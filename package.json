@@ -1,0 +1,28 @@
+{
+  "name": "angular-gm",
+  "description": "AngularGM - Google Maps Directives for AngularJS",
+  "version": "0.0.1",
+  "homepage": "http://dylanfprice.github.com/angular-gm",
+  "author": "Dylan Price <the.dylan.price@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dylanfprice/angular-gm.git"
+  },
+  "engines": {
+    "node": "0.8.x"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "karma": ">= 0.6.0",
+    "grunt": ">= 0.4.0",
+    "phantomjs": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-karma": "*"
+  },
+  "scripts": {
+    "test": "testacular start test/testacular.conf.js --single-run --browsers PhantomJS",
+    "test-server": "testacular start test/testacular.conf.js --browsers PhantomJS"
+  }
+}
