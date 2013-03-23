@@ -1,47 +1,42 @@
-# [AngularStrap](http://mgcrea.github.com/angular-strap) [![Build Status](https://secure.travis-ci.org/mgcrea/angular-strap.png?branch=master)](http://travis-ci.org/#!/mgcrea/angular-strap)
+# AngularGM
 
-AngularStrap is a set of directives that enables seamless integration of [Twitter Bootstrap](https://twitter.github.com/bootstrap) into your [AngularJS](https://github.com/angular/angular.js) app.
-
+AngularGM is a set of directives for embedding Google Maps in your application using the Google Maps Javascript API.
 
 
 ## Documentation and examples
 
-+ Check the [documentation](http://mgcrea.github.com/angular-strap) and [changelog](https://github.com/mgcrea/angular-strap/wiki/Changelog).
-
-+ Use & fork the available [plunkers](https://github.com/mgcrea/angular-strap/wiki/Plunkers) to test a directive or report an issue.
+TODO
 
 
+## Using
 
-## Quick start
-
-+ Include the required libraries (cdn/local)
+* Include the required libraries (cdn/local)
 
 >
 ``` html
+<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/0.7.1/angular-strap.min.js"></script>
+angular-gm
 ```
 
-+ Inject the `$strap.directives` into your app module
+* Declare a dependency on the `googleMaps` module
 
 >
 ``` javascript
-var app = angular.module('angularjs-starter', ['$strap.directives']);
+var app = angular.module('angularjs-starter', ['googleMaps']);
 ```
 
+## Development
 
-## Developers
+Clone the repo, `git clone git://github.com/dylanfprice/angular-gm.git`
 
-Clone the repo, `git clone git://github.com/mgcrea/angular-strap.git`, [download the latest release](https://github.com/mgcrea/angular-strap/zipball/master) or install with bower `bower install angular-strap`.
-
-AngularStrap is tested with `testacular` against the latest available release of jQuery & Bootstrap.
+AngularGM is tested with `karma`
 
 >
 	$ sudo npm install grunt-cli --global
 	$ npm install --dev
-	$ grunt test
+	$ grunt karma:server
 
 You can build the latest version using `grunt`.
 
@@ -49,42 +44,9 @@ You can build the latest version using `grunt`.
 	$ grunt build
 
 
+## Author
 
-## Contributing
+**Dylan Price**
 
-Please submit all pull requests the against master branch. If your unit test contains JavaScript patches or features, you should include relevant unit tests. Thanks!
+* http://github.com/dylanfprice
 
-
-
-## Authors
-
-**Olivier Louvignes**
-
-+ http://olouv.com
-+ http://github.com/mgcrea
-
-
-
-## Copyright and license
-
-	The MIT License
-
-	Copyright (c) 2012 Olivier Louvignes
-
-	Permission is hereby granted, free of charge, to any person obtaining a copy
-	of this software and associated documentation files (the "Software"), to deal
-	in the Software without restriction, including without limitation the rights
-	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	copies of the Software, and to permit persons to whom the Software is
-	furnished to do so, subject to the following conditions:
-
-	The above copyright notice and this permission notice shall be included in
-	all copies or substantial portions of the Software.
-
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	THE SOFTWARE.
