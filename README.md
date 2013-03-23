@@ -10,7 +10,7 @@ TODO
 
 ## Using
 
-* Include the required libraries
+Include the required libraries
 
 ``` html
 <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
@@ -19,7 +19,7 @@ TODO
 angular-gm
 ```
 
-* Declare a dependency on the `googleMaps` module
+Declare a dependency on the `googleMaps` module
 
 ``` javascript
 var app = angular.module('angularjs-starter', ['googleMaps']);
