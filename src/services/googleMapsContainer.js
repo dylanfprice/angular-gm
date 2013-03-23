@@ -95,6 +95,6 @@
       getMapPromise: getMapPromise,
       removeMap: removeMap,
       clear: clear
-    }
+    };
   }]);
 })();

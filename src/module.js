@@ -19,7 +19,7 @@
       zoom : 8,
       center : new google.maps.LatLng(46, -120),
       mapTypeId : google.maps.MapTypeId.ROADMAP
-    },
+    }
   });
 
 })();

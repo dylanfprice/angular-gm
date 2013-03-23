@@ -47,7 +47,7 @@
       Object.defineProperties(this, {
         'precision': {
           value: MapController.precision,
-          writeable: false,
+          writeable: false
         },
 
         'center': {
@@ -320,7 +320,7 @@
      * @throw if fn is null or undefined
      */
     MapController.prototype.forEachMarker = function(fn) {
-      if (fn == null) { throw 'fn was null or undefined'; };
+      if (fn == null) { throw 'fn was null or undefined'; }
       angular.forEach(this._markers, function(marker, hash) {
         if (marker != null) {
           fn(marker);

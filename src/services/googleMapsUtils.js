@@ -102,6 +102,6 @@
       latLngToObj: latLngToObj,
       objToLatLng: objToLatLng,
       hasNaN: hasNaN
-    }
+    };
   }]);
 })();

@@ -182,7 +182,7 @@
       });
 
       // initialize markers
-      $timeout(angular.bind(this, updateMarkers, scope.gmObjects()));
+      $timeout(angular.bind(null, updateMarkers, scope.gmObjects()));
     }
 
 
