@@ -50,8 +50,10 @@ You can build the latest version using `grunt`.
 
 * http://github.com/dylanfprice
 
+## Credits
+
 Inspired by Nicolas Laplante's angular-google-maps directive
-  https://github.com/nlaplante/angular-google-maps
+    https://github.com/nlaplante/angular-google-maps
 
 README and project layout stolen from Olivier Louvignes' AngularStrap repo
-  https://github.com/mgcrea/angular-strap
+    https://github.com/mgcrea/angular-strap
