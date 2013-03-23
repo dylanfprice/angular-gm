@@ -2,6 +2,12 @@
 
 module.exports = function(grunt) {
 
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-jsdoc');
+
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -15,6 +21,7 @@ module.exports = function(grunt) {
       ' */\n'
     },
     dirs: {
+      src: 'src/**/*.js',
       dest: 'dist'
     },
     concat: {
@@ -22,8 +29,8 @@ module.exports = function(grunt) {
         banner: '<%= meta.banner %>'
       },
       dist: {
-        src: ['src/module.js', 'src/directives/*.js', 'src/services/*.js'],
-        dest: '<%= dirs.dest %>/<%= pkg.name %>.js'
+        src: ['<%= dirs.src %>'],
+        dest: '<%= dirs.dest %>/<%= pkg.name %>-<%= pkg.version %>.js'
       }
     },
     uglify: {
@@ -32,11 +39,11 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['<%= concat.dist.dest %>'],
-        dest: '<%= dirs.dest %>/<%= pkg.name %>.min.js'
+        dest: '<%= dirs.dest %>/<%= pkg.name %>-<%= pkg.version %>.min.js'
       }
     },
     jshint: {
-      files: ['Gruntfile.js', 'src/**/*.js'],
+      files: ['Gruntfile.js', '<%= dirs.src %>'],
       options: {
         curly: false,
         browser: true,
@@ -71,16 +78,20 @@ module.exports = function(grunt) {
         singleRun: true,
         browsers: ['PhantomJS']
       }
+    },
+    jsdoc : {
+      compile: {
+        src: ['src/module.js'], 
+        options: {
+          destination: '<%= dirs.dest %>/docs',
+          configure: 'jsdoc.json'
+        }
+      }
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-karma');
-
   grunt.registerTask('default', ['build']);
 
-  grunt.registerTask('build', ['jshint', 'karma:unit', 'concat', 'uglify']);
+  grunt.registerTask('build', ['jshint', 'karma:unit', 'concat', 'uglify', 'jsdoc']);
 
 };
