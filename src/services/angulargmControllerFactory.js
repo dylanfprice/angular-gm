@@ -1,21 +1,21 @@
 'use strict';
 
 (function () {
-  angular.module('googleMaps').
+  angular.module('AngularGM').
 
   /**
    * Directive controller which is owned by the gmMap directive and shared
-   * among all other google maps directives.
+   * among all other angulargm directives.
    */
-  factory('googleMapControllerFactory', ['googleMapsUtils', 'googleMapsDefaults', 'googleMapsContainer',
-    function (googleMapsUtils, googleMapsDefaults, googleMapsContainer) {
+  factory('angulargmControllerFactory', ['angulargmUtils', 'angulargmDefaults', 'angulargmContainer',
+    function (angulargmUtils, angulargmDefaults, angulargmContainer) {
 
     /** aliases */
-    var latLngEqual = googleMapsUtils.latLngEqual;
-    var boundsEqual = googleMapsUtils.boundsEqual;
-    var hasNaN = googleMapsUtils.hasNaN;
-    var gMDefaults = googleMapsDefaults;
-    var gMContainer = googleMapsContainer;
+    var latLngEqual = angulargmUtils.latLngEqual;
+    var boundsEqual = angulargmUtils.boundsEqual;
+    var hasNaN = angulargmUtils.hasNaN;
+    var gMDefaults = angulargmDefaults;
+    var gMContainer = angulargmContainer;
 
 
     /** MapController class **/
@@ -30,7 +30,7 @@
     var MapController = function($scope, $element, $attrs) {
 
       var mapId = $scope.gmMapId();
-      if (!mapId) { throw 'googleMap must have non-empty gmMapId attribute'; }
+      if (!mapId) { throw 'angulargm must have non-empty gmMapId attribute'; }
 
       var mapDiv = $element.find('[id]');
       mapDiv.attr('id', mapId);
@@ -120,7 +120,7 @@
     };
 
 
-    // Create the map and add to googleMapsContainer
+    // Create the map and add to angulargmContainer
     MapController.prototype._createMap = function(id, element, config, gMContainer) {
       var map = gMContainer.getMap(id);
       if (!map) {
@@ -128,7 +128,7 @@
         gMContainer.addMap(id, map);
       } else {
         throw 'A map with id ' + id + ' already exists. You must use' +
-          ' different ids for each instance of the googleMap directive.';
+          ' different ids for each instance of the angulargm directive.';
       }
       return map;
     };

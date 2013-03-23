@@ -1,12 +1,12 @@
-describe('googleMapsContainer', function() {
+describe('angulargmContainer', function() {
   var cntr;
 
   beforeEach(function() {
-    module('googleMaps');
+    module('AngularGM');
   });
 
-  beforeEach(inject(function(googleMapsContainer) {
-    cntr = googleMapsContainer;
+  beforeEach(inject(function(angulargmContainer) {
+    cntr = angulargmContainer;
     spyOn(google.maps, 'Map').andCallFake(function() {
     });
   }));

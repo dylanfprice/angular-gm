@@ -1,7 +1,6 @@
-
 (function() {
   var mapCtrl;
-  angular.module('googleMaps-test', ['googleMaps']).
+  angular.module('AngularGM-test', ['AngularGM']).
 
   factory('gmtestMapController', function() {
     return function() {

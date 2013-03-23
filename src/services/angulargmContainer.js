@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  angular.module('googleMaps').
+  angular.module('AngularGM').
 
   /**
    * A container which maps mapIds to google.maps.Map instances, and
@@ -12,15 +12,15 @@
    * #getMapPromise(mapId) method so you can guarantee the map will be
    * initialized. For example,
    *
-   * function MyCtrl(googleMapsContainer) {
-   *   var gmapPromise = googleMapsContainer.getMapPromise('myMapid');
+   * function MyCtrl(angulargmContainer) {
+   *   var gmapPromise = angulargmContainer.getMapPromise('myMapid');
    *
    *   gmapPromise.then(function(gmap) {
    *     // google map configuration here
    *   });
    * }
    */
-  factory('googleMapsContainer', ['$q', function($q) {
+  factory('angulargmContainer', ['$q', function($q) {
     var maps = {};
     var defers = {};
 

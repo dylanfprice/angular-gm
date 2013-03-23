@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  angular.module('googleMaps').
+  angular.module('AngularGM').
 
   /**
    * A directive for embedding google maps into your app. 
@@ -25,8 +25,8 @@
    *
    * myMapOptions:  object in the current scope that is a
    *                google.maps.MapOptions object. If unspecified, will use the
-   *                values in googleMapsDefaults.mapOptions.
-   *                'googleMapsDefaults' is a service, so it is both injectable
+   *                values in angulargmDefaults.mapOptions.
+   *                'angulargmDefaults' is a service, so it is both injectable
    *                and overrideable (using $provide.decorator).
    *
    * All attributes except gm-map-options are required. The myCenter, myZoom,
@@ -39,10 +39,10 @@
    * For more on configuring defaults, see module.js.
    *
    * If you need to get a handle on the google.maps.Map object, see
-   * services/googleMapsContainer.js
+   * services/angulargmContainer.js
    */
-  directive('gmMap', ['$timeout', 'googleMapControllerFactory',
-    function ($timeout, googleMapControllerFactory) {
+  directive('gmMap', ['$timeout', 'angulargmControllerFactory',
+    function ($timeout, angulargmControllerFactory) {
   
     /** link function **/
 
@@ -58,7 +58,7 @@
       // Make sure gmMapId is defined
       // Note: redundant check in MapController. Can't hurt.
       if (!angular.isDefined(scope.gmMapId)) {
-        throw 'googleMap must have non-empty gmMapId attribute';
+        throw 'angulargm must have non-empty gmMapId attribute';
       }
 
       // Check what's defined in attrs
@@ -154,7 +154,7 @@
         gmMapOptions: '&',
         gmMapId: '&'
       },
-      controller: googleMapControllerFactory.MapController,
+      controller: angulargmControllerFactory.MapController,
       link: link
     };
   }]);

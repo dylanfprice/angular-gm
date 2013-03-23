@@ -3,8 +3,8 @@ describe('gmMarkers', function() {
   var timeout;
 
   beforeEach(function() {
-    module('googleMaps');
-    module('googleMaps-test');
+    module('AngularGM');
+    module('AngularGM-test');
   });
 
   beforeEach(inject(function($rootScope, $compile, $timeout, gmtestMapController) {
@@ -21,7 +21,7 @@ describe('gmMarkers', function() {
   
     timeout = $timeout;
 
-    // compile googleMapMarkers directive
+    // compile angulargmMarkers directive
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
                             '<gm-markers ' +
                               'gm-objects="people"' + 
@@ -81,8 +81,8 @@ describe('gmMarkers', function() {
   describe('objects', function() {
     var objToLatLng;
 
-    beforeEach(inject(function(googleMapsUtils) {
-      objToLatLng = googleMapsUtils.objToLatLng;
+    beforeEach(inject(function(angulargmUtils) {
+      objToLatLng = angulargmUtils.objToLatLng;
     }));
 
     it('initializes markers with objects', function() {

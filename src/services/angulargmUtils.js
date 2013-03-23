@@ -1,12 +1,12 @@
 'use strict';
 
 (function () {
-  angular.module('googleMaps').
+  angular.module('AngularGM').
 
   /**
    * Common utility functions.
    */
-  factory('googleMapsUtils', [function() {
+  factory('angulargmUtils', [function() {
 
     /**
      * Check if two floating point numbers are equal. 

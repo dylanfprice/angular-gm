@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  angular.module('googleMaps').
+  angular.module('AngularGM').
 
   /**
    * A directive for adding markers to a gmMap. You may have multiple per gmMap.
@@ -68,12 +68,12 @@
    * Only the gm-objects and gm-get-lat-lng attributes are required.
    *
    */
-  directive('gmMarkers', ['$log', '$parse', '$timeout', 'googleMapsUtils', 
-    function($log, $parse, $timeout, googleMapsUtils) {
+  directive('gmMarkers', ['$log', '$parse', '$timeout', 'angulargmUtils', 
+    function($log, $parse, $timeout, angulargmUtils) {
 
     /** aliases */
-    var latLngEqual = googleMapsUtils.latLngEqual;
-    var objToLatLng = googleMapsUtils.objToLatLng;
+    var latLngEqual = angulargmUtils.latLngEqual;
+    var objToLatLng = angulargmUtils.objToLatLng;
 
 
     function link(scope, element, attrs, controller) {

@@ -1,4 +1,4 @@
-describe('googleMapsUtils', function() {
+describe('angulargmUtils', function() {
   var latLngEqual,
       boundsEqual,
       latLngToObj,
@@ -9,15 +9,15 @@ describe('googleMapsUtils', function() {
       latLngObj;
 
   beforeEach(function() {
-    module('googleMaps');
+    module('AngularGM');
   });
 
-  beforeEach(inject(function(googleMapsUtils) {
-    latLngEqual = googleMapsUtils.latLngEqual;
-    boundsEqual = googleMapsUtils.boundsEqual;
-    latLngToObj = googleMapsUtils.latLngToObj;
-    objToLatLng = googleMapsUtils.objToLatLng;
-    hasNaN = googleMapsUtils.hasNaN;
+  beforeEach(inject(function(angulargmUtils) {
+    latLngEqual = angulargmUtils.latLngEqual;
+    boundsEqual = angulargmUtils.boundsEqual;
+    latLngToObj = angulargmUtils.latLngToObj;
+    objToLatLng = angulargmUtils.objToLatLng;
+    hasNaN = angulargmUtils.hasNaN;
 
     latLngG = new google.maps.LatLng(1, 2);
     latLngObj = {lat: 1, lng: 2};
