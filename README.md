@@ -12,7 +12,6 @@ TODO
 
 * Include the required libraries
 
->
 ``` html
 <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -22,7 +21,6 @@ angular-gm
 
 * Declare a dependency on the `googleMaps` module
 
->
 ``` javascript
 var app = angular.module('angularjs-starter', ['googleMaps']);
 ```
@@ -53,7 +51,7 @@ $ grunt build
 
 ## Credits
 
-Inspired by Nicolas Laplante's angular-google-maps directive (https://github.com/nlaplante/angular-google-maps)
+Inspired by Nicolas Laplante's angular-google-maps directive (http://github.com/nlaplante/angular-google-maps)
 
-README and project layout stolen from Olivier Louvignes' AngularStrap repo (https://github.com/mgcrea/angular-strap)
+README and project layout stolen from Olivier Louvignes' AngularStrap repo (http://github.com/mgcrea/angular-strap)
   
