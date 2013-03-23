@@ -36,7 +36,7 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      files: ['Gruntfile.js', 'src/directives/*.js', 'test/unit/*.js'],
+      files: ['Gruntfile.js', 'src/**/*.js'],
       options: {
         curly: false,
         browser: true,
@@ -54,13 +54,13 @@ module.exports = function(grunt) {
         globals: {
           exports: true,
           angular: false,
-          $: false
+          google: false
         }
       }
     },
     karma: {
       options: {
-        configFile: 'test/karma.conf.js',
+        configFile: 'test/karma.conf.js'
       },
       server: {
       },
@@ -70,7 +70,7 @@ module.exports = function(grunt) {
       continuous: {
         singleRun: true,
         browsers: ['PhantomJS']
-      },
+      }
     }
   });
 
@@ -81,6 +81,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['build']);
 
-  grunt.registerTask('build', ['karma:unit', 'concat', 'uglify']);
+  grunt.registerTask('build', ['jshint', 'karma:unit', 'concat', 'uglify']);
 
-}
+};
