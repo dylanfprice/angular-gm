@@ -39,11 +39,7 @@
    * For more on configuring defaults, see module.js.
    *
    * If you need to get a handle on the google.maps.Map object, see
-   * googleMapsContainer.js
-   *
-   *
-   * Inspired by Nicolas Laplante's angular-google-maps directive
-   * https://github.com/nlaplante/angular-google-maps
+   * services/googleMapsContainer.js
    */
   directive('gmMap', ['$timeout', 'googleMapControllerFactory',
     function ($timeout, googleMapControllerFactory) {
