@@ -19,10 +19,10 @@ Include the required libraries
 <script src="//raw.github.com/dylanfprice/angular-gm/gh-pages/angular-gm.min.js"></script>
 ```
 
-Declare a dependency on the `googleMaps` module
+Declare a dependency on the `AngularGM` module
 
 ``` javascript
-var app = angular.module('angularjs-starter', ['googleMaps']);
+var app = angular.module('myModule', ['AngularGM']);
 ```
 
 ## Development
