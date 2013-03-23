@@ -19,7 +19,7 @@ browsers = ['Firefox', 'PhantomJS'];
 reportSlowerThan = 500;
 
 preprocessors = {
-  '**/src/**/*.js': 'coverage',
+  '**/src/**/*.js': 'coverage'
 };
 
 reporters = ['progress', 'coverage'];
