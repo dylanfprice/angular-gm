@@ -52,6 +52,5 @@ $ grunt build
 ## Credits
 
 Inspired by Nicolas Laplante's angular-google-maps directive (http://github.com/nlaplante/angular-google-maps)
-
 README and project layout stolen from Olivier Louvignes' AngularStrap repo (http://github.com/mgcrea/angular-strap)
   
