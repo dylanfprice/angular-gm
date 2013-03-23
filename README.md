@@ -33,7 +33,6 @@ Clone the repo, `git clone git://github.com/dylanfprice/angular-gm.git`
 
 AngularGM is tested with `karma`
 
->
 ``` bash
 $ sudo npm install grunt-cli --global
 $ npm install --dev
@@ -42,22 +41,19 @@ $ grunt karma:server
 
 You can build the latest version using `grunt`.
 
->
-	$ grunt build
+```bash
+$ grunt build
+```
 
 
 ## Author
 
-**Dylan Price**
+**Dylan Price** (http://github.com/dylanfprice)
 
-* http://github.com/dylanfprice
 
 ## Credits
 
-Inspired by Nicolas Laplante's angular-google-maps directive
+Inspired by Nicolas Laplante's angular-google-maps directive (https://github.com/nlaplante/angular-google-maps)
 
-  https://github.com/nlaplante/angular-google-maps
-
-README and project layout stolen from Olivier Louvignes' AngularStrap repo
-
-  https://github.com/mgcrea/angular-strap
+README and project layout stolen from Olivier Louvignes' AngularStrap repo (https://github.com/mgcrea/angular-strap)
+  
