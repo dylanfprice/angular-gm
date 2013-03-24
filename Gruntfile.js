@@ -81,10 +81,11 @@ module.exports = function(grunt) {
     },
     jsdoc : {
       compile: {
-        src: ['src/module.js'], 
+        src: ['README.md', '<%= dirs.src %>'], 
         options: {
           destination: '<%= dirs.dest %>/docs',
-          configure: 'jsdoc.json'
+          configure: 'jsdoc/conf.json',
+          template: 'jsdoc/template'
         }
       }
     }
