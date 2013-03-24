@@ -1,73 +1,82 @@
 'use strict';
 
+/**
+ * A directive for adding markers to a `gmMap`. You may have multiple per `gmMap`.
+ *
+ * To use, you specify an array of custom objects and tell the directive how to
+ * extract location data from them. A marker will be created for each of your
+ * objects. If you update the array of objects, the markers will also update.
+ *
+ * Usage:
+ * ```html
+ * <gm-map ... >
+ *   <gm-markers gm-objects="myObjects" 
+ *               gm-get-lat-lng="myGetLatLng" 
+ *               gm-marker-options="myMarkerOptions" 
+ *               gm-event="myEvent"
+ *               gm-on-*event*="myEventHandler">
+ *   </gm-markers>
+ * </gm-map>
+ * ```
+ *
+ * + `gm-objects`: an array of objects in the current scope. These can be any
+ *   objects you wish to attach to markers, the only requirement is that they
+ *   have a uniform method of accessing a lat and lng.
+ *
+ * + `gm-get-lat-lng`: an angular expression that given an object from
+ *   `gm-objects`, evaluates to an object with lat and lng properties. Your
+ *   object can be accessed through the variable 'object'.  For example, if
+ *   your controller has
+ *   ```
+ *   ...
+ *   $scope.myObjects = [
+ *     { id: 0, location: { lat: 5, lng: 5} }, 
+ *     { id: 1, location: { lat: 6, lng: 6} }
+ *   ]
+ *   ...
+ *   ```
+ *   then in the `gm-map` directive you would put
+ *   ```
+ *   ...
+ *   gm-objects="myObjects"
+ *   gm-get-lat-lng="{ lat: object.location.lat, lng: object.location.lng }"
+ *   ...
+ *   ```
+ *
+ * + `gm-marker-options`: object in the current scope that is a
+ *   google.maps.MarkerOptions object. If unspecified, google maps api defaults
+ *   will be used.
+ *
+ * + `gm-event`: a variable in the current scope that is used to simulate
+ *   events on a marker. Setting this variable to an object of the form 
+ *   ```
+ *       {
+ *         event: 'click',
+ *         location: new google.maps.LatLng(45, -120),
+ *       } 
+ *   ```
+ *   will generate the named event on the marker at the given location, if such
+ *   a marker exists. Note: when setting the `gm-event` variable, you must set
+ *   it to a new object for the changes to be detected. Code like
+ *   `myEvent["location"] = new google.maps.LatLng(45,-120)` will not work.
+ *                        
+ *
+ * + `gm-on-*event*`: an angular expression which evaluates to an event
+ *   handler. This handler will be attached to each marker's \*event\* event.
+ *   The variables 'object' and 'marker' evaluate to your object and the
+ *   google.maps.Marker, respectively. For example:
+ *   `gm-on-click="myClickFn(object, marker)"` will call your myClickFn
+ *   whenever a marker is clicked.  You may have multiple `gm-on-*event*`
+ *   handlers, but only one for each type of event.
+ *
+ *
+ * Only the `gm-objects` and `gm-get-lat-lng` attributes are required.
+ *
+ * @module gmMarkers
+ */
 (function () {
   angular.module('AngularGM').
 
-  /**
-   * A directive for adding markers to a gmMap. You may have multiple per gmMap.
-   *
-   * To use, you specify an array of custom objects you define and tell the
-   * directive how to extract location data from them. A marker will be created
-   * for each of your objects. If you update the array of objects, the markers
-   * will also update.
-   *
-   * Usage:
-   * <gm-map ...>
-   *   <gm-markers 
-   *     gm-objects="myObjects" 
-   *     gm-get-lat-lng="myGetLatLng" 
-   *     gm-marker-options="myMarkerOptions" 
-   *     gm-event="myEvent"
-   *     gm-on-*event*="myEventHandler">
-   *   </gm-markers>
-   * </gm-map>
-   *
-   * myObjects:        an array of objects in the current scope. These can be
-   *                   any objects you wish to attach to markers, the only
-   *                   requirement is that they have a uniform method of
-   *                   accessing a lat and lng.
-   *
-   * myGetLatLng:      an angular expression that given an object from
-   *                   myObjects, evaluates to an object with lat and lng
-   *                   properties. Your object can be accessed through the
-   *                   variable 'object'.  For example, if myObjects is [
-   *                     {id: 0, location: {lat:5,lng:5}}, 
-   *                     {id: 1, location: {lat:6,lng:6}}
-   *                   ]
-   *                   then myGetLatLng would look like
-   *                     { lat: object.location.lat, lng: object.location.lng }.
-   *
-   * myMarkerOptions:  object in the current scope that is a
-   *                   google.maps.MarkerOptions object. If unspecified, google
-   *                   maps api defaults will be used.
-   *
-   * myEvent:          name for a variable in the current scope that is used to
-   *                   simulate events on a marker. Setting this variable to an
-   *                   object of the form {
-   *                     event: 'click',
-   *                     location: new google.maps.LatLng(45, -120),
-   *                   }
-   *                   will generate the named event on the marker at the given
-   *                   location, if such a marker exists. Note: when setting
-   *                   the myEvent variable, you must set it to a new object
-   *                   for the changes to be detected. Code like
-   *                   'myEvent["location"] = new google.maps.LatLng(45, -120)'
-   *                   will not work.
-   *
-   * myEventHandler:   an angular expression which evaluates to an event
-   *                   handler. This handler will be attached to each marker's
-   *                   *event* event. The variables 'object' and 'marker'
-   *                   evaluate to your object and the google.maps.Marker,
-   *                   respectively. For example:
-   *                     gm-on-click="myClickFn(object, marker)"
-   *                   will call your myClickFn whenever a marker is clicked.
-   *                   You may have multiple gm-on-*event* handlers, but only
-   *                   one for each type of event.
-   *
-   *
-   * Only the gm-objects and gm-get-lat-lng attributes are required.
-   *
-   */
   directive('gmMarkers', ['$log', '$parse', '$timeout', 'angulargmUtils', 
     function($log, $parse, $timeout, angulargmUtils) {
 

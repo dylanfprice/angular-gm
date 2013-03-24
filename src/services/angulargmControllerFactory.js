@@ -1,12 +1,12 @@
 'use strict';
 
+/**
+ * Directive controller which is owned by the [gmMap]{@link module:gmMap}
+ * directive and shared among all other angulargm directives.
+ */
 (function () {
   angular.module('AngularGM').
 
-  /**
-   * Directive controller which is owned by the gmMap directive and shared
-   * among all other angulargm directives.
-   */
   factory('angulargmControllerFactory', ['angulargmUtils', 'angulargmDefaults', 'angulargmContainer',
     function (angulargmUtils, angulargmDefaults, angulargmContainer) {
 

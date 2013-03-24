@@ -1,11 +1,11 @@
 'use strict';
 
+/**
+ * Common utility functions.
+ */
 (function () {
   angular.module('AngularGM').
 
-  /**
-   * Common utility functions.
-   */
   factory('angulargmUtils', [function() {
 
     /**

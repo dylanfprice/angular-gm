@@ -4,41 +4,48 @@
  * A directive for embedding google maps into your app. 
  *
  * Usage:
- * <gm-map gm-map-id="myMapId" gm-center="myCenter" gm-zoom="myZoom" gm-bounds="myBounds" gm-map-options="myMapOptions"></gm-map>
+ * ```html
+ * <gm-map gm-map-id="myMapId" 
+ *         gm-center="myCenter" 
+ *         gm-zoom="myZoom" 
+ *         gm-bounds="myBounds" 
+ *         gm-map-options="myMapOptions">
+ * </gm-map>
+ * ```
  *
- * myMapId:       angular expression that evaluates to a unique string id for
- *                the map, e.g. "'map_canvas'" or "myMapId" where myMapId is
- *                a variable in the current scope. This allows you to have
- *                multiple maps/instances of the directive.
+ * + `gm-map-id`: angular expression that evaluates to a unique string id for
+ *   the map, e.g. "'map_canvas'" or "myMapId" where myMapId is a variable in
+ *   the current scope. This allows you to have multiple maps/instances of the
+ *   directive.
  *
- * myCenter:      name for a center variable in the current scope.  The value
- *                will be a google.maps.LatLng object.
+ * + `gm-center`: name for a center variable in the current scope.  The value
+ *   will be a google.maps.LatLng object.
  *
- * myZoom:        name for a zoom variable in the current scope.  Value will
- *                be an integer.
+ * + `gm-zoom`: name for a zoom variable in the current scope.  Value will be
+ *   an integer.
  *
- * myBounds:      name for a bounds variable in the current scope.  Value
- *                will be a google.maps.LatLngBounds object.
+ * + `gm-bounds`: name for a bounds variable in the current scope.  Value will
+ *   be a google.maps.LatLngBounds object.
  *
- * myMapOptions:  object in the current scope that is a
- *                google.maps.MapOptions object. If unspecified, will use the
- *                values in angulargmDefaults.mapOptions.
- *                'angulargmDefaults' is a service, so it is both injectable
- *                and overrideable (using $provide.decorator).
+ * + `gm-map-options`: object in the current scope that is a
+ *   google.maps.MapOptions object. If unspecified, will use the values in
+ *   angulargmDefaults.mapOptions. '[angulargmDefaults]{@link module:angulargmDefaults}'
+ *   is a service, so it is both injectable and overrideable (using
+ *   $provide.decorator).
  *
- * All attributes except gm-map-options are required. The myCenter, myZoom,
- * and myBounds variables do not have to exist in the current scope--they
- * will be created if necessary. All three have bi-directional association,
- * i.e. drag or zoom the map and they will update, update them and the map
- * will change.  However, any initial state of these three variables will be
+ * All attributes except `gm-map-options` are required. The `gm-center`, `gm-zoom`,
+ * and `gm-bounds` variables do not have to exist in the current scope--they will
+ * be created if necessary. All three have bi-directional association, i.e.
+ * drag or zoom the map and they will update, update them and the map will
+ * change.  However, any initial state of these three variables will be
  * ignored.
  *
  * For more on configuring defaults, see module.js.
  *
  * If you need to get a handle on the google.maps.Map object, see
- * services/angulargmContainer.js
+ * [angulargmContainer]{@link module:angulargmContainer}
  *
- * @module AngularGM/gmMap
+ * @module gmMap
  */
 (function () {
   angular.module('AngularGM').
