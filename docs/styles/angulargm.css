@@ -11,3 +11,7 @@ pre, code, tt {
   font-family: Consolas,"Liberation Mono",Courier,monospace;
   font-size: 14px;
 }
+
+h2 {
+  margin-top: 60px;
+}
