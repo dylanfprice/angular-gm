@@ -23,9 +23,12 @@ var app = angular.module('myModule', ['AngularGM']);
 
 ## Documentation and Examples
 
-[JSDoc page](http://dylanfprice.github.com/angular-gm/docs/) (this README)
+[See here.](http://dylanfprice.github.com/angular-gm/docs/module-AngularGM.html)
 
-[AngularGM Module](http://dylanfprice.github.com/angular-gm/docs/module-AngularGM.html)
+This README can be accessed in two places:
+
++ [AngularGM JSDoc](http://dylanfprice.github.com/angular-gm/docs/)
++ [AngularGM Github](https://github.com/dylanfprice/angular-gm#angulargm)
 
 
 ## Development
