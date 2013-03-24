@@ -20,6 +20,12 @@ Declare a dependency on the `AngularGM` module
 var app = angular.module('myModule', ['AngularGM']);
 ```
 
+Make a map
+
+```html
+<gm-map gm-map-id="'myMap'" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" style="width:500px;height:500px;"></gm-map>
+```
+
 
 ## Documentation and Examples
 
