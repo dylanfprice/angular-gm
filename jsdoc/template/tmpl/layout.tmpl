@@ -37,9 +37,13 @@
     <script src="scripts/prettify/lang-css.js"></script>
     <script>
       window.onload = function() {
-        $('pre').addClass('prettyprint');
+        var pres = $('pre');
+        pres.addClass('prettyprint');
+        pres.addClass('source');
+
         var htmlPres = $('pre[lang~=html]');
         htmlPres.text(htmlPres.html());
+
         prettyPrint();
       };
     </script>
