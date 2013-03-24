@@ -1,0 +1,13 @@
+code {
+  white-space: nowrap;
+  background-color: #F8F8F8;
+  border: 1px solid #EAEAEA;
+  border-radius: 3px 3px 3px 3px;
+  margin: 0 2px;
+  padding: 0 5px;
+}
+
+pre, code, tt {
+  font-family: Consolas,"Liberation Mono",Courier,monospace;
+  font-size: 14px;
+}
