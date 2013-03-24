@@ -89,7 +89,7 @@
  *
  * + `gm-map-options`: object in the current scope that is a
  *   google.maps.MapOptions object. If unspecified, will use the values in
- *   angulargmDefaults.mapOptions. '[angulargmDefaults]{@link module:angulargmDefaults}'
+ *   angulargmDefaults.mapOptions. [angulargmDefaults]{@link module:angulargmDefaults}
  *   is a service, so it is both injectable and overrideable (using
  *   $provide.decorator).
  *
