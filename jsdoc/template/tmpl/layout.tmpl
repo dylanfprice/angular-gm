@@ -42,7 +42,11 @@
         pres.addClass('source');
 
         var htmlPres = $('pre[lang~=html]');
-        htmlPres.text(htmlPres.html());
+        htmlPres.each(function(index) {
+          var elt = $(this);
+          console.log(elt);
+          elt.text(elt.html());
+        });
 
         prettyPrint();
       };
