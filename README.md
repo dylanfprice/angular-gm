@@ -12,7 +12,7 @@ TODO
 
 Include the required libraries
 
-``` html
+```html
 <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
@@ -39,7 +39,7 @@ $ grunt karma:server
 
 You can build the latest version using `grunt`.
 
-```bash
+``` bash
 $ grunt build
 ```
 
@@ -52,5 +52,6 @@ $ grunt build
 ## Credits
 
 Inspired by Nicolas Laplante's angular-google-maps directive (http://github.com/nlaplante/angular-google-maps)
+
 README and project layout stolen from Olivier Louvignes' AngularStrap repo (http://github.com/mgcrea/angular-strap)
   
