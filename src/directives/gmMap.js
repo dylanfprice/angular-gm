@@ -50,8 +50,7 @@
 (function () {
   angular.module('AngularGM').
 
-  directive('gmMap', ['$timeout', 'angulargmControllerFactory',
-    function ($timeout, angulargmControllerFactory) {
+  directive('gmMap', ['$timeout', function ($timeout) {
   
     /** link function **/
 
@@ -163,7 +162,7 @@
         gmMapOptions: '&',
         gmMapId: '&'
       },
-      controller: angulargmControllerFactory.MapController,
+      controller: 'angulargmMapController',
       link: link
     };
   }]);

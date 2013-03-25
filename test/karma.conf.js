@@ -10,6 +10,7 @@ files = [
   'src/module.js',
   'src/directives/*.js',
   'src/services/*.js',
+  'src/controllers/*.js',
   'test/unit/**/*.js'
 ];
 

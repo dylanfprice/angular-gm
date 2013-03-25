@@ -1,4 +1,4 @@
-describe('angulargmControllerFactory', function() {
+describe('angulargmMapController', function() {
   var scope;
   var mapCtrl, mapCntr;
 
@@ -7,7 +7,7 @@ describe('angulargmControllerFactory', function() {
   });
 
 
-  beforeEach(inject(function($rootScope, angulargmControllerFactory, angulargmContainer) {
+  beforeEach(inject(function($rootScope, $controller, angulargmContainer) {
     // set up scope
     scope = $rootScope.$new();
     scope.gmMapOptions = function() {
@@ -21,17 +21,12 @@ describe('angulargmControllerFactory', function() {
       return 'test';
     };
 
-    // set up attrs
-    var attrs = {
-      gmMapId: 'test'
-    };
-
     // set up element
     var elm = angular.element('<div gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">' +
                                 '<div id="test"></div>' +
                               '</div');
 
-    mapCtrl = new angulargmControllerFactory.MapController(scope, elm, attrs);
+    mapCtrl = $controller('angulargmMapController', {$scope: scope, $element: elm});
     mapCntr = angulargmContainer;
   }));
 
@@ -45,18 +40,17 @@ describe('angulargmControllerFactory', function() {
   });
 
 
-  it('constructs the map using defaults when there are no options', inject(function($rootScope, angulargmControllerFactory, angulargmDefaults) {
+  it('constructs the map using defaults when there are no options', inject(function($rootScope, $controller, angulargmDefaults) {
     scope = $rootScope.$new();
     scope.gmMapOptions = function() { };
     scope.gmMapId = function() {
       return 'test2';
     };
-    attrs = {};
 
     var elm = angular.element('<div gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
                                 '<div id="test2"></div>' +
                               '</div');
-    mapCtrl = new angulargmControllerFactory.MapController(scope, elm, attrs);
+    mapCtrl = $controller('angulargmMapController', {$scope: scope, $element: elm});
 
     expect(mapCtrl.center).toEqual(angulargmDefaults.mapOptions.center);
     expect(mapCtrl.zoom).toEqual(angulargmDefaults.mapOptions.zoom);

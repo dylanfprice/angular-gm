@@ -7,8 +7,12 @@
 (function () {
   angular.module('AngularGM').
 
-  factory('angulargmControllerFactory', ['angulargmUtils', 'angulargmDefaults', 'angulargmContainer',
-    function (angulargmUtils, angulargmDefaults, angulargmContainer) {
+  controller('angulargmMapController', 
+    ['$scope', '$element', 'angulargmUtils', 'angulargmDefaults',
+    'angulargmContainer',
+
+    function ($scope, $element, angulargmUtils, angulargmDefaults,
+      angulargmContainer) {
 
     /** aliases */
     var latLngEqual = angulargmUtils.latLngEqual;
@@ -18,16 +22,18 @@
     var gMContainer = angulargmContainer;
 
 
-    /** MapController class **/
-    
+    /** constants */
+    var consts = {};
+    consts.precision = 3;
+
+
     /* 
      * Construct a new controller for the gmMap directive.
      * @param {angular.Scope} $scope
      * @param {angular.element} $element
-     * @param {angular.Attributes} $attrs
      * @constructor
      */
-    var MapController = function($scope, $element, $attrs) {
+    var constructor = function($scope, $element) {
 
       var mapId = $scope.gmMapId();
       if (!mapId) { throw 'angulargm must have non-empty gmMapId attribute'; }
@@ -46,7 +52,7 @@
 
       Object.defineProperties(this, {
         'precision': {
-          value: MapController.precision,
+          value: consts.precision,
           writeable: false
         },
 
@@ -106,12 +112,8 @@
     };
 
 
-    // used for hashing marker objects
-    MapController.precision = 3;
-
-
     // Retrieve google.maps.MapOptions
-    MapController.prototype._getConfig = function($scope, gMDefaults) {
+    this._getConfig = function($scope, gMDefaults) {
       // Get config or defaults
       var defaults = gMDefaults.mapOptions;
       var config = {};
@@ -121,7 +123,7 @@
 
 
     // Create the map and add to angulargmContainer
-    MapController.prototype._createMap = function(id, element, config, gMContainer) {
+    this._createMap = function(id, element, config, gMContainer) {
       var map = gMContainer.getMap(id);
       if (!map) {
         map = new google.maps.Map(element[0], config);
@@ -135,7 +137,7 @@
 
         
     // Set up listeners to update this.dragging
-    MapController.prototype._initDragListeners = function() {
+    this._initDragListeners = function() {
       var self = this;
       this.addMapListener('dragstart', function () {
         self.dragging = true;
@@ -151,7 +153,7 @@
     };
 
 
-    MapController.prototype._destroy = function(mapId) {
+    this._destroy = function(mapId) {
       gMContainer.removeMap(mapId);
     };
 
@@ -161,7 +163,7 @@
      * @param {string} event an event defined on google.maps.Map
      * @param {Function} a handler for the event
      */
-    MapController.prototype.addMapListener = function(event, handler) {
+    this.addMapListener = function(event, handler) {
       google.maps.event.addListener(this._map, 
           event, handler);
     };
@@ -172,7 +174,7 @@
      * @param {string} event an event defined on google.maps.Map
      * @param {Function} a handler for the event
      */
-    MapController.prototype.addMapListenerOnce = function(event, handler) {
+    this.addMapListenerOnce = function(event, handler) {
       google.maps.event.addListenerOnce(this._map, 
           event, handler);
     };
@@ -181,7 +183,7 @@
     /**
      * Alias for google.maps.event.addListener(object, event, handler)
      */
-    MapController.prototype.addListener = function(object, event, handler) {
+    this.addListener = function(object, event, handler) {
       google.maps.event.addListener(object, event, handler);
     };
 
@@ -189,7 +191,7 @@
     /**
      * Alias for google.maps.event.addListenerOnce(object, event, handler)
      */
-    MapController.prototype.addListenerOnce = function(object, event, handler) {
+    this.addListenerOnce = function(object, event, handler) {
       google.maps.event.addListenerOnce(object, event, handler);
     };
 
@@ -198,7 +200,7 @@
      * Alias for google.maps.event.trigger(map, event)
      * @param {string} event an event defined on google.maps.Map
      */
-    MapController.prototype.mapTrigger = function(event) {
+    this.mapTrigger = function(event) {
       google.maps.event.trigger(this._map, event);
     };
 
@@ -206,7 +208,7 @@
     /**
      * Alias for google.maps.event.trigger(object, event)
      */
-    MapController.prototype.trigger = function(object, event) {
+    this.trigger = function(object, event) {
       google.maps.event.trigger(object, event);
     };
 
@@ -219,7 +221,7 @@
      *   delta_lng are < 0.0005
      * @throw if markerOptions does not have all required options (i.e. position)
      */
-    MapController.prototype.addMarker = function(markerOptions) {
+    this.addMarker = function(markerOptions) {
       var opts = {};
       angular.extend(opts, markerOptions);
 
@@ -245,7 +247,7 @@
      * @param {number} lng
      * @return {boolean} true if there is a marker with the given lat and lng
      */
-    MapController.prototype.hasMarker = function(lat, lng) {
+    this.hasMarker = function(lat, lng) {
       return (this.getMarker(lat, lng) instanceof google.maps.Marker);
     };
 
@@ -256,7 +258,7 @@
      * @return {google.maps.Marker} the marker at given lat and lng, or null if
      *   no such marker exists
      */
-    MapController.prototype.getMarker = function (lat, lng) {
+    this.getMarker = function (lat, lng) {
       if (lat == null || lng == null)
         throw 'lat or lng was null';
 
@@ -276,7 +278,7 @@
      * @return {boolean} true if a marker was removed, false if nothing
      *   happened
      */
-    MapController.prototype.removeMarker = function(lat, lng) {
+    this.removeMarker = function(lat, lng) {
       if (lat == null || lng == null)
         throw 'lat or lng was null';
 
@@ -303,7 +305,7 @@
      * this.addMapListenerOnce if you need to access these values immediately
      * after calling fitToMarkers.
      */
-    MapController.prototype.fitToMarkers = function () {
+    this.fitToMarkers = function () {
       var bounds = new google.maps.LatLngBounds();
 
       this.forEachMarker(function(marker) {
@@ -319,7 +321,7 @@
      * @param {Function} fn will called with marker as first argument
      * @throw if fn is null or undefined
      */
-    MapController.prototype.forEachMarker = function(fn) {
+    this.forEachMarker = function(fn) {
       if (fn == null) { throw 'fn was null or undefined'; }
       angular.forEach(this._markers, function(marker, hash) {
         if (marker != null) {
@@ -328,10 +330,8 @@
       });
     };
 
-
-    return {
-      MapController: MapController
-    };
+    /** Instantiate controller */
+    angular.bind(this, constructor)($scope, $element);
 
   }]);
 })();

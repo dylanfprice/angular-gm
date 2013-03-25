@@ -29,7 +29,7 @@ module.exports = function(grunt) {
         banner: '<%= meta.banner %>'
       },
       dist: {
-        src: ['src/module.js', 'src/directives/*.js', 'src/services/*.js'],
+        src: ['src/module.js', 'src/directives/*.js', 'src/services/*.js', 'src/controllers/*.js'],
         dest: '<%= dirs.dest %>/<%= pkg.name %>-<%= pkg.version %>.js'
       }
     },
