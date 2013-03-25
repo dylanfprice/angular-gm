@@ -1,6 +1,6 @@
 /**
  * AngularGM - Google Maps Directives for AngularJS
- * @version v0.0.1 - 2013-03-24
+ * @version v0.0.1 - 2013-03-25
  * @link http://dylanfprice.github.com/angular-gm
  * @author Dylan Price <the.dylan.price@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -110,8 +110,7 @@
 (function () {
   angular.module('AngularGM').
 
-  directive('gmMap', ['$timeout', 'angulargmControllerFactory',
-    function ($timeout, angulargmControllerFactory) {
+  directive('gmMap', ['$timeout', function ($timeout) {
   
     /** link function **/
 
@@ -223,7 +222,7 @@
         gmMapOptions: '&',
         gmMapId: '&'
       },
-      controller: angulargmControllerFactory.MapController,
+      controller: 'angulargmMapController',
       link: link
     };
   }]);
@@ -552,345 +551,6 @@
 'use strict';
 
 /**
- * Directive controller which is owned by the [gmMap]{@link module:gmMap}
- * directive and shared among all other angulargm directives.
- */
-(function () {
-  angular.module('AngularGM').
-
-  factory('angulargmControllerFactory', ['angulargmUtils', 'angulargmDefaults', 'angulargmContainer',
-    function (angulargmUtils, angulargmDefaults, angulargmContainer) {
-
-    /** aliases */
-    var latLngEqual = angulargmUtils.latLngEqual;
-    var boundsEqual = angulargmUtils.boundsEqual;
-    var hasNaN = angulargmUtils.hasNaN;
-    var gMDefaults = angulargmDefaults;
-    var gMContainer = angulargmContainer;
-
-
-    /** MapController class **/
-    
-    /* 
-     * Construct a new controller for the gmMap directive.
-     * @param {angular.Scope} $scope
-     * @param {angular.element} $element
-     * @param {angular.Attributes} $attrs
-     * @constructor
-     */
-    var MapController = function($scope, $element, $attrs) {
-
-      var mapId = $scope.gmMapId();
-      if (!mapId) { throw 'angulargm must have non-empty gmMapId attribute'; }
-
-      var mapDiv = $element.find('[id]');
-      mapDiv.attr('id', mapId);
-
-      var config = this._getConfig($scope, gMDefaults);
-
-      // 'private' properties
-      this._map = this._createMap(mapId, mapDiv, config, gMContainer);
-      this._markers = {};
-
-      // 'public' properties
-      this.dragging = false;
-
-      Object.defineProperties(this, {
-        'precision': {
-          value: MapController.precision,
-          writeable: false
-        },
-
-        'center': {
-          configurable: true, // for testing so we can mock
-          get: function() {
-             return this._map.getCenter();
-           },
-          set: function(center) {
-            if (hasNaN(center)) 
-              throw 'center contains null or NaN';
-            var changed = !latLngEqual(this.center, center);
-            if (changed) {
-              // TODO: change to panTo
-              //this._map.setCenter(center);
-              this._map.panTo(center);
-            }
-          } 
-        },
-
-        'zoom': {
-          configurable: true, // for testing so we can mock
-          get: function() {
-            return this._map.getZoom();
-          },
-          set: function(zoom) {
-            if (!(zoom != null && !isNaN(zoom))) 
-              throw 'zoom was null or NaN';
-            var changed = this.zoom !== zoom;
-            if (changed) {
-              this._map.setZoom(zoom);
-            }
-          }
-        },
-
-        'bounds': {
-          configurable: true, // for testing so we can mock
-          get: function() {
-            return this._map.getBounds();
-          },
-          set: function(bounds) {
-            var numbers = !hasNaN(bounds.getSouthWest()) &&
-                          !hasNaN(bounds.getNorthEast());
-            if (!numbers) 
-              throw 'bounds contains null or NaN';
-
-            var changed = !(boundsEqual(this.bounds, bounds));
-            if (changed) {
-              this._map.fitBounds(bounds);
-            }
-          }
-        }
-      });
-
-      this._initDragListeners();
-      $scope.$on('$destroy', angular.bind(this, this._destroy, mapId));
-    };
-
-
-    // used for hashing marker objects
-    MapController.precision = 3;
-
-
-    // Retrieve google.maps.MapOptions
-    MapController.prototype._getConfig = function($scope, gMDefaults) {
-      // Get config or defaults
-      var defaults = gMDefaults.mapOptions;
-      var config = {};
-      angular.extend(config, defaults, $scope.gmMapOptions());
-      return config;
-    };
-
-
-    // Create the map and add to angulargmContainer
-    MapController.prototype._createMap = function(id, element, config, gMContainer) {
-      var map = gMContainer.getMap(id);
-      if (!map) {
-        map = new google.maps.Map(element[0], config);
-        gMContainer.addMap(id, map);
-      } else {
-        throw 'A map with id ' + id + ' already exists. You must use' +
-          ' different ids for each instance of the angulargm directive.';
-      }
-      return map;
-    };
-
-        
-    // Set up listeners to update this.dragging
-    MapController.prototype._initDragListeners = function() {
-      var self = this;
-      this.addMapListener('dragstart', function () {
-        self.dragging = true;
-      });
-      
-      this.addMapListener('idle', function () {
-        self.dragging = false;
-      });
-      
-      this.addMapListener('drag', function() {
-        self.dragging = true;   
-      });
-    };
-
-
-    MapController.prototype._destroy = function(mapId) {
-      gMContainer.removeMap(mapId);
-    };
-
-    
-    /**
-     * Alias for google.maps.event.addListener(map, event, handler)
-     * @param {string} event an event defined on google.maps.Map
-     * @param {Function} a handler for the event
-     */
-    MapController.prototype.addMapListener = function(event, handler) {
-      google.maps.event.addListener(this._map, 
-          event, handler);
-    };
-
-
-    /**
-     * Alias for google.maps.event.addListenerOnce(map, event, handler)
-     * @param {string} event an event defined on google.maps.Map
-     * @param {Function} a handler for the event
-     */
-    MapController.prototype.addMapListenerOnce = function(event, handler) {
-      google.maps.event.addListenerOnce(this._map, 
-          event, handler);
-    };
-
-
-    /**
-     * Alias for google.maps.event.addListener(object, event, handler)
-     */
-    MapController.prototype.addListener = function(object, event, handler) {
-      google.maps.event.addListener(object, event, handler);
-    };
-
-
-    /**
-     * Alias for google.maps.event.addListenerOnce(object, event, handler)
-     */
-    MapController.prototype.addListenerOnce = function(object, event, handler) {
-      google.maps.event.addListenerOnce(object, event, handler);
-    };
-
-
-    /**
-     * Alias for google.maps.event.trigger(map, event)
-     * @param {string} event an event defined on google.maps.Map
-     */
-    MapController.prototype.mapTrigger = function(event) {
-      google.maps.event.trigger(this._map, event);
-    };
-
-
-    /**
-     * Alias for google.maps.event.trigger(object, event)
-     */
-    MapController.prototype.trigger = function(object, event) {
-      google.maps.event.trigger(object, event);
-    };
-
-
-    /**
-     * Adds a new marker to the map.
-     * @param {google.maps.MarkerOptions} markerOptions
-     * @return {boolean} true if a marker was added, false if there was already
-     *   a marker at this position. 'at this position' means delta_lat and
-     *   delta_lng are < 0.0005
-     * @throw if markerOptions does not have all required options (i.e. position)
-     */
-    MapController.prototype.addMarker = function(markerOptions) {
-      var opts = {};
-      angular.extend(opts, markerOptions);
-
-      if (!(opts.position instanceof google.maps.LatLng)) {
-        throw 'markerOptions did not contain a position';
-      }
-
-      var marker = new google.maps.Marker(opts);
-      var position = marker.getPosition();
-      if (this.hasMarker(position.lat(), position.lng())) {
-        return false;
-      }
-      
-      var hash = position.toUrlValue(this.precision);
-      this._markers[hash] = marker;
-      marker.setMap(this._map);
-      return true;
-    };      
-
-
-    /**
-     * @param {number} lat
-     * @param {number} lng
-     * @return {boolean} true if there is a marker with the given lat and lng
-     */
-    MapController.prototype.hasMarker = function(lat, lng) {
-      return (this.getMarker(lat, lng) instanceof google.maps.Marker);
-    };
-
-
-    /**
-     * @param {number} lat
-     * @param {number} lng
-     * @return {google.maps.Marker} the marker at given lat and lng, or null if
-     *   no such marker exists
-     */
-    MapController.prototype.getMarker = function (lat, lng) {
-      if (lat == null || lng == null)
-        throw 'lat or lng was null';
-
-      var latLng = new google.maps.LatLng(lat, lng);
-      var hash = latLng.toUrlValue(this.precision);
-      if (hash in this._markers) {
-        return this._markers[hash];
-      } else {
-        return null;
-      }
-    };  
-
-
-    /**
-     * @param {number} lat
-     * @param {number} lng
-     * @return {boolean} true if a marker was removed, false if nothing
-     *   happened
-     */
-    MapController.prototype.removeMarker = function(lat, lng) {
-      if (lat == null || lng == null)
-        throw 'lat or lng was null';
-
-      var latLng = new google.maps.LatLng(lat, lng);
-
-      var removed = false;
-      var hash = latLng.toUrlValue(this.precision);
-      var marker = this._markers[hash];
-      if (marker) {
-        marker.setMap(null);
-        removed = true;
-      }
-      this._markers[hash] = null;
-      delete this._markers[hash];
-      return removed;
-    };
-
-
-    /**
-     * Changes bounds of map to view all markers.
-     *
-     * Note: after calling this function, this.bounds, this.center, and
-     * this.zoom may temporarily be null as the map moves. Therefore, use
-     * this.addMapListenerOnce if you need to access these values immediately
-     * after calling fitToMarkers.
-     */
-    MapController.prototype.fitToMarkers = function () {
-      var bounds = new google.maps.LatLngBounds();
-
-      this.forEachMarker(function(marker) {
-        bounds.extend(marker.getPosition());
-      });
-
-      this.bounds = bounds;
-    };
-
-
-    /**
-     * Applies a function to each marker.
-     * @param {Function} fn will called with marker as first argument
-     * @throw if fn is null or undefined
-     */
-    MapController.prototype.forEachMarker = function(fn) {
-      if (fn == null) { throw 'fn was null or undefined'; }
-      angular.forEach(this._markers, function(marker, hash) {
-        if (marker != null) {
-          fn(marker);
-        }
-      });
-    };
-
-
-    return {
-      MapController: MapController
-    };
-
-  }]);
-})();
-
-
-'use strict';
-
-/**
  * Common utility functions.
  */
 (function () {
@@ -995,3 +655,342 @@
     };
   }]);
 })();
+
+'use strict';
+
+/**
+ * Directive controller which is owned by the [gmMap]{@link module:gmMap}
+ * directive and shared among all other angulargm directives.
+ */
+(function () {
+  angular.module('AngularGM').
+
+  controller('angulargmMapController', 
+    ['$scope', '$element', 'angulargmUtils', 'angulargmDefaults',
+    'angulargmContainer',
+
+    function ($scope, $element, angulargmUtils, angulargmDefaults,
+      angulargmContainer) {
+
+    /** aliases */
+    var latLngEqual = angulargmUtils.latLngEqual;
+    var boundsEqual = angulargmUtils.boundsEqual;
+    var hasNaN = angulargmUtils.hasNaN;
+    var gMDefaults = angulargmDefaults;
+    var gMContainer = angulargmContainer;
+
+
+    /** constants */
+    var consts = {};
+    consts.precision = 3;
+
+
+    /* 
+     * Construct a new controller for the gmMap directive.
+     * @param {angular.Scope} $scope
+     * @param {angular.element} $element
+     * @constructor
+     */
+    var constructor = function($scope, $element) {
+
+      var mapId = $scope.gmMapId();
+      if (!mapId) { throw 'angulargm must have non-empty gmMapId attribute'; }
+
+      var mapDiv = $element.find('[id]');
+      mapDiv.attr('id', mapId);
+
+      var config = this._getConfig($scope, gMDefaults);
+
+      // 'private' properties
+      this._map = this._createMap(mapId, mapDiv, config, gMContainer);
+      this._markers = {};
+
+      // 'public' properties
+      this.dragging = false;
+
+      Object.defineProperties(this, {
+        'precision': {
+          value: consts.precision,
+          writeable: false
+        },
+
+        'center': {
+          configurable: true, // for testing so we can mock
+          get: function() {
+             return this._map.getCenter();
+           },
+          set: function(center) {
+            if (hasNaN(center)) 
+              throw 'center contains null or NaN';
+            var changed = !latLngEqual(this.center, center);
+            if (changed) {
+              // TODO: change to panTo
+              //this._map.setCenter(center);
+              this._map.panTo(center);
+            }
+          } 
+        },
+
+        'zoom': {
+          configurable: true, // for testing so we can mock
+          get: function() {
+            return this._map.getZoom();
+          },
+          set: function(zoom) {
+            if (!(zoom != null && !isNaN(zoom))) 
+              throw 'zoom was null or NaN';
+            var changed = this.zoom !== zoom;
+            if (changed) {
+              this._map.setZoom(zoom);
+            }
+          }
+        },
+
+        'bounds': {
+          configurable: true, // for testing so we can mock
+          get: function() {
+            return this._map.getBounds();
+          },
+          set: function(bounds) {
+            var numbers = !hasNaN(bounds.getSouthWest()) &&
+                          !hasNaN(bounds.getNorthEast());
+            if (!numbers) 
+              throw 'bounds contains null or NaN';
+
+            var changed = !(boundsEqual(this.bounds, bounds));
+            if (changed) {
+              this._map.fitBounds(bounds);
+            }
+          }
+        }
+      });
+
+      this._initDragListeners();
+      $scope.$on('$destroy', angular.bind(this, this._destroy, mapId));
+    };
+
+
+    // Retrieve google.maps.MapOptions
+    this._getConfig = function($scope, gMDefaults) {
+      // Get config or defaults
+      var defaults = gMDefaults.mapOptions;
+      var config = {};
+      angular.extend(config, defaults, $scope.gmMapOptions());
+      return config;
+    };
+
+
+    // Create the map and add to angulargmContainer
+    this._createMap = function(id, element, config, gMContainer) {
+      var map = gMContainer.getMap(id);
+      if (!map) {
+        map = new google.maps.Map(element[0], config);
+        gMContainer.addMap(id, map);
+      } else {
+        throw 'A map with id ' + id + ' already exists. You must use' +
+          ' different ids for each instance of the angulargm directive.';
+      }
+      return map;
+    };
+
+        
+    // Set up listeners to update this.dragging
+    this._initDragListeners = function() {
+      var self = this;
+      this.addMapListener('dragstart', function () {
+        self.dragging = true;
+      });
+      
+      this.addMapListener('idle', function () {
+        self.dragging = false;
+      });
+      
+      this.addMapListener('drag', function() {
+        self.dragging = true;   
+      });
+    };
+
+
+    this._destroy = function(mapId) {
+      gMContainer.removeMap(mapId);
+    };
+
+    
+    /**
+     * Alias for google.maps.event.addListener(map, event, handler)
+     * @param {string} event an event defined on google.maps.Map
+     * @param {Function} a handler for the event
+     */
+    this.addMapListener = function(event, handler) {
+      google.maps.event.addListener(this._map, 
+          event, handler);
+    };
+
+
+    /**
+     * Alias for google.maps.event.addListenerOnce(map, event, handler)
+     * @param {string} event an event defined on google.maps.Map
+     * @param {Function} a handler for the event
+     */
+    this.addMapListenerOnce = function(event, handler) {
+      google.maps.event.addListenerOnce(this._map, 
+          event, handler);
+    };
+
+
+    /**
+     * Alias for google.maps.event.addListener(object, event, handler)
+     */
+    this.addListener = function(object, event, handler) {
+      google.maps.event.addListener(object, event, handler);
+    };
+
+
+    /**
+     * Alias for google.maps.event.addListenerOnce(object, event, handler)
+     */
+    this.addListenerOnce = function(object, event, handler) {
+      google.maps.event.addListenerOnce(object, event, handler);
+    };
+
+
+    /**
+     * Alias for google.maps.event.trigger(map, event)
+     * @param {string} event an event defined on google.maps.Map
+     */
+    this.mapTrigger = function(event) {
+      google.maps.event.trigger(this._map, event);
+    };
+
+
+    /**
+     * Alias for google.maps.event.trigger(object, event)
+     */
+    this.trigger = function(object, event) {
+      google.maps.event.trigger(object, event);
+    };
+
+
+    /**
+     * Adds a new marker to the map.
+     * @param {google.maps.MarkerOptions} markerOptions
+     * @return {boolean} true if a marker was added, false if there was already
+     *   a marker at this position. 'at this position' means delta_lat and
+     *   delta_lng are < 0.0005
+     * @throw if markerOptions does not have all required options (i.e. position)
+     */
+    this.addMarker = function(markerOptions) {
+      var opts = {};
+      angular.extend(opts, markerOptions);
+
+      if (!(opts.position instanceof google.maps.LatLng)) {
+        throw 'markerOptions did not contain a position';
+      }
+
+      var marker = new google.maps.Marker(opts);
+      var position = marker.getPosition();
+      if (this.hasMarker(position.lat(), position.lng())) {
+        return false;
+      }
+      
+      var hash = position.toUrlValue(this.precision);
+      this._markers[hash] = marker;
+      marker.setMap(this._map);
+      return true;
+    };      
+
+
+    /**
+     * @param {number} lat
+     * @param {number} lng
+     * @return {boolean} true if there is a marker with the given lat and lng
+     */
+    this.hasMarker = function(lat, lng) {
+      return (this.getMarker(lat, lng) instanceof google.maps.Marker);
+    };
+
+
+    /**
+     * @param {number} lat
+     * @param {number} lng
+     * @return {google.maps.Marker} the marker at given lat and lng, or null if
+     *   no such marker exists
+     */
+    this.getMarker = function (lat, lng) {
+      if (lat == null || lng == null)
+        throw 'lat or lng was null';
+
+      var latLng = new google.maps.LatLng(lat, lng);
+      var hash = latLng.toUrlValue(this.precision);
+      if (hash in this._markers) {
+        return this._markers[hash];
+      } else {
+        return null;
+      }
+    };  
+
+
+    /**
+     * @param {number} lat
+     * @param {number} lng
+     * @return {boolean} true if a marker was removed, false if nothing
+     *   happened
+     */
+    this.removeMarker = function(lat, lng) {
+      if (lat == null || lng == null)
+        throw 'lat or lng was null';
+
+      var latLng = new google.maps.LatLng(lat, lng);
+
+      var removed = false;
+      var hash = latLng.toUrlValue(this.precision);
+      var marker = this._markers[hash];
+      if (marker) {
+        marker.setMap(null);
+        removed = true;
+      }
+      this._markers[hash] = null;
+      delete this._markers[hash];
+      return removed;
+    };
+
+
+    /**
+     * Changes bounds of map to view all markers.
+     *
+     * Note: after calling this function, this.bounds, this.center, and
+     * this.zoom may temporarily be null as the map moves. Therefore, use
+     * this.addMapListenerOnce if you need to access these values immediately
+     * after calling fitToMarkers.
+     */
+    this.fitToMarkers = function () {
+      var bounds = new google.maps.LatLngBounds();
+
+      this.forEachMarker(function(marker) {
+        bounds.extend(marker.getPosition());
+      });
+
+      this.bounds = bounds;
+    };
+
+
+    /**
+     * Applies a function to each marker.
+     * @param {Function} fn will called with marker as first argument
+     * @throw if fn is null or undefined
+     */
+    this.forEachMarker = function(fn) {
+      if (fn == null) { throw 'fn was null or undefined'; }
+      angular.forEach(this._markers, function(marker, hash) {
+        if (marker != null) {
+          fn(marker);
+        }
+      });
+    };
+
+    /** Instantiate controller */
+    angular.bind(this, constructor)($scope, $element);
+
+  }]);
+})();
+
