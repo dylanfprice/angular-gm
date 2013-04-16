@@ -1,6 +1,6 @@
 /**
  * AngularGM - Google Maps Directives for AngularJS
- * @version v0.0.1 - 2013-03-27
+ * @version v0.0.1 - 2013-04-16
  * @link http://dylanfprice.github.com/angular-gm
  * @author Dylan Price <the.dylan.price@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -99,8 +99,6 @@
  * drag or zoom the map and they will update, update them and the map will
  * change.  However, any initial state of these three variables will be
  * ignored.
- *
- * For more on configuring defaults, see module.js.
  *
  * If you need to get a handle on the google.maps.Map object, see
  * [angulargmContainer]{@link module:angulargmContainer}
