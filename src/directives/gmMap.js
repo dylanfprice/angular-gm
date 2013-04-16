@@ -40,8 +40,6 @@
  * change.  However, any initial state of these three variables will be
  * ignored.
  *
- * For more on configuring defaults, see module.js.
- *
  * If you need to get a handle on the google.maps.Map object, see
  * [angulargmContainer]{@link module:angulargmContainer}
  *
