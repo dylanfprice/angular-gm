@@ -12,7 +12,7 @@
  * <gm-map ... >
  *   <gm-markers gm-objects="myObjects" 
  *               gm-get-lat-lng="myGetLatLng" 
- *               gm-marker-options="myMarkerOptions" 
+ *               gm-get-marker-options="myGetMarkerOptions" 
  *               gm-event="myEvent"
  *               gm-on-*event*="myEventHandler">
  *   </gm-markers>
@@ -43,9 +43,10 @@
  *   ...
  *   ```
  *
- * + `gm-marker-options`: object in the current scope that is a
- *   google.maps.MarkerOptions object. If unspecified, google maps api defaults
- *   will be used.
+ * + `gm-get-marker-options`: an angular expression that given an object from
+ *   `gm-objects`, evaluates to a google.maps.MarkerOptions object. Your object
+ *   can be accessed through the variable 'object'. If unspecified, google maps
+ *   api defaults will be used.
  *
  * + `gm-event`: a variable in the current scope that is used to simulate
  *   events on a marker. Setting this variable to an object of the form 
@@ -107,7 +108,6 @@
       // fn for updating markers from objects
       var updateMarkers = function(objects) {
 
-        var markerOptions = scope.gmMarkerOptions();
         var objectHash = {};
 
         angular.forEach(objects, function(object, i) {
@@ -116,6 +116,8 @@
           if (position == null) {
             return;
           }
+
+          var markerOptions = scope.gmGetMarkerOptions({object: object});
 
           // hash objects for quick access
           var hash = position.toUrlValue(controller.precision);
@@ -201,7 +203,7 @@
       scope: {
         gmObjects: '&',
         gmGetLatLng: '&',
-        gmMarkerOptions: '&',
+        gmGetMarkerOptions: '&',
         gmEvent: '&'
       },
       require: '^gmMap',

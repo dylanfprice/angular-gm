@@ -14,8 +14,11 @@ describe('gmMarkers', function() {
       {name: '0', lat: 1, lng: 2},
       {name: '3', lat: 4, lng: 5}
     ];
-    scope.opts = {
-      title: '7'
+    scope.getOpts = function(person) {
+      return {
+        key: 'value',
+        title: person.name
+      };
     };
     scope.mapId = 'test';
   
@@ -26,7 +29,7 @@ describe('gmMarkers', function() {
                             '<gm-markers ' +
                               'gm-objects="people"' + 
                               'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' + 
-                              'gm-marker-options="opts"' + 
+                              'gm-get-marker-options="getOpts(object)"' + 
                               'gm-event="markerEvent"' +
                               'gm-on-click="selected = {person: object, marker: marker}"' +
                               'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' + 
@@ -51,7 +54,7 @@ describe('gmMarkers', function() {
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
                             '<gm-markers ' +
                               'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' + 
-                              'gm-marker-options="opts"' + 
+                              'gm-get-marker-options="getOpts(object)"' + 
                               'gm-on-click="selected = {person: object, marker: marker}"' +
                               'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' + 
                             '</gm-markers>' + 
@@ -66,7 +69,7 @@ describe('gmMarkers', function() {
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
                             '<gm-markers ' +
                               'gm-objects="people"' + 
-                              'gm-marker-options="opts"' + 
+                              'gm-get-marker-options="getOpts(object)"' + 
                               'gm-on-click="selected = {person: object, marker: marker}"' +
                               'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' + 
                             '</gm-markers>' + 
@@ -88,8 +91,8 @@ describe('gmMarkers', function() {
     it('initializes markers with objects', function() {
       var position1 = objToLatLng(scope.people[0]);
       var position2 = objToLatLng(scope.people[1]);
-      expect(mapCtrl.addMarker).toHaveBeenCalledWith({title: jasmine.any(String), position: position1});
-      expect(mapCtrl.addMarker).toHaveBeenCalledWith({title: jasmine.any(String), position: position2});
+      expect(mapCtrl.addMarker).toHaveBeenCalledWith({key: 'value', title: jasmine.any(String), position: position1});
+      expect(mapCtrl.addMarker).toHaveBeenCalledWith({key: 'value', title: jasmine.any(String), position: position2});
     });
 
     
@@ -97,7 +100,7 @@ describe('gmMarkers', function() {
       scope.people.push({name: '6', lat: 7, lng: 8});
       var position = objToLatLng(scope.people[2]);
       scope.$digest();
-      expect(mapCtrl.addMarker).toHaveBeenCalledWith({title: jasmine.any(String), position: position});
+      expect(mapCtrl.addMarker).toHaveBeenCalledWith({key: 'value', title: jasmine.any(String), position: position});
     });
 
 
@@ -138,8 +141,9 @@ describe('gmMarkers', function() {
   });
 
 
-  it('uses given marker options', function() {
-    expect(mapCtrl.addMarker).toHaveBeenCalledWith({title: '7', position: jasmine.any(Object)});
+  it('retrieves marker options', function() {
+    expect(mapCtrl.addMarker).toHaveBeenCalledWith({key: 'value', title: '0', position: jasmine.any(Object)});
+    expect(mapCtrl.addMarker).toHaveBeenCalledWith({key: 'value', title: '3', position: jasmine.any(Object)});
   });
 
 
