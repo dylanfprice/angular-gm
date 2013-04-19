@@ -73,21 +73,21 @@
  * </gm-map>
  * ```
  *
- * + `gm-map-id`: angular expression that evaluates to a unique string id for
+ *   + `gm-map-id`: angular expression that evaluates to a unique string id for
  *   the map, e.g. "'map_canvas'" or "myMapId" where myMapId is a variable in
  *   the current scope. This allows you to have multiple maps/instances of the
  *   directive.
  *
- * + `gm-center`: name for a center variable in the current scope.  The value
+ *   + `gm-center`: name for a center variable in the current scope.  The value
  *   will be a google.maps.LatLng object.
  *
- * + `gm-zoom`: name for a zoom variable in the current scope.  Value will be
+ *   + `gm-zoom`: name for a zoom variable in the current scope.  Value will be
  *   an integer.
  *
- * + `gm-bounds`: name for a bounds variable in the current scope.  Value will
+ *   + `gm-bounds`: name for a bounds variable in the current scope.  Value will
  *   be a google.maps.LatLngBounds object.
  *
- * + `gm-map-options`: object in the current scope that is a
+ *   + `gm-map-options`: object in the current scope that is a
  *   google.maps.MapOptions object. If unspecified, will use the values in
  *   angulargmDefaults.mapOptions. [angulargmDefaults]{@link module:angulargmDefaults}
  *   is a service, so it is both injectable and overrideable (using
@@ -247,11 +247,11 @@
  * </gm-map>
  * ```
  *
- * + `gm-objects`: an array of objects in the current scope. These can be any
+ *   + `gm-objects`: an array of objects in the current scope. These can be any
  *   objects you wish to attach to markers, the only requirement is that they
  *   have a uniform method of accessing a lat and lng.
  *
- * + `gm-get-lat-lng`: an angular expression that given an object from
+ *   + `gm-get-lat-lng`: an angular expression that given an object from
  *   `gm-objects`, evaluates to an object with lat and lng properties. Your
  *   object can be accessed through the variable 'object'.  For example, if
  *   your controller has
@@ -271,12 +271,12 @@
  *   ...
  *   ```
  *
- * + `gm-get-marker-options`: an angular expression that given an object from
+ *   + `gm-get-marker-options`: an angular expression that given an object from
  *   `gm-objects`, evaluates to a google.maps.MarkerOptions object. Your object
  *   can be accessed through the variable 'object'. If unspecified, google maps
  *   api defaults will be used.
  *
- * + `gm-events`: a variable in the current scope that is used to simulate
+ *   + `gm-events`: a variable in the current scope that is used to simulate
  *   events on markers. Setting this variable to an object of the form 
  *   ```
  *       [
@@ -294,7 +294,7 @@
  *   will not work.
  *                        
  *
- * + `gm-on-*event*`: an angular expression which evaluates to an event
+ *   + `gm-on-*event*`: an angular expression which evaluates to an event
  *   handler. This handler will be attached to each marker's \*event\* event.
  *   The variables 'object' and 'marker' evaluate to your object and the
  *   google.maps.Marker, respectively. For example:
@@ -304,6 +304,18 @@
  *
  *
  * Only the `gm-objects` and `gm-get-lat-lng` attributes are required.
+ *
+ * Events:
+ *
+ *   + `gmMarkersRedraw`: force the gmMarkers directive to clear and redraw all
+ *   markers. To use: `$scope.$broadcast('gmMarkersRedraw', 'myObjects')`
+ *
+ *   Parameters:
+ *
+ *       + `objects`: required. The name of the scope variable which holds the
+ *       objects to redraw markers for. This is what you set `gm-objects` to.
+ *       It is necessary because there may be multiple instances of the
+ *       `gmMarkers` directive.
  *
  * @module gmMarkers
  */
@@ -425,6 +437,13 @@
               }
             });
           });
+        }
+      });
+
+      scope.$on('gmMarkersRedraw', function(event, objectsName) {
+        if (objectsName === attrs.gmObjects) {
+          updateMarkers();          
+          updateMarkers(scope.gmObjects());
         }
       });
 
