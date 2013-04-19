@@ -20,5 +20,5 @@
     "grunt-contrib-uglify": "*",
     "grunt-karma": "*",
     "grunt-jsdoc": "*"
-  },
+  }
 }
