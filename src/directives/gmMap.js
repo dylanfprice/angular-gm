@@ -13,21 +13,21 @@
  * </gm-map>
  * ```
  *
- * + `gm-map-id`: angular expression that evaluates to a unique string id for
+ *   + `gm-map-id`: angular expression that evaluates to a unique string id for
  *   the map, e.g. "'map_canvas'" or "myMapId" where myMapId is a variable in
  *   the current scope. This allows you to have multiple maps/instances of the
  *   directive.
  *
- * + `gm-center`: name for a center variable in the current scope.  The value
+ *   + `gm-center`: name for a center variable in the current scope.  The value
  *   will be a google.maps.LatLng object.
  *
- * + `gm-zoom`: name for a zoom variable in the current scope.  Value will be
+ *   + `gm-zoom`: name for a zoom variable in the current scope.  Value will be
  *   an integer.
  *
- * + `gm-bounds`: name for a bounds variable in the current scope.  Value will
+ *   + `gm-bounds`: name for a bounds variable in the current scope.  Value will
  *   be a google.maps.LatLngBounds object.
  *
- * + `gm-map-options`: object in the current scope that is a
+ *   + `gm-map-options`: object in the current scope that is a
  *   google.maps.MapOptions object. If unspecified, will use the values in
  *   angulargmDefaults.mapOptions. [angulargmDefaults]{@link module:angulargmDefaults}
  *   is a service, so it is both injectable and overrideable (using

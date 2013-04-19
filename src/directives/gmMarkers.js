@@ -19,11 +19,11 @@
  * </gm-map>
  * ```
  *
- * + `gm-objects`: an array of objects in the current scope. These can be any
+ *   + `gm-objects`: an array of objects in the current scope. These can be any
  *   objects you wish to attach to markers, the only requirement is that they
  *   have a uniform method of accessing a lat and lng.
  *
- * + `gm-get-lat-lng`: an angular expression that given an object from
+ *   + `gm-get-lat-lng`: an angular expression that given an object from
  *   `gm-objects`, evaluates to an object with lat and lng properties. Your
  *   object can be accessed through the variable 'object'.  For example, if
  *   your controller has
@@ -43,12 +43,12 @@
  *   ...
  *   ```
  *
- * + `gm-get-marker-options`: an angular expression that given an object from
+ *   + `gm-get-marker-options`: an angular expression that given an object from
  *   `gm-objects`, evaluates to a google.maps.MarkerOptions object. Your object
  *   can be accessed through the variable 'object'. If unspecified, google maps
  *   api defaults will be used.
  *
- * + `gm-events`: a variable in the current scope that is used to simulate
+ *   + `gm-events`: a variable in the current scope that is used to simulate
  *   events on markers. Setting this variable to an object of the form 
  *   ```
  *       [
@@ -66,7 +66,7 @@
  *   will not work.
  *                        
  *
- * + `gm-on-*event*`: an angular expression which evaluates to an event
+ *   + `gm-on-*event*`: an angular expression which evaluates to an event
  *   handler. This handler will be attached to each marker's \*event\* event.
  *   The variables 'object' and 'marker' evaluate to your object and the
  *   google.maps.Marker, respectively. For example:
@@ -79,12 +79,12 @@
  *
  * Events:
  *
- * + `gmMarkersRedraw`: force the gmMarkers directive to clear and redraw all
- *   markers. Call: `$scope.$broadcast('gmMarkersRedraw', 'myObjects')`
+ *   + `gmMarkersRedraw`: force the gmMarkers directive to clear and redraw all
+ *   markers. To use: `$scope.$broadcast('gmMarkersRedraw', 'myObjects')`
  *
  *   Parameters:
  *
- *     + `objects`: required. The name of the scope variable which holds the
+ *       + `objects`: required. The name of the scope variable which holds the
  *       objects to redraw markers for. This is what you set `gm-objects` to.
  *       It is necessary because there may be multiple instances of the
  *       `gmMarkers` directive.
