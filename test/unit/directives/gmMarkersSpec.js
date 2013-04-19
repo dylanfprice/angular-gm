@@ -30,7 +30,7 @@ describe('gmMarkers', function() {
                               'gm-objects="people"' + 
                               'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' + 
                               'gm-get-marker-options="getOpts(object)"' + 
-                              'gm-event="markerEvent"' +
+                              'gm-events="markerEvents"' +
                               'gm-on-click="selected = {person: object, marker: marker}"' +
                               'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' + 
                             '</gm-markers>' + 
@@ -150,10 +150,10 @@ describe('gmMarkers', function() {
   it('triggers events', function() {
     var person = scope.people[0];
     var position = new google.maps.LatLng(person.lat, person.lng);
-    scope.markerEvent = {
+    scope.markerEvents = [{
       event: 'click',
       locations: [position],
-    }
+    }]
 
     scope.$digest();
     $timeout.flush();
@@ -167,16 +167,37 @@ describe('gmMarkers', function() {
   it('triggers events on multiple markers', function() {
     var position0 = new google.maps.LatLng(scope.people[0].lat, scope.people[0].lng);
     var position1 = new google.maps.LatLng(scope.people[1].lat, scope.people[1].lng);
-    scope.markerEvent = {
+    scope.markerEvents = [{
       event: 'click',
       locations: [position0, position1]
-    }
+    }]
     scope.$digest();
     $timeout.flush();
     var marker0 = mapCtrl.trigger.calls[0].args[0];
     var marker1 = mapCtrl.trigger.calls[1].args[0];
     expect(marker0.getPosition()).toEqual(position0);
     expect(marker1.getPosition()).toEqual(position1);
+  });
+
+
+  it('triggers multiple events on markers', function() {
+    var position = new google.maps.LatLng(scope.people[0].lat, scope.people[0].lng);
+    scope.markerEvents = [
+      {
+        event: 'event0',
+        locations: [position]
+      },
+      {
+        event: 'event1',
+        locations: [position]
+      }
+    ]
+    scope.$digest();
+    $timeout.flush();
+    var event0 = mapCtrl.trigger.calls[0].args[1];
+    var event1 = mapCtrl.trigger.calls[1].args[1];
+    expect(event0).toEqual('event0');
+    expect(event1).toEqual('event1');
   });
 
 
