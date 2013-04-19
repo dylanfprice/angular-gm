@@ -1,13 +1,13 @@
 describe('gmMarkers', function() {
   var elm, scope, mapCtrl; 
-  var timeout;
+  var $timeout;
 
   beforeEach(function() {
     module('AngularGM');
     module('AngularGM-test');
   });
 
-  beforeEach(inject(function($rootScope, $compile, $timeout, gmtestMapController) {
+  beforeEach(inject(function($rootScope, $compile, _$timeout_, gmtestMapController) {
     // set up scopes
     scope = $rootScope.$new();
     scope.people = [
@@ -22,7 +22,7 @@ describe('gmMarkers', function() {
     };
     scope.mapId = 'test';
   
-    timeout = $timeout;
+    $timeout = _$timeout_;
 
     // compile angulargmMarkers directive
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
@@ -46,7 +46,7 @@ describe('gmMarkers', function() {
     spyOn(mapCtrl, 'addListener').andCallThrough();
 
     scope.$digest();
-    timeout.flush();
+    $timeout.flush();
   }));
 
 
@@ -152,15 +152,31 @@ describe('gmMarkers', function() {
     var position = new google.maps.LatLng(person.lat, person.lng);
     scope.markerEvent = {
       event: 'click',
-      location: position,
+      locations: [position],
     }
 
     scope.$digest();
-    timeout.flush();
+    $timeout.flush();
     var marker = mapCtrl.trigger.mostRecentCall.args[0];
     var event = mapCtrl.trigger.mostRecentCall.args[1];
     expect(marker.getPosition()).toEqual(position);
     expect(event).toEqual('click');
+  });
+
+
+  it('triggers events on multiple markers', function() {
+    var position0 = new google.maps.LatLng(scope.people[0].lat, scope.people[0].lng);
+    var position1 = new google.maps.LatLng(scope.people[1].lat, scope.people[1].lng);
+    scope.markerEvent = {
+      event: 'click',
+      locations: [position0, position1]
+    }
+    scope.$digest();
+    $timeout.flush();
+    var marker0 = mapCtrl.trigger.calls[0].args[0];
+    var marker1 = mapCtrl.trigger.calls[1].args[0];
+    expect(marker0.getPosition()).toEqual(position0);
+    expect(marker1.getPosition()).toEqual(position1);
   });
 
 
@@ -183,7 +199,7 @@ describe('gmMarkers', function() {
     }, 'no mouseover', 500);
     runs(function() {
       scope.$digest();
-      timeout.flush();
+      $timeout.flush();
       expect(scope.mouseovered.person).toEqual(person);
     });
   });

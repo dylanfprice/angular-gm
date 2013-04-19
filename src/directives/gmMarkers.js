@@ -49,17 +49,18 @@
  *   api defaults will be used.
  *
  * + `gm-event`: a variable in the current scope that is used to simulate
- *   events on a marker. Setting this variable to an object of the form 
+ *   events on markers. Setting this variable to an object of the form 
  *   ```
  *       {
  *         event: 'click',
- *         location: new google.maps.LatLng(45, -120),
+ *         locations: [new google.maps.LatLng(45, -120), ...]
  *       } 
  *   ```
- *   will generate the named event on the marker at the given location, if such
- *   a marker exists. Note: when setting the `gm-event` variable, you must set
- *   it to a new object for the changes to be detected. Code like
- *   `myEvent["location"] = new google.maps.LatLng(45,-120)` will not work.
+ *   will generate the named event on the markers at the given locations, if a
+ *   marker at each location exists. Note: when setting the `gm-event`
+ *   variable, you must set it to a new object for the changes to be detected.
+ *   Code like `myEvent["locations"] = [new google.maps.LatLng(45,-120)]` will
+ *   not work.
  *                        
  *
  * + `gm-on-*event*`: an angular expression which evaluates to an event
@@ -184,11 +185,13 @@
       scope.$watch('gmEvent()', function(newValue, oldValue) {
         if (newValue != null && newValue !== oldValue) {
           var event = newValue.event;
-          var location = newValue.location;
-          var marker = controller.getMarker(location.lat(), location.lng());
-          if (marker != null) {
-            $timeout(angular.bind(this, controller.trigger, marker, event));
-          }
+          var locations = newValue.locations;
+          angular.forEach(locations, function(location) {
+            var marker = controller.getMarker(location.lat(), location.lng());
+            if (marker != null) {
+              $timeout(angular.bind(this, controller.trigger, marker, event));
+            }
+          });
         }
       });
 
