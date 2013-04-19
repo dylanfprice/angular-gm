@@ -77,6 +77,18 @@
  *
  * Only the `gm-objects` and `gm-get-lat-lng` attributes are required.
  *
+ * Events:
+ *
+ * + `gmMarkersRedraw`: force the gmMarkers directive to clear and redraw all
+ *   markers. Call: `$scope.$broadcast('gmMarkersRedraw', 'myObjects')`
+ *
+ *   Parameters:
+ *
+ *     + `objects`: required. The name of the scope variable which holds the
+ *       objects to redraw markers for. This is what you set `gm-objects` to.
+ *       It is necessary because there may be multiple instances of the
+ *       `gmMarkers` directive.
+ *
  * @module gmMarkers
  */
 (function () {
@@ -197,6 +209,13 @@
               }
             });
           });
+        }
+      });
+
+      scope.$on('gmMarkersRedraw', function(event, objectsName) {
+        if (objectsName === attrs.gmObjects) {
+          updateMarkers();          
+          updateMarkers(scope.gmObjects());
         }
       });
 

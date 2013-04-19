@@ -1,5 +1,6 @@
 describe('gmMarkers', function() {
   var elm, scope, mapCtrl; 
+  var objToLatLng;
   var $timeout;
 
   beforeEach(function() {
@@ -7,7 +8,7 @@ describe('gmMarkers', function() {
     module('AngularGM-test');
   });
 
-  beforeEach(inject(function($rootScope, $compile, _$timeout_, gmtestMapController) {
+  beforeEach(inject(function($rootScope, $compile, _$timeout_, angulargmUtils, gmtestMapController) {
     // set up scopes
     scope = $rootScope.$new();
     scope.people = [
@@ -23,6 +24,7 @@ describe('gmMarkers', function() {
     scope.mapId = 'test';
   
     $timeout = _$timeout_;
+    objToLatLng = angulargmUtils.objToLatLng;
 
     // compile angulargmMarkers directive
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
@@ -65,6 +67,7 @@ describe('gmMarkers', function() {
     expect(angular.bind(this, $compile(elm), scope)).toThrow();
   }));
 
+
   it('requires the gmGetLatLng attribute', inject(function($compile) {
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
                             '<gm-markers ' +
@@ -82,11 +85,7 @@ describe('gmMarkers', function() {
 
 
   describe('objects', function() {
-    var objToLatLng;
 
-    beforeEach(inject(function(angulargmUtils) {
-      objToLatLng = angulargmUtils.objToLatLng;
-    }));
 
     it('initializes markers with objects', function() {
       var position1 = objToLatLng(scope.people[0]);
@@ -223,6 +222,36 @@ describe('gmMarkers', function() {
       $timeout.flush();
       expect(scope.mouseovered.person).toEqual(person);
     });
+  });
+
+
+  it('listens for marker redraw event', function() {
+    var position1 = objToLatLng(scope.people[0]);
+    var position2 = objToLatLng(scope.people[1]);
+    scope.getOpts = function(person) {
+      return {
+        key: 'differentValue',
+        title: person.name
+      };
+    };
+    scope.$broadcast('gmMarkersRedraw', 'people');
+
+    expect(mapCtrl.addMarker).toHaveBeenCalledWith({key: 'differentValue', title: jasmine.any(String), position: position1});
+    expect(mapCtrl.addMarker).toHaveBeenCalledWith({key: 'differentValue', title: jasmine.any(String), position: position2});
+  });
+
+
+  it('ignores marker redraw event for other instance', function() {
+    scope.getOpts = function(person) {
+      return {
+        key: 'differentValue',
+        title: person.name
+      };
+    };
+    scope.$broadcast('gmMarkersRedraw', 'otherObjects');
+
+    expect(mapCtrl.addMarker).not.toHaveBeenCalledWith({key: 'differentValue', title: jasmine.any(String), position: jasmine.any(Object)});
+    expect(mapCtrl.addMarker).not.toHaveBeenCalledWith({key: 'differentValue', title: jasmine.any(String), position: jasmine.any(Object)});
   });
 
 });
