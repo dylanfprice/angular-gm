@@ -20,7 +20,7 @@ Include the required libraries
 <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
-<script src="//dylanfprice.github.com/angular-gm/angular-gm-0.0.2.min.js"></script>
+<script src="//dylanfprice.github.com/angular-gm/angular-gm-0.0.1.min.js"></script>
 ```
 
 Declare a dependency on the `AngularGM` module
