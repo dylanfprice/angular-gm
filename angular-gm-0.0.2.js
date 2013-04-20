@@ -847,6 +847,7 @@
      * Alias for google.maps.event.addListener(map, event, handler)
      * @param {string} event an event defined on google.maps.Map
      * @param {Function} a handler for the event
+     * @ignore
      */
     this.addMapListener = function(event, handler) {
       google.maps.event.addListener(this._map, 
@@ -858,6 +859,7 @@
      * Alias for google.maps.event.addListenerOnce(map, event, handler)
      * @param {string} event an event defined on google.maps.Map
      * @param {Function} a handler for the event
+     * @ignore
      */
     this.addMapListenerOnce = function(event, handler) {
       google.maps.event.addListenerOnce(this._map, 
@@ -867,6 +869,7 @@
 
     /**
      * Alias for google.maps.event.addListener(object, event, handler)
+     * @ignore
      */
     this.addListener = function(object, event, handler) {
       google.maps.event.addListener(object, event, handler);
@@ -875,6 +878,7 @@
 
     /**
      * Alias for google.maps.event.addListenerOnce(object, event, handler)
+     * @ignore
      */
     this.addListenerOnce = function(object, event, handler) {
       google.maps.event.addListenerOnce(object, event, handler);
@@ -884,6 +888,7 @@
     /**
      * Alias for google.maps.event.trigger(map, event)
      * @param {string} event an event defined on google.maps.Map
+     * @ignore
      */
     this.mapTrigger = function(event) {
       google.maps.event.trigger(this._map, event);
@@ -892,6 +897,7 @@
 
     /**
      * Alias for google.maps.event.trigger(object, event)
+     * @ignore
      */
     this.trigger = function(object, event) {
       google.maps.event.trigger(object, event);
@@ -905,6 +911,7 @@
      *   a marker at this position. 'at this position' means delta_lat and
      *   delta_lng are < 0.0005
      * @throw if markerOptions does not have all required options (i.e. position)
+     * @ignore
      */
     this.addMarker = function(markerOptions) {
       var opts = {};
@@ -931,6 +938,7 @@
      * @param {number} lat
      * @param {number} lng
      * @return {boolean} true if there is a marker with the given lat and lng
+     * @ignore
      */
     this.hasMarker = function(lat, lng) {
       return (this.getMarker(lat, lng) instanceof google.maps.Marker);
@@ -942,6 +950,7 @@
      * @param {number} lng
      * @return {google.maps.Marker} the marker at given lat and lng, or null if
      *   no such marker exists
+     * @ignore
      */
     this.getMarker = function (lat, lng) {
       if (lat == null || lng == null)
@@ -962,6 +971,7 @@
      * @param {number} lng
      * @return {boolean} true if a marker was removed, false if nothing
      *   happened
+     * @ignore
      */
     this.removeMarker = function(lat, lng) {
       if (lat == null || lng == null)
@@ -989,6 +999,7 @@
      * this.zoom may temporarily be null as the map moves. Therefore, use
      * this.addMapListenerOnce if you need to access these values immediately
      * after calling fitToMarkers.
+     * @ignore
      */
     this.fitToMarkers = function () {
       var bounds = new google.maps.LatLngBounds();
@@ -1005,6 +1016,7 @@
      * Applies a function to each marker.
      * @param {Function} fn will called with marker as first argument
      * @throw if fn is null or undefined
+     * @ignore
      */
     this.forEachMarker = function(fn) {
       if (fn == null) { throw 'fn was null or undefined'; }
