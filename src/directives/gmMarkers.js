@@ -35,7 +35,7 @@
  *   ]
  *   ...
  *   ```
- *   then in the `gm-map` directive you would put
+ *   then in the `gm-markers` directive you would put
  *   ```
  *   ...
  *   gm-objects="myObjects"
