@@ -254,4 +254,16 @@ describe('gmMarkers', function() {
     expect(mapCtrl.addMarker).not.toHaveBeenCalledWith({key: 'differentValue', title: jasmine.any(String), position: jasmine.any(Object)});
   });
 
+  it('emits marker update event when markers updated', function() {
+    var count = 0;
+    scope.$on('gmMarkersUpdated', function(event, objects) {
+      if (objects == 'people') { count++; }
+    });
+
+    scope.people.pop();
+    scope.$digest();
+
+    expect(count).toEqual(1);
+  });
+
 });

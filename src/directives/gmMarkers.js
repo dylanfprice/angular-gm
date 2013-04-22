@@ -89,6 +89,21 @@
  *       It is necessary because there may be multiple instances of the
  *       `gmMarkers` directive.
  *
+ *   + `gmMarkersUpdated`: emitted when markers are updated. To use: 
+ *   ```
+ *   $scope.$on('gmMarkersUpdated', function(event, objects) {
+ *       if (objects === 'myObjects') {
+ *         ...
+ *       }
+ *   });
+ *   ```
+ *
+ *   Parameters:
+ *       
+ *       + `objects`: the name of the scope variable which holds the objects the
+ *       gmMarkers directive was constructed with. This is what `gm-objects`
+ *       was set to.
+ *
  * @module gmMarkers
  */
 (function () {
@@ -181,6 +196,8 @@
           var position = marker.getPosition();
           controller.removeMarker(position.lat(), position.lng());
         });
+
+        scope.$emit('gmMarkersUpdated', attrs.gmObjects);
       }; // end updateMarkers()
 
       // watch objects
