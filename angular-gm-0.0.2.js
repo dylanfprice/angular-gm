@@ -1,6 +1,6 @@
 /**
  * AngularGM - Google Maps Directives for AngularJS
- * @version v0.0.2 - 2013-04-19
+ * @version v0.0.2 - 2013-04-21
  * @link http://dylanfprice.github.com/angular-gm
  * @author Dylan Price <the.dylan.price@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -263,7 +263,7 @@
  *   ]
  *   ...
  *   ```
- *   then in the `gm-map` directive you would put
+ *   then in the `gm-markers` directive you would put
  *   ```
  *   ...
  *   gm-objects="myObjects"
@@ -316,6 +316,21 @@
  *       objects to redraw markers for. This is what you set `gm-objects` to.
  *       It is necessary because there may be multiple instances of the
  *       `gmMarkers` directive.
+ *
+ *   + `gmMarkersUpdated`: emitted when markers are updated. To use: 
+ *   ```
+ *   $scope.$on('gmMarkersUpdated', function(event, objects) {
+ *       if (objects === 'myObjects') {
+ *         ...
+ *       }
+ *   });
+ *   ```
+ *
+ *   Parameters:
+ *       
+ *       + `objects`: the name of the scope variable which holds the objects the
+ *       gmMarkers directive was constructed with. This is what `gm-objects`
+ *       was set to.
  *
  * @module gmMarkers
  */
@@ -409,6 +424,8 @@
           var position = marker.getPosition();
           controller.removeMarker(position.lat(), position.lng());
         });
+
+        scope.$emit('gmMarkersUpdated', attrs.gmObjects);
       }; // end updateMarkers()
 
       // watch objects
