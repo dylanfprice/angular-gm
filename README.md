@@ -8,7 +8,7 @@ AngularGM is a set of directives for embedding Google Maps in your application u
 + Bi-directional association of map bounds, center, and zoom with scope variables
 + Multiple Google Maps can be embedded in the same page
 + Works with [ngView](http://docs.angularjs.org/api/ng.directive:ngView)
-+ Bind custom objects to markers, adding/removing an object/marker is O(n)
++ Bind custom objects to markers
 + Listen for and generate events on markers/objects
 
 
