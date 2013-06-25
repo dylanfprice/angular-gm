@@ -1,6 +1,6 @@
 /**
  * AngularGM - Google Maps Directives for AngularJS
- * @version v0.0.2 - 2013-04-21
+ * @version v0.0.2 - 2013-06-25
  * @link http://dylanfprice.github.com/angular-gm
  * @author Dylan Price <the.dylan.price@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -233,7 +233,8 @@
  *
  * To use, you specify an array of custom objects and tell the directive how to
  * extract location data from them. A marker will be created for each of your
- * objects. If you update the array of objects, the markers will also update.
+ * objects. If you assign a new array to your scope variable or change the
+ * array's length, the markers will also update.
  *
  * Usage:
  * ```html

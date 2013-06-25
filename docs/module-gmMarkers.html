@@ -34,105 +34,96 @@
     
         
             <div class="description"><p>A directive for adding markers to a <code>gmMap</code>. You may have multiple per <code>gmMap</code>.</p>
-
 <p>To use, you specify an array of custom objects and tell the directive how to
 extract location data from them. A marker will be created for each of your
-objects. If you update the array of objects, the markers will also update.</p>
-
+objects. If you assign a new array to your scope variable or change the
+array's length, the markers will also update.</p>
 <p>Usage:</p>
-
-<div class="highlight"><pre lang="html"><gm-map ... >
-  <gm-markers gm-objects="myObjects" 
-              gm-get-lat-lng="myGetLatLng" 
-              gm-get-marker-options="myGetMarkerOptions" 
-              gm-events="myEvents"
-              gm-on-*event*="myEventHandler">
-  </gm-markers>
-</gm-map>
-</pre></div>
-
+<pre><code class="lang-html">&lt;gm-map ... &gt;
+  &lt;gm-markers gm-objects=&quot;myObjects&quot; 
+              gm-get-lat-lng=&quot;myGetLatLng&quot; 
+              gm-get-marker-options=&quot;myGetMarkerOptions&quot; 
+              gm-events=&quot;myEvents&quot;
+              gm-on-*event*=&quot;myEventHandler&quot;&gt;
+  &lt;/gm-markers&gt;
+&lt;/gm-map&gt;</code></pre>
 <ul>
 <li><p><code>gm-objects</code>: an array of objects in the current scope. These can be any
 objects you wish to attach to markers, the only requirement is that they
-have a uniform method of accessing a lat and lng.</p></li>
+have a uniform method of accessing a lat and lng.</p>
+</li>
 <li><p><code>gm-get-lat-lng</code>: an angular expression that given an object from
 <code>gm-objects</code>, evaluates to an object with lat and lng properties. Your
 object can be accessed through the variable 'object'.  For example, if
 your controller has</p>
-
-<div class="highlight"><pre lang="">...
+<pre><code>...
 $scope.myObjects = [
 { id: 0, location: { lat: 5, lng: 5} }, 
 { id: 1, location: { lat: 6, lng: 6} }
 ]
-...
-</pre></div>
-
+...</code></pre>
 <p>then in the <code>gm-markers</code> directive you would put</p>
-
-<div class="highlight"><pre lang="">...
-gm-objects="myObjects"
-gm-get-lat-lng="{ lat: object.location.lat, lng: object.location.lng }"
-...
-</pre></div></li>
+<pre><code>...
+gm-objects=&quot;myObjects&quot;
+gm-get-lat-lng=&quot;{ lat: object.location.lat, lng: object.location.lng }&quot;
+...</code></pre>
+</li>
 <li><p><code>gm-get-marker-options</code>: an angular expression that given an object from
 <code>gm-objects</code>, evaluates to a google.maps.MarkerOptions object. Your object
 can be accessed through the variable 'object'. If unspecified, google maps
-api defaults will be used.</p></li>
+api defaults will be used.</p>
+</li>
 <li><p><code>gm-events</code>: a variable in the current scope that is used to simulate
 events on markers. Setting this variable to an object of the form </p>
-
-<div class="highlight"><pre lang="">  [
+<pre><code>  [
     {
       event: 'click',
       locations: [new google.maps.LatLng(45, -120), ...]
     },
     ...
-  ]
-</pre></div>
-
+  ]</code></pre>
 <p>will generate the named events on the markers at the given locations, if a
 marker at each location exists. Note: when setting the <code>gm-events</code>
 variable, you must set it to a new object for the changes to be detected.
-Code like <code>myEvent[0]["locations"] = [new google.maps.LatLng(45,-120)]</code>
-will not work.</p></li>
-<li><p><code>gm-on-*event*</code>: an angular expression which evaluates to an event
+Code like <code>myEvent[0][&quot;locations&quot;] = [new google.maps.LatLng(45,-120)]</code>
+will not work.</p>
+</li>
+</ul>
+<ul>
+<li><code>gm-on-*event*</code>: an angular expression which evaluates to an event
 handler. This handler will be attached to each marker's *event* event.
 The variables 'object' and 'marker' evaluate to your object and the
 google.maps.Marker, respectively. For example:
-<code>gm-on-click="myClickFn(object, marker)"</code> will call your myClickFn
+<code>gm-on-click=&quot;myClickFn(object, marker)&quot;</code> will call your myClickFn
 whenever a marker is clicked.  You may have multiple <code>gm-on-*event*</code>
-handlers, but only one for each type of event.</p></li>
+handlers, but only one for each type of event.</li>
 </ul>
-
 <p>Only the <code>gm-objects</code> and <code>gm-get-lat-lng</code> attributes are required.</p>
-
 <p>Events:</p>
-
 <ul>
 <li><p><code>gmMarkersRedraw</code>: force the gmMarkers directive to clear and redraw all
 markers. To use: <code>$scope.$broadcast('gmMarkersRedraw', 'myObjects')</code></p>
-
 <p>Parameters:</p>
-
-<ul><li><code>objects</code>: required. The name of the scope variable which holds the
+<ul>
+<li><code>objects</code>: required. The name of the scope variable which holds the
 objects to redraw markers for. This is what you set <code>gm-objects</code> to.
 It is necessary because there may be multiple instances of the
-<code>gmMarkers</code> directive.</li></ul></li>
+<code>gmMarkers</code> directive.</li>
+</ul>
+</li>
 <li><p><code>gmMarkersUpdated</code>: emitted when markers are updated. To use: </p>
-
-<div class="highlight"><pre lang="">$scope.$on('gmMarkersUpdated', function(event, objects) {
+<pre><code>$scope.$on('gmMarkersUpdated', function(event, objects) {
   if (objects === 'myObjects') {
     ...
   }
-});
-</pre></div>
-
+});</code></pre>
 <p>Parameters:</p>
-
-<ul><li><code>objects</code>: the name of the scope variable which holds the objects the
+<ul>
+<li><code>objects</code>: the name of the scope variable which holds the objects the
 gmMarkers directive was constructed with. This is what <code>gm-objects</code>
-was set to.</li></ul></li>
+was set to.</li>
+</ul>
+</li>
 </ul></div>
         
         
@@ -208,7 +199,7 @@ was set to.</li></ul></li>
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Sun Apr 21 2013 22:21:21 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Tue Jun 25 2013 14:28:01 GMT-0700 (PDT)
 </footer>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
