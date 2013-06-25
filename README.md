@@ -54,7 +54,7 @@ AngularGM is tested with `karma`
 
 ``` bash
 $ sudo npm install grunt-cli --global
-$ npm install --dev
+$ npm install
 $ grunt karma:server
 ```
 
