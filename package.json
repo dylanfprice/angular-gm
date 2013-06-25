@@ -20,6 +20,7 @@
     "grunt-contrib-uglify": "*",
     "grunt-karma": "*",
     "grunt-jsdoc": "*",
-    "jshint": "~2.1.4"
+    "jshint": "~2.1.4",
+    "jsdoc": "~3.2.0"
   }
 }
