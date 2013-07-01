@@ -184,18 +184,14 @@
         // remove 'orphaned' markers
         var orphaned = [];
         
-        controller.forEachMarker(function(marker) {
-          var markerPosition = marker.getPosition();
-          var hash = markerPosition.toUrlValue(controller.precision);
-
+        controller.forEachMarker(function(marker, hash) {
           if (!(hash in objectHash)) {
-            orphaned.push(marker);
+            orphaned.push(hash);
           }
         });
 
-        angular.forEach(orphaned, function(marker, i) {
-          var position = marker.getPosition();
-          controller.removeMarker(position.lat(), position.lng());
+        angular.forEach(orphaned, function(markerHash, i) {
+          controller.removeMarkerByHash(markerHash);
         });
 
         scope.$emit('gmMarkersUpdated', attrs.gmObjects);

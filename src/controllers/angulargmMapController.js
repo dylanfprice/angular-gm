@@ -306,6 +306,24 @@
       return removed;
     };
 
+    /**
+     *
+     * @param {string} hash
+     * @returns {boolean} true if a marker was removed, false if nothing
+     *   happened
+     */
+    this.removeMarkerByHash = function(hash) {
+        var removed = false;
+        var marker = this._markers[hash];
+        if (marker) {
+            marker.setMap(null);
+            removed = true;
+        }
+        this._markers[hash] = null;
+        delete this._markers[hash];
+        return removed;
+    };
+
 
     /**
      * Changes bounds of map to view all markers.
@@ -337,7 +355,7 @@
       if (fn == null) { throw 'fn was null or undefined'; }
       angular.forEach(this._markers, function(marker, hash) {
         if (marker != null) {
-          fn(marker);
+          fn(marker, hash);
         }
       });
     };
