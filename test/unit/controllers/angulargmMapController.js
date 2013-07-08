@@ -145,6 +145,8 @@ describe('angulargmMapController', function() {
       positionVeryClose = new google.maps.LatLng(1.0005, 2.0005);
       position2 = new google.maps.LatLng(3, 4);
 
+      scope = 'scope';
+
       markerOptions = {
         position: position
       };
@@ -158,31 +160,31 @@ describe('angulargmMapController', function() {
         position: position2
       };
 
-      mapCtrl.addMarker(markerOptions);
+      mapCtrl.addMarker(scope, markerOptions);
     });
 
     describe('addMarker', function() {
 
       it('adds new markers to the map', function() {
-        added = mapCtrl.addMarker(markerOptions2);
+        added = mapCtrl.addMarker(scope, markerOptions2);
         expect(added).toBeTruthy();
       });
 
       
       it('does not add markers already on the map', function() {
-        var added = mapCtrl.addMarker(markerOptions);
+        var added = mapCtrl.addMarker(scope, markerOptions);
         expect(added).toBeFalsy();
       });
 
 
       it('adds markers which differ by at least 0.0005', function() {
-        var added = mapCtrl.addMarker(markerOptionsVeryClose);
+        var added = mapCtrl.addMarker(scope, markerOptionsVeryClose);
         expect(added).toBeTruthy();
       });
 
 
       it('does not add markers which differ less than 0.0005', function() {
-        var added = mapCtrl.addMarker(markerOptionsSame);
+        var added = mapCtrl.addMarker(scope, markerOptionsSame);
         expect(added).toBeFalsy();
       });
 
@@ -192,25 +194,25 @@ describe('angulargmMapController', function() {
     describe('getMarker', function() {
 
       it('retrieves markers that are on the map', function() {
-        var marker = mapCtrl.getMarker(position.lat(), position.lng());
+        var marker = mapCtrl.getMarker(scope, position.lat(), position.lng());
         expect(marker.getPosition()).toEqual(markerOptions.position);
       });
 
 
       it('returns null for marker not on the map', function() {
-        var marker = mapCtrl.getMarker(position2.lat(), position2.lng());
+        var marker = mapCtrl.getMarker(scope, position2.lat(), position2.lng());
         expect(marker).toBeNull();
       });
 
 
       it('retrives markers given a lat and lng that are within 0.0005', function() {
-        var marker = mapCtrl.getMarker(positionSame.lat(), positionSame.lng());
+        var marker = mapCtrl.getMarker(scope, positionSame.lat(), positionSame.lng());
         expect(marker.getPosition()).toEqual(markerOptions.position);
       });
 
 
       it('does not retrieve marker given lat and lng more than 0.0005 away', function() {
-        var marker = mapCtrl.getMarker(positionVeryClose.lat(), positionVeryClose.lng());
+        var marker = mapCtrl.getMarker(scope, positionVeryClose.lat(), positionVeryClose.lng());
         expect(marker).toBeNull();
       });
 
@@ -220,16 +222,16 @@ describe('angulargmMapController', function() {
     describe('removeMarker', function() {
 
       it('removes markers from the map', function() {
-        var removed = mapCtrl.removeMarker(position.lat(), position.lng());
+        var removed = mapCtrl.removeMarker(scope, position.lat(), position.lng());
         expect(removed).toBeTruthy();
-        expect(mapCtrl.getMarker(position.lat(), position.lng())).toBeNull();
+        expect(mapCtrl.getMarker(scope, position.lat(), position.lng())).toBeNull();
       });
 
 
       it('does not remove markers not on the map', function() {
-        var removed = mapCtrl.removeMarker(position2.lat(), position2.lng());
+        var removed = mapCtrl.removeMarker(scope, position2.lat(), position2.lng());
         expect(removed).toBeFalsy();
-        expect(mapCtrl.getMarker(position.lat(), position.lng())).not.toBeNull();
+        expect(mapCtrl.getMarker(scope, position.lat(), position.lng())).not.toBeNull();
       });
 
     });
@@ -252,7 +254,7 @@ describe('angulargmMapController', function() {
 
 
     it('does not apply a function to removed markers', function() {
-      mapCtrl.removeMarker(1, 2);
+      mapCtrl.removeMarker(scope, 1, 2);
       var called = false;
       mapCtrl.forEachMarker(function(marker) {
         called = true;
