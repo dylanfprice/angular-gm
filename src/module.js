@@ -6,10 +6,11 @@
  * ## API Documentation
  * See...
  *
- * + {@link module:gmMap}                            for usage of the `<gm-map>` directive
- * + {@link module:gmMarkers}                    for usage of the `<gm-markers>` directive
+ * + {@link module:gmMap}               for usage of the `<gm-map>` directive
+ * + {@link module:gmMarkers}           for usage of the `<gm-markers>` directive
+ * + {@link module:gmInfoWindow}        for usage of the `<div gm-info-window="...>` directive
  * + {@link module:angulargmContainer}  if you need to run custom configuration on the map, e.g. add new map types
- * + {@link module:angulargmDefaults}    to override the default map options
+ * + {@link module:angulargmDefaults}   to override the default map options
  *
  * ## Example Plunkers ([fullscreen](http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL))
  *  
