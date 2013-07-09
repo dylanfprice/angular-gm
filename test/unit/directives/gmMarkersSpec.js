@@ -5,10 +5,9 @@ describe('gmMarkers', function() {
 
   beforeEach(function() {
     module('AngularGM');
-    module('AngularGM-test');
   });
 
-  beforeEach(inject(function($rootScope, $compile, _$timeout_, angulargmUtils, gmtestMapController) {
+  beforeEach(inject(function($rootScope, $compile, _$timeout_, angulargmUtils) {
     // set up scopes
     scope = $rootScope.$new();
     scope.people = [
@@ -36,12 +35,11 @@ describe('gmMarkers', function() {
                               'gm-on-click="selected = {person: object, marker: marker}"' +
                               'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' + 
                             '</gm-markers>' + 
-                            '<gmtest-get-map-controller></gmtest-get-map-controller>' +
                           '</gm-map>');
 
     $compile(elm)(scope);
 
-    mapCtrl = gmtestMapController();
+    mapCtrl = elm.controller('gmMap');
     spyOn(mapCtrl, 'addMarker').andCallThrough();
     spyOn(mapCtrl, 'removeMarker').andCallThrough();
     spyOn(mapCtrl, 'removeMarkerByHash').andCallThrough();

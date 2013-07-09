@@ -6,14 +6,12 @@ describe('gmMap', function() {
 
   beforeEach(function() {
     module('AngularGM');
-    module('AngularGM-test');
   });
 
 
-  beforeEach(inject(function($rootScope, $compile, gmtestMapController, angulargmContainer, angulargmUtils) {
+  beforeEach(inject(function($rootScope, $compile, angulargmContainer, angulargmUtils) {
     // compile angulargm directive
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="pCenter" gm-zoom="pZoom" gm-bounds="pBounds" gm-map-options="mapOptions">' +
-                            '<gmtest-get-map-controller></gmtest-get-map-controller>' +
                           '</gm-map>');
 
     scope = $rootScope.$new();
@@ -35,7 +33,7 @@ describe('gmMap', function() {
     );
     
     // get MapController
-    mapCtrl = gmtestMapController();
+    mapCtrl = elm.controller('gmMap');
     var center, zoom, bounds;
     Object.defineProperties(mapCtrl, {
       'center': {
