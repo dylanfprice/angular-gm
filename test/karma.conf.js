@@ -4,7 +4,7 @@ files = [
   JASMINE,
   JASMINE_ADAPTER,
   'https://maps.googleapis.com/maps/api/js?sensor=false',
-  'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+  'http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js',
   'test/lib/angular/angular.js',
   'test/lib/angular/angular-mocks.js',
   'src/module.js',
