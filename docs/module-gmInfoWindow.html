@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: AngularGM</title>
+    <title>JSDoc: Module: gmInfoWindow</title>
     
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Module: AngularGM</h1>
+    <h1 class="page-title">Module: gmInfoWindow</h1>
     
     
 
@@ -33,22 +33,28 @@
     
     
         
-            <div class="description"><p>Module for embedding Google Maps into AngularJS applications. </p>
-<h2>API Documentation</h2>
-<p>See...</p>
+            <div class="description"><p>A directive for creating a google.maps.InfoWindow.  </p>
+<p>Usage:</p>
+<pre><code class="lang-html">&lt;div gm-info-window=&quot;myInfoWindow&quot;
+     gm-info-window-options=&quot;myInfoWindowOptions&quot;
+     gm-on-*event*=&quot;myEventHandler&quot;&gt;
+&lt;/div&gt;</code></pre>
 <ul>
-<li><a href="module-gmMap.html"><code>module:gmMap</code></a>               for usage of the <code>&lt;gm-map&gt;</code> directive</li>
-<li><a href="module-gmMarkers.html"><code>module:gmMarkers</code></a>           for usage of the <code>&lt;gm-markers&gt;</code> directive</li>
-<li><a href="module-gmInfoWindow.html"><code>module:gmInfoWindow</code></a>        for usage of the <code>&lt;div gm-info-window=&quot;...&gt;</code> directive</li>
-<li><a href="module-angulargmContainer.html"><code>module:angulargmContainer</code></a>  if you need to run custom configuration on the map, e.g. add new map types</li>
-<li><a href="module-angulargmDefaults.html"><code>module:angulargmDefaults</code></a>   to override the default map options</li>
-</ul>
-<h2>Example Plunkers (<a href="http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL">fullscreen</a>)</h2>
-<p>&lt;iframe style=&quot;width: 100%; height: 400px&quot; src=&quot;http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;allowfullscreen&quot;&gt;
-&lt;/iframe&gt;
-
-</p>
-<p>(JSDoc is escaping my iframe so for the time being just click the link.)</p></div>
+<li><p><code>gm-info-window</code>: name of scope variable to store the
+google.maps.InfoWindow in. Does not have to already exist.</p>
+</li>
+<li><p><code>gm-info-window-options</code>: object in the current scope that is a
+google.maps.InfoWindowOptions object. If unspecified, google maps api
+defaults will be used.</p>
+</li>
+<li><p><code>gm-on-*event*</code>: an angular expression which evaluates to an event
+handler. This handler will be attached to the InfoWindow's *event*
+event.  The variable 'infoWindow' evaluates to the InfoWindow.  For
+example: <code>gm-on-closeclick=&quot;myCloseclickFn(infoWindow)&quot;</code> will call your
+myCloseclickFn whenever the InfoWindow is clicked closed. You may have
+multiple <code>gm-on-*event*</code> handlers, but only one for each type of event.</p>
+</li>
+</ul></div>
         
         
         
@@ -64,13 +70,6 @@
     
     
     
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li><a href="mailto:the.dylan.price@gmail.com">Dylan Price</a></li>
-        </ul>
-    </dd>
-    
     
     
     
@@ -81,7 +80,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        module.js, line 3
+        directives/gmInfoWindow.js, line 3
     </li></ul></dd>
     
     

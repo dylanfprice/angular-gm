@@ -1,6 +1,6 @@
 /**
  * AngularGM - Google Maps Directives for AngularJS
- * @version v0.0.2 - 2013-07-09
+ * @version v0.1.0 - 2013-07-09
  * @link http://dylanfprice.github.com/angular-gm
  * @author Dylan Price <the.dylan.price@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -1133,26 +1133,6 @@
         this._markers[scopeId][hash] = null;
         delete this._markers[scopeId][hash];
         return removed;
-    };
-
-
-    /**
-     * Changes bounds of map to view all markers.
-     *
-     * Note: after calling this function, this.bounds, this.center, and
-     * this.zoom may temporarily be null as the map moves. Therefore, use
-     * this.addMapListenerOnce if you need to access these values immediately
-     * after calling fitToMarkers.
-     * @ignore
-     */
-    this.fitToMarkers = function () {
-      var bounds = new google.maps.LatLngBounds();
-
-      this.forEachMarker(function(marker) {
-        bounds.extend(marker.getPosition());
-      });
-
-      this.bounds = bounds;
     };
 
 

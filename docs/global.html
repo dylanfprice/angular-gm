@@ -93,7 +93,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="addListener"><span class="type-signature"></span>addListener<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getMap"><span class="type-signature"></span>getMap<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
     
     
 </dt>
@@ -101,7 +101,7 @@
     
     
     <div class="description">
-        <p>Alias for google.maps.event.addListener(object, event, handler)</p>
+        <p>Get current map.</p>
     </div>
     
 
@@ -134,7 +134,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        controllers/angulargmMapController.js, line 188
+        controllers/angulargmMapController.js, line 391
     </li></ul></dd>
     
     
@@ -151,71 +151,24 @@
     
     
     
+    <h5>Returns:</h5>
     
-    
-</dd>
-
-        
             
-<dt>
-    <h4 class="name" id="addListenerOnce"><span class="type-signature"></span>addListenerOnce<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Alias for google.maps.event.addListenerOnce(object, event, handler)</p>
-    </div>
-    
 
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        controllers/angulargmMapController.js, line 196
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">object</span>
+
+
+	</dd>
 </dl>
 
-    
-    
-    
-    
-    
-    
+        
     
     
 </dd>
@@ -223,16 +176,12 @@
         
             
 <dt>
-    <h4 class="name" id="addMapListener"><span class="type-signature">&lt;private> </span>addMapListener<span class="signature">(event, a)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="removeMarkerByHash"><span class="type-signature"></span>removeMarkerByHash<span class="signature">(scope, hash)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
     
 </dt>
 <dd>
     
-    
-    <div class="description">
-        <p>Alias for google.maps.event.addListener(map, event, handler)</p>
-    </div>
     
 
     
@@ -265,7 +214,30 @@
 	
         <tr>
             
-                <td class="name"><code>event</code></td>
+                <td class="name"><code>scope</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>id</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>hash</code></td>
             
             
             <td class="type">
@@ -281,142 +253,6 @@
             
             
             
-            <td class="description last"><p>an event defined on google.maps.Map</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>a</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Function</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>handler for the event</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        controllers/angulargmMapController.js, line 167
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="addMarker"><span class="type-signature"></span>addMarker<span class="signature">(markerOptions)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Adds a new marker to the map.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>markerOptions</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">google.maps.MarkerOptions</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
             <td class="description last"></td>
         </tr>
 	
@@ -448,768 +284,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        controllers/angulargmMapController.js, line 226
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>true if a marker was added, false if there was already
-  a marker at this position. 'at this position' means delta_lat and
-  delta_lng are &lt; 0.0005</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">boolean</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="fitToMarkers"><span class="type-signature"></span>fitToMarkers<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Changes bounds of map to view all markers.</p>
-
-<p>Note: after calling this function, this.bounds, this.center, and
-this.zoom may temporarily be null as the map moves. Therefore, use
-this.addMapListenerOnce if you need to access these values immediately
-after calling fitToMarkers.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        controllers/angulargmMapController.js, line 310
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="forEachMarker"><span class="type-signature"></span>forEachMarker<span class="signature">(fn)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Applies a function to each marker.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>fn</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Function</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>will called with marker as first argument</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        controllers/angulargmMapController.js, line 326
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getMarker"><span class="type-signature"></span>getMarker<span class="signature">(lat, lng)</span><span class="type-signature"> &rarr; {google.maps.Marker}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>lat</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>lng</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        controllers/angulargmMapController.js, line 263
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>the marker at given lat and lng, or null if
-  no such marker exists</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">google.maps.Marker</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="hasMarker"><span class="type-signature"></span>hasMarker<span class="signature">(lat, lng)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>lat</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>lng</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        controllers/angulargmMapController.js, line 252
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>true if there is a marker with the given lat and lng</p>
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">boolean</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="mapTrigger"><span class="type-signature"></span>mapTrigger<span class="signature">(event)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Alias for google.maps.event.trigger(map, event)</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>event</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>an event defined on google.maps.Map</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        controllers/angulargmMapController.js, line 205
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="removeMarker"><span class="type-signature"></span>removeMarker<span class="signature">(lat, lng)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>lat</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>lng</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        controllers/angulargmMapController.js, line 283
+        controllers/angulargmMapController.js, line 315
     </li></ul></dd>
     
     
@@ -1253,71 +328,6 @@ after calling fitToMarkers.</p>
     
 </dd>
 
-        
-            
-<dt>
-    <h4 class="name" id="trigger"><span class="type-signature"></span>trigger<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Alias for google.maps.event.trigger(object, event)</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        controllers/angulargmMapController.js, line 213
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
         </dl>
     
     
@@ -1334,13 +344,13 @@ after calling fitToMarkers.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-AngularGM.html">AngularGM</a></li><li><a href="module-angulargmContainer.html">angulargmContainer</a></li><li><a href="module-angulargmDefaults.html">angulargmDefaults</a></li><li><a href="module-gmMap.html">gmMap</a></li><li><a href="module-gmMarkers.html">gmMarkers</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addListener">addListener</a></li><li><a href="global.html#addListenerOnce">addListenerOnce</a></li><li><a href="global.html#addMapListener">addMapListener</a></li><li><a href="global.html#addMarker">addMarker</a></li><li><a href="global.html#fitToMarkers">fitToMarkers</a></li><li><a href="global.html#forEachMarker">forEachMarker</a></li><li><a href="global.html#getMarker">getMarker</a></li><li><a href="global.html#hasMarker">hasMarker</a></li><li><a href="global.html#mapTrigger">mapTrigger</a></li><li><a href="global.html#removeMarker">removeMarker</a></li><li><a href="global.html#trigger">trigger</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-AngularGM.html">AngularGM</a></li><li><a href="module-angulargmContainer.html">angulargmContainer</a></li><li><a href="module-angulargmDefaults.html">angulargmDefaults</a></li><li><a href="module-gmInfoWindow.html">gmInfoWindow</a></li><li><a href="module-gmMap.html">gmMap</a></li><li><a href="module-gmMarkers.html">gmMarkers</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getMap">getMap</a></li><li><a href="global.html#removeMarkerByHash">removeMarkerByHash</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri Apr 19 2013 21:06:42 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Tue Jul 09 2013 01:49:30 GMT-0700 (PDT)
 </footer>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
