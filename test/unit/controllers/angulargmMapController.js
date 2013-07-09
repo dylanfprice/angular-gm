@@ -237,12 +237,6 @@ describe('angulargmMapController', function() {
     });
 
 
-    xit('fits the map to markers', function() {
-      // TODO: this is a hard one to test, but the functionality isn't exposed
-      // yet so we can skip it for now
-    });
-
-
     it('can apply a function to each marker', function() {
       markers = [];
       mapCtrl.forEachMarker(function(marker) {

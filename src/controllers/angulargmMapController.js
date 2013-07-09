@@ -327,26 +327,6 @@
 
 
     /**
-     * Changes bounds of map to view all markers.
-     *
-     * Note: after calling this function, this.bounds, this.center, and
-     * this.zoom may temporarily be null as the map moves. Therefore, use
-     * this.addMapListenerOnce if you need to access these values immediately
-     * after calling fitToMarkers.
-     * @ignore
-     */
-    this.fitToMarkers = function () {
-      var bounds = new google.maps.LatLngBounds();
-
-      this.forEachMarker(function(marker) {
-        bounds.extend(marker.getPosition());
-      });
-
-      this.bounds = bounds;
-    };
-
-
-    /**
      * Applies a function to each marker.
      * @param {Function} fn will called with marker as first argument
      * @throw if fn is null or undefined
