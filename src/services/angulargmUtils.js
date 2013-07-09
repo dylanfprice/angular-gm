@@ -6,7 +6,7 @@
 (function () {
   angular.module('AngularGM').
 
-  factory('angulargmUtils', [function() {
+  factory('angulargmUtils', ['$parse', function($parse) {
 
     /**
      * Check if two floating point numbers are equal. 
@@ -96,12 +96,32 @@
       return isNull || isNotaN;
     }
 
+    /**
+     * @param {Object} attrs directive attributes
+     * @return {Object} mapping from event names to handler fns
+     */
+    function getEventHandlers(attrs) {
+      var handlers = {};
+
+      // retrieve gm-on-___ handlers
+      angular.forEach(attrs, function(value, key) {
+        if (key.lastIndexOf('gmOn', 0) === 0) {
+          var event = angular.lowercase(key.substring(4));
+          var fn = $parse(value);
+          handlers[event] = fn;
+        }
+      });
+
+      return handlers;
+    }
+
     return {
       latLngEqual: latLngEqual,
       boundsEqual: boundsEqual,
       latLngToObj: latLngToObj,
       objToLatLng: objToLatLng,
-      hasNaN: hasNaN
+      hasNaN: hasNaN,
+      getEventHandlers: getEventHandlers
     };
   }]);
 })();

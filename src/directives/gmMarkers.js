@@ -116,6 +116,7 @@
     /** aliases */
     var latLngEqual = angulargmUtils.latLngEqual;
     var objToLatLng = angulargmUtils.objToLatLng;
+    var getEventHandlers = angulargmUtils.getEventHandlers;
 
 
     function link(scope, element, attrs, controller) {
@@ -126,16 +127,7 @@
         throw 'gmGetLatLng attribute required';
       }
 
-      var handlers = {}; // map events -> handlers
-
-      // retrieve gm-on-___ handlers
-      angular.forEach(attrs, function(value, key) {
-        if (key.lastIndexOf('gmOn', 0) === 0) {
-          var event = angular.lowercase(key.substring(4));
-          var fn = $parse(value);
-          handlers[event] = fn;
-        }
-      });
+      var handlers = getEventHandlers(attrs); // map events -> handlers
 
       // fn for updating markers from objects
       var updateMarkers = function(scope, objects) {
