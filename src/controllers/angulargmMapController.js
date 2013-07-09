@@ -311,6 +311,7 @@
      * @param {string} hash
      * @returns {boolean} true if a marker was removed, false if nothing
      *   happened
+     * @ignore
      */
     this.removeMarkerByHash = function(scopeId, hash) {
         var removed = false;
@@ -387,6 +388,7 @@
     /**
      * Get current map.
      * @returns {object}
+     * @ignore
      */
     this.getMap = function() {
         return this._map;
