@@ -66,8 +66,6 @@
               throw 'center contains null or NaN';
             var changed = !latLngEqual(this.center, center);
             if (changed) {
-              // TODO: change to panTo
-              //this._map.setCenter(center);
               this._map.panTo(center);
             }
           } 
