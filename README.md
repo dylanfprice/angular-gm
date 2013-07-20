@@ -9,7 +9,7 @@ AngularGM is a set of directives for embedding Google Maps in your application u
 
 + Bi-directional association of map bounds, center, and zoom with scope variables
 + Multiple Google Maps can be embedded in the same page
-+ Works with [ngView](http://docs.angularjs.org/api/ng.directive:ngView) (map gets destroyed/created when the view changes) and reuses map instances so there is no [memory leak](https://github.com/dylanfprice/angular-gm/issues/3)
++ Works with [ngView](http://docs.angularjs.org/api/ng.directive:ngView) and reuses map instances so there is no [memory leak](https://github.com/dylanfprice/angular-gm/issues/3)
 + Bind custom objects to markers
 + Listen for and generate events on markers/objects
 + Create InfoWindows which compile Angular expressions (credit goes to [ui-map](https://github.com/angular-ui/ui-map) for this feature)
