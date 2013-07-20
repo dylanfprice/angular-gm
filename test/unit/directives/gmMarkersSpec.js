@@ -243,6 +243,22 @@ describe('gmMarkers', function() {
   });
 
 
+  it('listens to marker redraw event when no objects specified', function() {
+    var position1 = objToLatLng(scope.people[0]);
+    var position2 = objToLatLng(scope.people[1]);
+    scope.getOpts = function(person) {
+      return {
+        key: 'differentValue',
+        title: person.name
+      };
+    };
+    scope.$broadcast('gmMarkersRedraw');
+
+    expect(mapCtrl.addMarker).toHaveBeenCalledWith(markersScopeId, {key: 'differentValue', title: jasmine.any(String), position: position1});
+    expect(mapCtrl.addMarker).toHaveBeenCalledWith(markersScopeId, {key: 'differentValue', title: jasmine.any(String), position: position2});
+  });
+
+
   it('ignores marker redraw event for other instance', function() {
     scope.getOpts = function(person) {
       return {

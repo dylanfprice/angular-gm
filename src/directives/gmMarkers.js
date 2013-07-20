@@ -85,10 +85,11 @@
  *
  *   Parameters:
  *
- *       + `objects`: required. The name of the scope variable which holds the
- *       objects to redraw markers for. This is what you set `gm-objects` to.
- *       It is necessary because there may be multiple instances of the
- *       `gmMarkers` directive.
+ *       + `objects`: Not required. The name of the scope variable which holds
+ *       the objects to redraw markers for, i.e. what you set `gm-objects` to.
+ *       It is useful because there may be multiple instances of the
+ *       `gmMarkers` directive. If not specified, all instances of gmMarkers
+ *       which are child scopes will redraw their markers.
  *
  *   + `gmMarkersUpdated`: emitted when markers are updated. To use: 
  *   ```
@@ -219,7 +220,7 @@
       });
 
       scope.$on('gmMarkersRedraw', function(event, objectsName) {
-        if (objectsName === attrs.gmObjects) {
+        if (objectsName == null || objectsName === attrs.gmObjects) {
           updateMarkers(scope);
           updateMarkers(scope, scope.gmObjects());
         }
