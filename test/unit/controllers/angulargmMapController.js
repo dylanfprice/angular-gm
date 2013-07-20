@@ -57,10 +57,14 @@ describe('angulargmMapController', function() {
   }));
 
 
-  it('destroys the map on scope destroy', function() {
+  it('removes markers on scope destroy', function() {
     var mapId = scope.gmMapId();
     scope.$destroy();
-    expect(mapCntr.getMap(mapId)).toBeUndefined();
+    numMarkers = 0;
+    mapCtrl.forEachMarker(function(marker) {
+      numMarkers++;  
+    });
+    expect(numMarkers).toEqual(0);
   });
 
 

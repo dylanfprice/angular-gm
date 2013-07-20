@@ -8,13 +8,15 @@
  * method so you can guarantee the map will be initialized. For example,
  *
  * ```
- * function MyCtrl(angulargmContainer) {
+ * angular.module('myModule').
+ *
+ * run(function(angulargmContainer) {
  *   var gmapPromise = angulargmContainer.getMapPromise('myMapid');
  *
  *   gmapPromise.then(function(gmap) {
  *     // google map configuration here
  *   });
- * }
+ * });
  * ```
  *
  * @module angulargmContainer
@@ -74,7 +76,9 @@
     /**
      * Removes map with given mapId from this container, and deletes the map.
      * In order for this to work you must ensure there are no references to the
-     * map object.
+     * map object. Note: this will likely cause a memory leak, see
+     * http://stackoverflow.com/questions/10485582/what-is-the-proper-way-to-destroy-a-map-instance
+     *
      * @param {string} mapId the unique id of the map to remove
      * @method
      */

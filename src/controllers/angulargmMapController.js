@@ -42,9 +42,9 @@
       mapDiv.attr('id', mapId);
 
       var config = this._getConfig($scope, gMDefaults);
-
+      
       // 'private' properties
-      this._map = this._createMap(mapId, mapDiv, config, gMContainer);
+      this._map = this._createMap(mapId, mapDiv, config, gMContainer, $scope);
       this._markers = {};
 
       // 'public' properties
@@ -106,7 +106,7 @@
       });
 
       this._initDragListeners();
-      $scope.$on('$destroy', angular.bind(this, this._destroy, mapId));
+      $scope.$on('$destroy', angular.bind(this, this._destroy));
     };
 
 
@@ -127,8 +127,8 @@
         map = new google.maps.Map(element[0], config);
         gMContainer.addMap(id, map);
       } else {
-        throw 'A map with id ' + id + ' already exists. You must use' +
-          ' different ids for each instance of the angulargm directive.';
+        var div = map.getDiv();
+        element.replaceWith(div);
       }
       return map;
     };
@@ -151,8 +151,16 @@
     };
 
 
-    this._destroy = function(mapId) {
-      gMContainer.removeMap(mapId);
+    this._destroy = function() {
+      google.maps.event.clearInstanceListeners(this._map);
+
+      var scopeIds = Object.keys(this._markers);
+      var self = this;
+      angular.forEach(scopeIds, function(scopeId) {
+        self.forEachMarkerInScope(scopeId, function(marker, hash) {
+          self.removeMarkerByHash(scopeId, hash);  
+        });
+      });
     };
 
     
