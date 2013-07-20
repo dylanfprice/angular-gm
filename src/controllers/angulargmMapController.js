@@ -38,7 +38,7 @@
       var mapId = $scope.gmMapId();
       if (!mapId) { throw 'angulargm must have non-empty gmMapId attribute'; }
 
-      var mapDiv = $element.find('[id]');
+      var mapDiv = angular.element($element[0].firstChild);
       mapDiv.attr('id', mapId);
 
       var config = this._getConfig($scope, gMDefaults);
