@@ -121,6 +121,7 @@
       controller.addMapListener('zoom_changed', updateScope);
       controller.addMapListener('center_changed', updateScope);
       controller.addMapListener('bounds_changed', updateScope);
+      controller.addMapListener('resize', updateScope);
       
       if (hasCenter) {
         scope.$watch('gmCenter', function (newValue, oldValue) {
@@ -158,6 +159,8 @@
           controller.mapTrigger('resize');
         }
       });
+
+      controller.mapTrigger('resize');
     }
 
 
