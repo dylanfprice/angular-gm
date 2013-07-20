@@ -43,31 +43,31 @@
     <section>
         <article><h1>AngularGM</h1>
 <p>AngularGM is a set of directives for embedding Google Maps in your application using the Google Maps Javascript API.</p>
+<p><a href="http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL">Example Plunkers</a></p>
 <h2>Features</h2>
 <ul>
 <li>Bi-directional association of map bounds, center, and zoom with scope variables</li>
 <li>Multiple Google Maps can be embedded in the same page</li>
-<li>Works with <a href="http://docs.angularjs.org/api/ng.directive:ngView">ngView</a></li>
+<li>Works with <a href="http://docs.angularjs.org/api/ng.directive:ngView">ngView</a> (map gets destroyed/created when the view changes) and reuses map instances so there is no <a href="https://github.com/dylanfprice/angular-gm/issues/3">memory leak</a></li>
 <li>Bind custom objects to markers</li>
 <li>Listen for and generate events on markers/objects</li>
+<li>Create InfoWindows which compile Angular expressions (credit goes to <a href="https://github.com/angular-ui/ui-map">ui-map</a> for this feature)</li>
+</ul>
+<h2>Documentation and Examples</h2>
+<ul>
+<li><a href="http://dylanfprice.github.com/angular-gm/docs/module-AngularGM.html">JSDoc</a></li>
+<li><a href="http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL">Example Plunkers</a></li>
 </ul>
 <h2>Quick Start</h2>
-<p>Include the required libraries</p>
+<p>Include the required libraries </p>
 <pre><code class="lang-html">&lt;script src=&quot;//maps.googleapis.com/maps/api/js?sensor=false&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;//dylanfprice.github.com/angular-gm/angular-gm-0.1.0.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;//dylanfprice.github.com/angular-gm/angular-gm-0.1.1.min.js&quot;&gt;&lt;/script&gt;</code></pre>
 <p>Declare a dependency on the <code>AngularGM</code> module</p>
 <pre><code class="lang-javascript">var app = angular.module('myModule', ['AngularGM']);</code></pre>
 <p>Make a map</p>
 <pre><code class="lang-html">&lt;gm-map gm-map-id=&quot;'myMap'&quot; gm-center=&quot;center&quot; gm-zoom=&quot;zoom&quot; gm-bounds=&quot;bounds&quot; style=&quot;width:500px;height:500px;&quot;&gt;&lt;/gm-map&gt;</code></pre>
-<h2>Documentation and Examples</h2>
-<p><a href="http://dylanfprice.github.com/angular-gm/docs/module-AngularGM.html">See here.</a></p>
-<p>This README can be accessed in two places:</p>
-<ul>
-<li><a href="http://dylanfprice.github.com/angular-gm/docs/">AngularGM JSDoc</a></li>
-<li><a href="https://github.com/dylanfprice/angular-gm#angulargm">AngularGM Github</a></li>
-</ul>
 <h2>Development</h2>
 <p>Clone the repo, <code>git clone git://github.com/dylanfprice/angular-gm.git</code></p>
 <p>AngularGM is tested with <code>karma</code></p>
@@ -76,11 +76,22 @@ $ npm install
 $ grunt karma:server</code></pre>
 <p>You can build the latest version using <code>grunt</code>.</p>
 <pre><code class="lang-bash">$ grunt build</code></pre>
+<p>Pull Requests welcome!</p>
 <h2>Author</h2>
 <p><strong>Dylan Price</strong> (<a href="http://github.com/dylanfprice">http://github.com/dylanfprice</a>)</p>
 <h2>Credits</h2>
 <p>Inspired by Nicolas Laplante's angular-google-maps directive (<a href="http://github.com/nlaplante/angular-google-maps">http://github.com/nlaplante/angular-google-maps</a>)</p>
-<p>README and project layout stolen from Olivier Louvignes' AngularStrap repo (<a href="http://github.com/mgcrea/angular-strap">http://github.com/mgcrea/angular-strap</a>)</p></article>
+<p>README and project layout stolen from Olivier Louvignes' AngularStrap repo (<a href="http://github.com/mgcrea/angular-strap">http://github.com/mgcrea/angular-strap</a>)</p>
+<p>Much of the gmInfoWindow directive code is from the <a href="https://github.com/angular-ui/ui-map">ui-map</a> project</p>
+<h2>Changelog</h2>
+<h3>v0.1.1</h3>
+<ul>
+<li>If you use the getMapPromise method of <a href="http://dylanfprice.github.io/angular-gm/docs/module-angulargmContainer.html">angulargmContainer</a>, you may want to make sure your configuration is in a <a href="http://docs.angularjs.org/api/angular.Module#run">run</a> function. If you do configuration in a controller it will get re-run on the same map instance every time the controller is re-instantiated.</li>
+<li><a href="http://github.com/dylanfprice/angular-gm/commit/a715cd14a44519d5f7473ee0d485781b9ca1c46b">view commit</a> &bull; Added gmMapResize event to gmMap. </li>
+<li><a href="http://github.com/dylanfprice/angular-gm/commit/4736ba9abd741f17333d60285f047bb380a2cc75">view commit</a> &bull; Make gmMarkersRedraw event more flexible. </li>
+<li><a href="http://github.com/dylanfprice/angular-gm/commit/bf97b1c4f99d2f7f88998e1bb6d0c512e687775b">view commit</a> &bull; Fixes #3. Reuse google map instances. </li>
+<li><a href="http://github.com/dylanfprice/angular-gm/commit/03ab919f6e00ef9b5eb033202b7f2183ce944b79">view commit</a> &bull; Update to angular 1.0.7. </li>
+</ul></article>
     </section>
 
 
@@ -97,7 +108,7 @@ $ grunt karma:server</code></pre>
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Tue Jul 09 2013 02:53:49 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Sat Jul 20 2013 16:20:01 GMT-0700 (PDT)
 </footer>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
