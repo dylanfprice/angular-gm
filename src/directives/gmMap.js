@@ -43,6 +43,17 @@
  * If you need to get a handle on the google.maps.Map object, see
  * [angulargmContainer]{@link module:angulargmContainer}
  *
+ * Events:
+ *
+ *   + `gmMapResize`: google.maps.event.trigger(map, 'resize') To use:
+ *   `$scope.$broadcast('gmMapResize', 'myMapId')`
+ *
+ *   Parameters:
+ *
+ *       + `mapId`: required. The id of your map.  This is what you set
+ *       `gm-map-id` to.  It is necessary because there may be multiple
+ *       instances of the `gmMap` directive.
+ *
  * @module gmMap
  */
 (function () {
@@ -141,6 +152,12 @@
           }
         });
       }
+
+      scope.$on('gmMapResize', function(event, gmMapId) {
+        if (scope.gmMapId() === gmMapId) {
+          controller.mapTrigger('resize');
+        }
+      });
     }
 
 

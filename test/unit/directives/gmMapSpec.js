@@ -34,6 +34,7 @@ describe('gmMap', function() {
     
     // get MapController
     mapCtrl = elm.controller('gmMap');
+    spyOn(mapCtrl, 'mapTrigger').andCallThrough();
     var center, zoom, bounds;
     Object.defineProperties(mapCtrl, {
       'center': {
@@ -193,6 +194,18 @@ describe('gmMap', function() {
     expect(mapCtrl.center).not.toEqual(null);
     expect(mapCtrl.zoom).not.toEqual(null);
     expect(mapCtrl.bounds).not.toEqual(null);
+  });
+
+
+  it('listens for map resize event', function() {
+    scope.$broadcast('gmMapResize', scope.mapId);
+    expect(mapCtrl.mapTrigger).toHaveBeenCalledWith('resize');
+  });
+
+  
+  it('ignores map resize for different map', function() {
+    scope.$broadcast('gmMapResize', scope.mapId + 'diff');
+    expect(mapCtrl.mapTrigger).not.toHaveBeenCalled();
   });
 
 
