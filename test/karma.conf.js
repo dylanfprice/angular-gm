@@ -16,7 +16,7 @@ files = [
 
 autoWatch = true;
 singleRun = false;
-browsers = ['Firefox', 'PhantomJS'];
+browsers = ['PhantomJS'];
 reportSlowerThan = 500;
 
 preprocessors = {
