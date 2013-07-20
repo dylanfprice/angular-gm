@@ -27,7 +27,7 @@ Include the required libraries
 ```html
 <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 <script src="//dylanfprice.github.com/angular-gm/angular-gm-0.1.0.min.js"></script>
 ```
 
