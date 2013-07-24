@@ -243,7 +243,7 @@
         throw 'markerOptions did not contain a position';
       }
 
-      var marker = new google.maps.Marker(opts);
+      var marker = new angulargmDefaults.markerConstructor(opts);
       var position = marker.getPosition();
       if (this.hasMarker(scopeId, position.lat(), position.lng())) {
         return false;
