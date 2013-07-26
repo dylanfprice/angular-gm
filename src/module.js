@@ -31,14 +31,17 @@
    * To provide your own default config, use the following
    * ```
    * angular.module('myModule').config(function($provide) {
-   *   $provide.decorator('angulargmDefaults', function() {
-   *     return {
+   *   $provide.decorator('angulargmDefaults', function($delegate) {
+   *     return angular.extend($delegate, {
+   *       // Note: markerConstructor must implement getPosition() and setMap()
+   *       // like google.maps.Marker
+   *       'markerConstructor': myCustomMarkerConstructor,
    *       'mapOptions': {
    *         center: new google.maps.LatLng(55, 111),
    *         mapTypeId: google.maps.MapTypeId.SATELLITE,
    *         ...
    *       }
-   *     };
+   *     });
    *   });
    * });
    * ```
