@@ -1,5 +1,6 @@
 #!/bin/sh
 
+rm -rf dist/ && \
 grunt build && \
 git checkout gh-pages && \
 cp -r dist/* . && \
