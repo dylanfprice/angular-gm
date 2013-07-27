@@ -46,6 +46,7 @@
       // 'private' properties
       this._map = this._createMap(mapId, mapDiv, config, gMContainer, $scope);
       this._markers = {};
+      this._listeners = [];
 
       // 'public' properties
       this.dragging = false;
@@ -129,6 +130,7 @@
       } else {
         var div = map.getDiv();
         element.replaceWith(div);
+        map.setOptions(config);
       }
       return map;
     };
@@ -152,7 +154,9 @@
 
 
     this._destroy = function() {
-      google.maps.event.clearInstanceListeners(this._map);
+      angular.forEach(this._listeners, function(listener) {
+        google.maps.event.removeListener(listener);
+      });
 
       var scopeIds = Object.keys(this._markers);
       var self = this;
@@ -171,8 +175,8 @@
      * @ignore
      */
     this.addMapListener = function(event, handler) {
-      google.maps.event.addListener(this._map, 
-          event, handler);
+      var listener = google.maps.event.addListener(this._map, event, handler);
+      this._listeners.push(listener);
     };
 
 

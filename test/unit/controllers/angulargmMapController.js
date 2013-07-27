@@ -1,5 +1,5 @@
 describe('angulargmMapController', function() {
-  var scope;
+  var scope, elm;
   var mapCtrl, mapCntr;
 
   beforeEach(function() {
@@ -22,7 +22,7 @@ describe('angulargmMapController', function() {
     };
 
     // set up element
-    var elm = angular.element('<div gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">' +
+    elm = angular.element('<div gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-options="mapOptions">' +
                                 '<div id="test"></div>' +
                               '</div');
 
@@ -31,11 +31,19 @@ describe('angulargmMapController', function() {
   }));
 
 
+  afterEach(inject(function(angulargmContainer) {
+    if (scope && scope.$destroy) {
+      scope.$destroy();
+    }
+    angulargmContainer.removeMap('test');
+  }));
+
+
   it('constructs the map using the provided map options', function() {
     expect(mapCtrl.dragging).toBeFalsy();
     expect(mapCtrl.center).toEqual(new google.maps.LatLng(2, 3));
     expect(mapCtrl.zoom).toEqual(1);
-    var map = mapCntr.getMap('test');
+    var map = mapCntr.getMap(scope.gmMapId());
     expect(mapCtrl.bounds).toEqual(map.getBounds());
   });
 
@@ -47,13 +55,41 @@ describe('angulargmMapController', function() {
       return 'test2';
     };
 
-    var elm = angular.element('<div gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
+    var elm2 = angular.element('<div gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
                                 '<div id="test2"></div>' +
                               '</div');
-    mapCtrl = $controller('angulargmMapController', {$scope: scope, $element: elm});
+    mapCtrl = $controller('angulargmMapController', {$scope: scope, $element: elm2});
 
     expect(mapCtrl.center).toEqual(angulargmDefaults.mapOptions.center);
     expect(mapCtrl.zoom).toEqual(angulargmDefaults.mapOptions.zoom);
+  }));
+
+
+  it('resets map on controller re-instantiation', inject(function($rootScope, $controller) {
+    var map = mapCntr.getMap(scope.gmMapId());
+    var scope2 = $rootScope.$new();
+    var gmMapOptions = scope.gmMapOptions();
+    var gmMapId = scope.gmMapId();
+    scope2.gmMapOptions = function() { return gmMapOptions };
+    scope2.gmMapId = function() { return gmMapId };
+
+    // move map
+    var newCenter = new google.maps.LatLng(gmMapOptions.center.lat() + 5,
+      gmMapOptions.center.lng() + 5);
+    map.setCenter(newCenter);
+    map.setZoom(gmMapOptions.zoom + 2);
+    map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+    expect(mapCtrl.center).toEqual(newCenter); // sanity check--we actually changed something
+   
+    // destroy scope
+    scope.$destroy();
+    
+    // re-instantiate controller
+    mapCtrl = $controller('angulargmMapController', {$scope: scope2, $element: elm});
+
+    expect(mapCtrl.center).toEqual(gmMapOptions.center);
+    expect(mapCtrl.zoom).toEqual(gmMapOptions.zoom);
+    expect(map.getMapTypeId()).toEqual(gmMapOptions.mapTypeId);
   }));
 
 
@@ -73,7 +109,7 @@ describe('angulargmMapController', function() {
     mapCtrl.addMapListener('center_changed', function() {
       called = true;
     });
-    google.maps.event.trigger(mapCntr.getMap('test'), 'center_changed');
+    google.maps.event.trigger(mapCntr.getMap(scope.gmMapId()), 'center_changed');
 
     expect(called).toBeTruthy();
   });
@@ -84,8 +120,8 @@ describe('angulargmMapController', function() {
     mapCtrl.addMapListenerOnce('center_changed', function() {
       callCount++;
     });
-    google.maps.event.trigger(mapCntr.getMap('test'), 'center_changed');
-    google.maps.event.trigger(mapCntr.getMap('test'), 'center_changed');
+    google.maps.event.trigger(mapCntr.getMap(scope.gmMapId()), 'center_changed');
+    google.maps.event.trigger(mapCntr.getMap(scope.gmMapId()), 'center_changed');
 
     expect(callCount).toEqual(1);
   });
