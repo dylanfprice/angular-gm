@@ -130,6 +130,8 @@
       } else {
         var div = map.getDiv();
         element.replaceWith(div);
+        this._map = map;
+        this.mapTrigger('resize');
         map.setOptions(config);
       }
       return map;
