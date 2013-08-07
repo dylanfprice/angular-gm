@@ -1,32 +1,36 @@
-basePath = '../';
+module.exports = function(config) {
+    config.set({
+        basePath: '../',
 
-files = [
-  JASMINE,
-  JASMINE_ADAPTER,
-  'https://maps.googleapis.com/maps/api/js?sensor=false',
-  'http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js',
-  'test/lib/angular/angular.js',
-  'test/lib/angular/angular-mocks.js',
-  'src/module.js',
-  'src/directives/*.js',
-  'src/services/*.js',
-  'src/controllers/*.js',
-  'test/unit/**/*.js'
-];
+        files: [
+          'https://maps.googleapis.com/maps/api/js?sensor=false',
+          'http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js',
+          'test/lib/angular/angular.js',
+          'test/lib/angular/angular-mocks.js',
+          'src/module.js',
+          'src/directives/*.js',
+          'src/services/*.js',
+          'src/controllers/*.js',
+          'test/unit/**/*.js'
+        ],
 
-autoWatch = true;
-singleRun = false;
-browsers = ['PhantomJS'];
-reportSlowerThan = 500;
+        frameworks: ["jasmine"],
 
-preprocessors = {
-  'src/**/*.js': 'coverage'
-};
+        autoWatch: true,
+        singleRun: false,
+        browsers: ['PhantomJS'],
+        reportSlowerThan: 500,
 
-reporters = ['progress', 'coverage'];
+        preprocessors: {
+          'src/**/*.js': 'coverage'
+        },
 
-coverageReporter = {
-  type : 'html',
-  dir : 'test/coverage/'
+        reporters: ['progress', 'coverage'],
+
+        coverageReporter: {
+          type : 'html',
+          dir : 'test/coverage/'
+        }
+    });
 };
 
