@@ -13,15 +13,22 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "grunt": ">= 0.4.0",
-    "phantomjs": "*",
-    "grunt-contrib-concat": "*",
-    "grunt-contrib-jshint": "*",
-    "grunt-contrib-uglify": "*",
-    "grunt-karma": "*",
-    "karma-coverage": "*",
-    "grunt-jsdoc": "*",
-    "jshint": "~2.1.4",
-    "jsdoc": "~3.2.0"
+    "grunt": "~0.4.1",
+    "phantomjs": "~1.9.1-0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-jshint": "~0.6.2",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-karma": "~0.6.1",
+    "jshint": "~2.1.9",
+    "karma-script-launcher": "~0.1.0",
+    "karma-html2js-preprocessor": "~0.1.0",
+    "karma-phantomjs-launcher": "~0.1.0",
+    "karma-chrome-launcher": "~0.1.0",
+    "karma-firefox-launcher": "~0.1.0",
+    "karma-jasmine": "~0.1.0",
+    "karma-requirejs": "~0.1.0",
+    "karma-coffee-preprocessor": "~0.1.0",
+    "karma": "~0.10.1",
+    "karma-coverage": "~0.1.0"
   }
 }
