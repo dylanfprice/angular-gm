@@ -19,8 +19,8 @@
       // check attrs
       if (!('gmObjects' in attrs)) {
         throw 'gmObjects attribute required';
-      } else if (!('gmGetCoords' in attrs)) {
-        throw 'gmGetCoords attribute required';
+      } else if (!('gmGetPath' in attrs)) {
+        throw 'gmGetPath attribute required';
       }
 
       var handlers = getEventHandlers(attrs); // map events -> handlers
@@ -32,11 +32,11 @@
           var objectHash = {};
 
           angular.forEach(objects, function(object, i) {
-            var coords = scope.gmGetCoords({object: object});
+            var path = scope.gmGetPath({object: object});
             var lineLatLngs = [];
             var hash = '';
 
-            angular.forEach(coords, function(latlng, j) {
+            angular.forEach(path, function(latlng, j) {
               var position = objToLatLng(latlng);
               if (null === position) {
                   $log.warn('Unable to generate lat/lng from ', latlng);
@@ -91,7 +91,7 @@
       priority: 100,
       scope: {
         gmObjects: '&',
-        gmGetCoords: '&',
+        gmGetPath: '&',
         gmGetPolylineOptions: '&',
         gmEvents: '&'
       },
