@@ -11,13 +11,14 @@ describe('gmMap', function() {
 
   beforeEach(inject(function($rootScope, $compile, angulargmContainer, angulargmUtils) {
     // compile angulargm directive
-    elm = angular.element('<gm-map gm-map-id="mapId" gm-center="pCenter" gm-zoom="pZoom" gm-bounds="pBounds" gm-map-options="mapOptions">' +
+    elm = angular.element('<gm-map gm-map-id="mapId" gm-center="pCenter" gm-zoom="pZoom" gm-bounds="pBounds" gm-map-type-id="pMapTypeId" gm-map-options="mapOptions">' +
                           '</gm-map>');
 
     scope = $rootScope.$new();
     scope.mapOptions = {
       center: new google.maps.LatLng(1, 2),
-      zoom: 3
+      zoom: 3,
+      mapTypeId: google.maps.MapTypeId.TERRAIN
     }
     scope.mapId = 'test';
     $compile(elm)(scope);
@@ -31,6 +32,7 @@ describe('gmMap', function() {
       new google.maps.LatLng(4, 5),
       new google.maps.LatLng(6, 7)
     );
+    initMapTypeId = google.maps.MapTypeId.TERRAIN;
     
     // get MapController
     mapCtrl = elm.controller('gmMap');
@@ -49,11 +51,16 @@ describe('gmMap', function() {
         get: function() { return bounds;},
         set: function(newB) {bounds = newB;},
       },
+      'mapTypeId': {
+        get: function() { return mapTypeId;},
+        set: function(newM) {mapTypeId = newM;},
+      }
     });
 
     mapCtrl.center = initCenter;
     mapCtrl.zoom = initZoom;
     mapCtrl.bounds = initBounds;
+    mapCtrl.mapTypeId = initMapTypeId;
   }));
 
 
@@ -99,6 +106,7 @@ describe('gmMap', function() {
     expect(scope.pCenter).toEqual(initCenter);
     expect(scope.pZoom).toEqual(initZoom);
     expect(scope.pBounds).toEqual(initBounds);
+    expect(scope.pMapTypeId).toEqual(initMapTypeId);
   }));
 
 
@@ -109,6 +117,7 @@ describe('gmMap', function() {
       southWest: {lat: 11, lng: 12},
       northEast: {lat: 13, lng: 14}
     };
+    scope.pMapTypeId = 'wut';
 
     google.maps.event.trigger(map, 'bounds_changed');
     $timeout.flush();
@@ -116,6 +125,7 @@ describe('gmMap', function() {
     expect(scope.pCenter).not.toEqual(initCenter);
     expect(scope.pZoom).not.toEqual(initZoom);
     expect(scope.pBounds).not.toEqual(initBounds);
+    expect(scope.pMapTypeId).not.toEqual(initMapTypeId);
   }));
 
 
@@ -190,10 +200,12 @@ describe('gmMap', function() {
     scope.pCenter = null;
     scope.pZoom = null;
     scope.pBounds = null;
+    scope.pMapTypeId = null;
     scope.$digest();
     expect(mapCtrl.center).not.toEqual(null);
     expect(mapCtrl.zoom).not.toEqual(null);
     expect(mapCtrl.bounds).not.toEqual(null);
+    expect(mapCtrl.mapTypeId).not.toEqual(null);
   });
 
 

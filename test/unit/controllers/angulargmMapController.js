@@ -45,6 +45,7 @@ describe('angulargmMapController', function() {
     expect(mapCtrl.zoom).toEqual(1);
     var map = mapCntr.getMap(scope.gmMapId());
     expect(mapCtrl.bounds).toEqual(map.getBounds());
+    expect(mapCtrl.mapTypeId).toEqual(google.maps.MapTypeId.TERRAIN);
   });
 
 

@@ -103,6 +103,21 @@
               this._map.fitBounds(bounds);
             }
           }
+        },
+
+        'mapTypeId': {
+          configurable: true, // for testing so we can mock
+          get: function() {
+            return this._map.getMapTypeId();
+          },
+          set: function(mapTypeId) {
+            if (mapTypeId == null)
+              throw 'mapTypeId was null or unknown';
+            var changed = this.mapTypeId !== mapTypeId;
+            if (changed) {
+              this._map.setMapTypeId(mapTypeId);
+            }
+          }
         }
       });
 

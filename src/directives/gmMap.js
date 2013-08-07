@@ -9,6 +9,7 @@
  *         gm-center="myCenter" 
  *         gm-zoom="myZoom" 
  *         gm-bounds="myBounds" 
+ *         gm-map-type-id="myMapTypeId"
  *         gm-map-options="myMapOptions">
  * </gm-map>
  * ```
@@ -27,18 +28,21 @@
  *   + `gm-bounds`: name for a bounds variable in the current scope.  Value will
  *   be a google.maps.LatLngBounds object.
  *
+ *   + `gm-map-type-id`: name for a mapTypeId variable in the current scope.
+ *   Value will be a string.
+ *
  *   + `gm-map-options`: object in the current scope that is a
  *   google.maps.MapOptions object. If unspecified, will use the values in
  *   angulargmDefaults.mapOptions. [angulargmDefaults]{@link module:angulargmDefaults}
  *   is a service, so it is both injectable and overrideable (using
  *   $provide.decorator).
  *
- * All attributes except `gm-map-options` are required. The `gm-center`, `gm-zoom`,
- * and `gm-bounds` variables do not have to exist in the current scope--they will
- * be created if necessary. All three have bi-directional association, i.e.
- * drag or zoom the map and they will update, update them and the map will
- * change.  However, any initial state of these three variables will be
- * ignored.
+ * All attributes except `gm-map-options` are required. The `gm-center`,
+ * `gm-zoom`, `gm-bounds`, and `gm-map-type-id` variables do not have to exist in
+ * the current scope--they will be created if necessary. All three have
+ * bi-directional association, i.e.  drag or zoom the map and they will update,
+ * update them and the map will change.  However, any initial state of these
+ * three variables will be ignored.
  *
  * If you need to get a handle on the google.maps.Map object, see
  * [angulargmContainer]{@link module:angulargmContainer}
@@ -85,6 +89,7 @@
       var hasCenter = false;
       var hasZoom = false;
       var hasBounds = false;
+      var hasMapTypeId = false;
 
       if (attrs.hasOwnProperty('gmCenter')) {
         hasCenter = true;
@@ -95,10 +100,13 @@
       if (attrs.hasOwnProperty('gmBounds')) {
         hasBounds = true;
       }
+      if (attrs.hasOwnProperty('gmMapTypeId')) {
+        hasMapTypeId = true;
+      }
 
       var updateScope = function() {
         $timeout(function () {
-          if (hasCenter || hasZoom || hasBounds) {
+          if (hasCenter || hasZoom || hasBounds || hasMapTypeId) {
             scope.$apply(function (s) {
               if (hasCenter) {
                 scope.gmCenter = controller.center;
@@ -112,6 +120,9 @@
                   scope.gmBounds = b;
                 }
               }
+              if (hasMapTypeId) {
+                scope.gmMapTypeId = controller.mapTypeId;
+              }
             });
           }
         });
@@ -121,6 +132,7 @@
       controller.addMapListener('zoom_changed', updateScope);
       controller.addMapListener('center_changed', updateScope);
       controller.addMapListener('bounds_changed', updateScope);
+      controller.addMapListener('maptypeid_changed', updateScope);
       controller.addMapListener('resize', updateScope);
       
       if (hasCenter) {
@@ -154,6 +166,15 @@
         });
       }
 
+      if (hasMapTypeId) {
+        scope.$watch('gmMapTypeId', function(newValue, oldValue) {
+          var changed = (newValue !== oldValue);
+          if (changed && newValue) {
+            controller.mapTypeId = newValue;
+          }
+        });
+      }
+
       scope.$on('gmMapResize', function(event, gmMapId) {
         if (scope.gmMapId() === gmMapId) {
           controller.mapTrigger('resize');
@@ -175,6 +196,7 @@
         gmCenter: '=',
         gmZoom: '=',
         gmBounds: '=',
+        gmMapTypeId: '=',
         gmMapOptions: '&',
         gmMapId: '&'
       },
