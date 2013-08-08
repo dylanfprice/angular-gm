@@ -1,40 +1,57 @@
 'use strict';
 
 /**
+ * @doc module
+ * @name angulargm
+ *
+ * @description
  * Module for embedding Google Maps into AngularJS applications. 
  *
- * ## API Documentation
+ *
+ * # API Documentation
  * See...
  *
- * + {@link module:gmMap}               for usage of the `<gm-map>` directive
- * + {@link module:gmMarkers}           for usage of the `<gm-markers>` directive
- * + {@link module:gmInfoWindow}        for usage of the `<div gm-info-window="...>` directive
- * + {@link module:angulargmContainer}  if you need to run custom configuration on the map, e.g. add new map types
- * + {@link module:angulargmDefaults}   to override the default map options
+ * + {@link angulargm.directive:gmMap gmMap} for usage of the `gm-map`
+ * directive
  *
- * ## Example Plunkers ([fullscreen](http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL))
+ * + {@link angulargm.directive:gmMarkers gmMarkers} for usage of the
+ * `gm-markers` directive
+ *
+ * + {@link angulargm.directive:gmInfoWindow gmInfoWindow} for usage of the
+ * `gm-info-window` directive
+ *
+ * + {@link angulargm.service:angulargmContainer angulargmContainer} if you
+ * need to run custom configuration on the map, e.g. add new map types
+ *
+ * + {@link angulargm.service:angulargmDefaults angulargmDefaults} to override
+ * the default map options
+ *
+ * + {@link angulargm.service:angulargmUtils angulargmUtils} to use utility
+ * functions for LatLng and LatLngBounds
+ *
+ *
+ * # Example Plunkers ([fullscreen](http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL))
  *  
  * <iframe style="width: 100%; height: 400px" src="http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL" frameborder="0" allowfullscreen="allowfullscreen">
  * </iframe>
  *
- * (JSDoc is escaping my iframe so for the time being just click the link.)
- *  
- * @module AngularGM
  * @author Dylan Price <the.dylan.price@gmail.com>
  */
 (function() {
   angular.module('AngularGM', []).
 
   /**
+   * @ngdoc service
+   * @name angulargm.service:angulargmDefaults
+   *
+   * @description
    * Default configuration.
    *
    * To provide your own default config, use the following
-   * ```
+   * ```js
    * angular.module('myModule').config(function($provide) {
    *   $provide.decorator('angulargmDefaults', function($delegate) {
    *     return angular.extend($delegate, {
-   *       // Note: markerConstructor must implement getPosition() and setMap()
-   *       // like google.maps.Marker
    *       'markerConstructor': myCustomMarkerConstructor,
    *       'mapOptions': {
    *         center: new google.maps.LatLng(55, 111),
@@ -45,8 +62,6 @@
    *   });
    * });
    * ```
-   *
-   * @module angulargmDefaults
    */
   value('angulargmDefaults', {
     'markerConstructor': google.maps.Marker,

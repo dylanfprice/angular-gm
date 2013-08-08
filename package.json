@@ -29,6 +29,7 @@
     "karma-requirejs": "~0.1.0",
     "karma-coffee-preprocessor": "~0.1.0",
     "karma": "~0.10.1",
-    "karma-coverage": "~0.1.0"
+    "karma-coverage": "~0.1.0",
+    "grunt-docular": "~0.1.1"
   }
 }

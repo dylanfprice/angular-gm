@@ -1,13 +1,17 @@
 'use strict';
 
 /**
+ * @ngdoc service
+ * @name angulargm.service:angulargmContainer
+ *
+ * @description
  * A container which maps mapIds to google.maps.Map instances, and additionally
  * allows getting a promise of a map for custom configuration of the map.
  *
- * If you want a handle to the map, you should use the getMapPromise(mapId)
+ * If you want a handle to the map, you should use the `getMapPromise(mapId)`
  * method so you can guarantee the map will be initialized. For example,
  *
- * ```
+ * ```js
  * angular.module('myModule').
  *
  * run(function(angulargmContainer) {
@@ -18,8 +22,6 @@
  *   });
  * });
  * ```
- *
- * @module angulargmContainer
  */
 (function () {
   angular.module('AngularGM').
@@ -34,7 +36,6 @@
      * @param {google.maps.Map} map the google map
      * @throw if there is already a map with mapId, or if map is not a
      *   google.maps.Map
-     * @method
      */
     function addMap(mapId, map) {
       if (!(map instanceof google.maps.Map)) {
@@ -53,7 +54,6 @@
      * @param {string} mapId the unique id of the map
      * @return {google.maps.Map|undefined} the map, or undefined if there is no
      *   map for mapId
-     * @method
      */
     function getMap(mapId) {
       return maps[mapId];
@@ -65,7 +65,6 @@
      *   been created yet
      * @return {angular.q.promise} a promise of a map that will be resolved
      *   when the map is added
-     * @method
      */
     function getMapPromise(mapId) {
       var defer = defers[mapId] || $q.defer();  
@@ -80,7 +79,6 @@
      * http://stackoverflow.com/questions/10485582/what-is-the-proper-way-to-destroy-a-map-instance
      *
      * @param {string} mapId the unique id of the map to remove
-     * @method
      */
     function removeMap(mapId) {
       if (mapId in maps) {

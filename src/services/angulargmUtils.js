@@ -1,6 +1,10 @@
 'use strict';
 
 /**
+ * @ngdoc service
+ * @name angulargm.service:angulargmUtils
+ *
+ * @description
  * Common utility functions.
  */
 (function () {
@@ -10,15 +14,22 @@
 
     /**
      * Check if two floating point numbers are equal. 
-     * @return true if f1 and f2 are 'very close'
+     *
+     * @param {number} f1 first number
+     * @param {number} f2 second number
+     * @return {boolean} true if f1 and f2 are 'very close' (within 0.000001)
      */
     function floatEqual (f1, f2) {
       return (Math.abs(f1 - f2) < 0.000001);
     }
 
     /**
-     * @param {google.maps.LatLng} l1
-     * @param {google.maps.LatLng} l2
+     * @ngdoc function
+     * @name #latLngEqual
+     * @methodOf angulargm.service:angulargmUtils
+     *
+     * @param {google.maps.LatLng} l1 first
+     * @param {google.maps.LatLng} l2 second
      * @return {boolean} true if l1 and l2 are 'very close'. If either are null
      * or not google.maps.LatLng objects returns false.
      */
@@ -31,8 +42,12 @@
     }
 
     /**
-     * @param {google.maps.LatLngBounds} b1
-     * @param {google.maps.LatLngBounds} b2
+     * @ngdoc function
+     * @name #boundsEqual
+     * @methodOf angulargm.service:angulargmUtils
+     *
+     * @param {google.maps.LatLngBounds} b1 first
+     * @param {google.maps.LatLngBounds} b2 second
      * @return {boolean} true if b1 and b2 are 'very close'. If either are null
      * or not google.maps.LatLngBounds objects returns false.
      */
@@ -50,7 +65,11 @@
     }
 
     /**
-     * @param {google.maps.LatLng} latLng
+     * @ngdoc function
+     * @name #latLngToObj
+     * @methodOf angulargm.service:angulargmUtils
+     *
+     * @param {google.maps.LatLng} latLng the LatLng
      * @return {Object} object literal with 'lat' and 'lng' properties.
      * @throw if latLng not instanceof google.maps.LatLng
      */
@@ -65,6 +84,10 @@
     }
 
     /**
+     * @ngdoc function
+     * @name #objToLatLng
+     * @methodOf angulargm.service:angulargmUtils
+     *
      * @param {Object} obj of the form { lat: 40, lng: -120 } 
      * @return {google.maps.LatLng} returns null if problems with obj (null,
      * NaN, etc.)
@@ -83,8 +106,12 @@
     }
 
     /**
-     * @param {google.maps.LatLng} latLng
-     * @return true if either lat or lng of latLng is null or isNaN
+     * @ngdoc function
+     * @name #hasNaN
+     * @methodOf angulargm.service:angulargmUtils
+     *
+     * @param {google.maps.LatLng} latLng the LatLng
+     * @return {boolean} true if either lat or lng of latLng is null or isNaN
      */
     function hasNaN(latLng) {
       if (!(latLng instanceof google.maps.LatLng))
