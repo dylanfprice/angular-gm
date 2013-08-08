@@ -89,7 +89,9 @@ v0.2.0..v0.1.1`.
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/3979163640fbc0bdca37764ff8f786c612ef5509) &bull; Added mapTypeId to gmMap. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/e34b216202507116c6123f7c86e866104f622111) &bull; Updated testing config for latest version 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/d9fa914ca80486cac0231a116f2b85885745a266) &bull; Versioned devDependencies. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/bdf6de3a1df8fc77ce9dd5f9e4daee6db58be37e) &bull; Switched documentation to docular. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/8cb84094fd77da8e71ccd31b2575911887086cff) &bull; Removed jsdoc. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/f5c79cfa370c8269a74009be84f73bb4961ab844) &bull; Script for pushing docs and builds to heroku. 
 
 ### v0.1.1
 + If you use the getMapPromise method of [angulargmContainer](http://dylanfprice.github.io/angular-gm/docs/module-angulargmContainer.html), you may want to make sure your configuration is in a [run](http://docs.angularjs.org/api/angular.Module#run) function. If you do configuration in a controller it will get re-run on the same map instance every time the controller is re-instantiated.
