@@ -1,65 +1,64 @@
 'use strict';
 
 /**
+ * @ngdoc directive
+ * @name angulargm.directive:gmMap
+ * @element ANY
+ * 
+ * @description
  * A directive for embedding google maps into your app. 
  *
- * Usage:
- * ```html
- * <gm-map gm-map-id="myMapId" 
- *         gm-center="myCenter" 
- *         gm-zoom="myZoom" 
- *         gm-bounds="myBounds" 
- *         gm-map-type-id="myMapTypeId"
- *         gm-map-options="myMapOptions">
- * </gm-map>
- * ```
- *
- *   + `gm-map-id`: angular expression that evaluates to a unique string id for
- *   the map, e.g. "'map_canvas'" or "myMapId" where myMapId is a variable in
- *   the current scope. This allows you to have multiple maps/instances of the
- *   directive.
- *
- *   + `gm-center`: name for a center variable in the current scope.  The value
- *   will be a google.maps.LatLng object.
- *
- *   + `gm-zoom`: name for a zoom variable in the current scope.  Value will be
- *   an integer.
- *
- *   + `gm-bounds`: name for a bounds variable in the current scope.  Value will
- *   be a google.maps.LatLngBounds object.
- *
- *   + `gm-map-type-id`: name for a mapTypeId variable in the current scope.
- *   Value will be a string.
- *
- *   + `gm-map-options`: object in the current scope that is a
- *   google.maps.MapOptions object. If unspecified, will use the values in
- *   angulargmDefaults.mapOptions. [angulargmDefaults]{@link module:angulargmDefaults}
- *   is a service, so it is both injectable and overrideable (using
- *   $provide.decorator).
- *
- * All attributes except `gm-map-options` are required. The `gm-center`,
- * `gm-zoom`, `gm-bounds`, and `gm-map-type-id` variables do not have to exist in
- * the current scope--they will be created if necessary. All three have
- * bi-directional association, i.e.  drag or zoom the map and they will update,
- * update them and the map will change.  However, any initial state of these
- * three variables will be ignored.
+ * `gm-map-id` is required. The `gm-center`, `gm-zoom`, `gm-bounds`, and
+ * `gm-map-type-id` variables do not have to exist in the current scope--they
+ * will be created if necessary. All three have bi-directional association,
+ * i.e.  drag or zoom the map and they will update, update them and the map
+ * will change.  However, any initial state of these three variables will be
+ * ignored.
  *
  * If you need to get a handle on the google.maps.Map object, see
- * [angulargmContainer]{@link module:angulargmContainer}
+ * [angulargmContainer]
  *
- * Events:
+ * @param {expression} gm-map-id angular expression that evaluates to a unique
+ * string id for the map, e.g. `'map_canvas'` or `myMapId` where myMapId is a
+ * variable in the current scope. This allows you to have multiple
+ * maps/instances of the directive.
  *
- *   + `gmMapResize`: google.maps.event.trigger(map, 'resize') To use:
- *   `$scope.$broadcast('gmMapResize', 'myMapId')`
  *
- *   Parameters:
+ * @param {string} gm-center name for a center variable in the current scope.
+ * The value will be a google.maps.LatLng object.
  *
- *       + `mapId`: required. The id of your map.  This is what you set
- *       `gm-map-id` to.  It is necessary because there may be multiple
- *       instances of the `gmMap` directive.
  *
- * @module gmMap
+ * @param {string} gm-zoom name for a zoom variable in the current scope.
+ * Value will be an integer.
+ *
+ *
+ * @param {string} gm-bounds name for a bounds variable in the current scope.
+ * Value will be a google.maps.LatLngBounds object.
+ *
+ *
+ * @param {string} gm-map-type-id name for a mapTypeId variable in the current
+ * scope.  Value will be a string.
+ *
+ *
+ * @param {expression} gm-map-options object in the current scope that is a
+ * google.maps.MapOptions object. If unspecified, will use the values in
+ * angulargmDefaults.mapOptions. [angulargmDefaults] is a service, so it is
+ * both injectable and overrideable (using $provide.decorator).
+ *
  */
+
+/**
+ * @ngdoc event
+ * @name angulargm.directive:gmMap#gmMapResize
+ * @eventOf angulargm.directive:gmMap
+ * @eventType listen on current gmMap scope
+ * @param {string} mapId Required. The id of your map.
+ * @example
+ * ```js
+ * $scope.$broadcast('gmMapResize', 'myMapId')
+ * ```
+ */
+
 (function () {
   angular.module('AngularGM').
 

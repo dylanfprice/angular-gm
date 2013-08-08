@@ -6,7 +6,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-jsdoc');
+  grunt.loadNpmTasks('grunt-docular');
 
   // Project configuration.
   grunt.initConfig({
@@ -79,20 +79,30 @@ module.exports = function(grunt) {
         browsers: ['PhantomJS']
       }
     },
-    jsdoc : {
-      compile: {
-        src: ['README.md', '<%= dirs.src %>'], 
-        options: {
-          destination: '<%= dirs.dest %>/docs',
-          configure: 'jsdoc/conf.json',
-          template: 'jsdoc/template'
+    docular : {
+      groups: [
+        {
+          groupTitle: 'AngularGM Docs',
+          groupId: 'angulargm',
+          groupIcon: 'icon-map-marker',
+          sections: [
+            {
+              id: "api",
+              title: "AngularGM API",
+              scripts: [
+                "src/",
+              ]
+            }
+          ]
         }
-      }
+      ],
+      showDocularDocs: false,
+      showAngularDocs: false
     }
   });
 
   grunt.registerTask('default', ['build']);
 
-  grunt.registerTask('build', ['jshint', 'karma:unit', 'concat', 'uglify', 'jsdoc']);
+  grunt.registerTask('build', ['jshint', 'karma:unit', 'concat', 'uglify', 'docular']);
 
 };

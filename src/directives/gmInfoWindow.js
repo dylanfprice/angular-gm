@@ -1,29 +1,31 @@
 'use strict';
 
 /**
+ * @ngdoc directive
+ * @name angulargm.directive:gmInfoWindow
+ * @element ANY
+ * 
+ * @description
  * A directive for creating a google.maps.InfoWindow.  
  *
- * Usage:
+ * + @param {string} gm-info-window name of scope variable to store the
+ * [google.maps.InfoWindow](https://developers.google.com/maps/documentation/javascript/reference#InfoWindow)
+ * in. Does not have to already exist.
+ *
+ * + @param {expression} gm-info-window-options object in the current scope
+ * that is a
+ * [google.maps.InfoWindowOptions](https://developers.google.com/maps/documentation/javascript/reference#InfoWindowOptions)
+ * object. If unspecified, google maps api defaults will be used.
+ *
+ * + @param {expression} gm-on-*event* an angular expression which evaluates to an
+ * event handler. This handler will be attached to the InfoWindow's \*event\*
+ * event.  The variable `infoWindow` evaluates to the InfoWindow.  For example:
  * ```html
- * <div gm-info-window="myInfoWindow"
- *      gm-info-window-options="myInfoWindowOptions"
- *      gm-on-*event*="myEventHandler">
- * </div>
- * ```
- *
- *   + `gm-info-window`: name of scope variable to store the
- *   google.maps.InfoWindow in. Does not have to already exist.
- *
- *   + `gm-info-window-options`: object in the current scope that is a
- *   google.maps.InfoWindowOptions object. If unspecified, google maps api
- *   defaults will be used.
- *
- *   + `gm-on-*event*`: an angular expression which evaluates to an event
- *   handler. This handler will be attached to the InfoWindow's \*event\*
- *   event.  The variable 'infoWindow' evaluates to the InfoWindow.  For
- *   example: `gm-on-closeclick="myCloseclickFn(infoWindow)"` will call your
- *   myCloseclickFn whenever the InfoWindow is clicked closed. You may have
- *   multiple `gm-on-*event*` handlers, but only one for each type of event.
+ * gm-on-closeclick="myCloseclickFn(infoWindow)"
+ * ``` 
+ * will call your myCloseclickFn whenever the InfoWindow is clicked closed. You
+ * may have multiple `gm-on-*event*` handlers, but only one for each type of
+ * event.
  *
  * @module gmInfoWindow
  */
