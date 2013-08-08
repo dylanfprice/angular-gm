@@ -405,35 +405,80 @@
         }
       });
 
-      var hash = '???';
-      var polyline = new angulargmDefaults.polylineConstructor(opts);
+      var hash = angulargmUtils.createHash(polylineOptions.path, this.precision);
       if (this.hasPolyline(scopeId, hash)) {
           return false;
       }
 
+      var polyline = new angulargmDefaults.polylineConstructor(opts);
       if (null == this._polylines[scopeId]) {
         this._polylines[scopeId] = {};
       }
       this._polylines[scopeId][hash] = polyline;
       polyline.setMap(this._map);
       return true;
-    }
+    };
 
     this.getPolyline = function (scopeId, hash) {
+      if (null == hash || '' == hash) {
+        throw 'no hash passed to lookup';
+      }
 
-    }
+      if (null != this._polylines[scopeId] && hash in this._polylines[scopeId]) {
+        return this._polylines[scopeId][hash];
+      } else {
+        return null;
+      }
+    };
 
     this.hasPolyline = function (scopeId, hash) {
-
-    }
+      return (this.getPolyline(scopeId, hash) instanceof Array);
+    };
 
     this.forEachPolylineInScope = function(scopeId, fn) {
+      if (null == fn) {
+        throw 'fn was null or undefined';
+      }
 
-    }
+      angular.forEach(this._polylines[scopeId], function(polyline, hash) {
+        if (null != polyline) {
+          fn(polyline, hash);
+        }
+      });
+    };
+
+    this.forEachPolyline = function(fn) {
+      if (null == fn) {
+        throw 'fn was null or undefined';
+      }
+
+      var that = this;
+      var allPolylines = Object.keys(this._polylines).reduce(function(polylines, key) {
+        angular.forEach(that._polylines[key], function(polyline) {
+          polylines.push(polyline);
+        });
+        return polylines;
+      }, []);
+
+      angular.forEach(allPolylines, function(polyline, hash) {
+        if (null != polyline) {
+          fn(polyline, hash);
+        }
+      });
+    };
 
     this.removePolylineByHash = function(scopeId, hash) {
+      var removed = false;
+      var polyline = this._polylines[scopeId][hash];
+      if (polyline) {
+        polyline.setMap(null);
+        removed = true;
+      }
 
-    }
+      this._polylines[scopeId][hash] = null;
+      delete this._polylines[scopeId][hash];
+      return removed;
+    };
 
     /**
      * Get current map.

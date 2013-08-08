@@ -28,7 +28,6 @@
         angular.forEach(objects, function(object, i) {
           var path = scope.gmGetPath({object: object});
           var lineLatLngs = [];
-          var hash = '';
 
           angular.forEach(path, function(latlng, j) {
             var position = objToLatLng(latlng);
@@ -38,20 +37,19 @@
             }
 
             lineLatLngs.push(position);
-            hash += position.toUrlValue(controller.precision);
           });
 
+          var hash = angulargmUtils.createHash(lineLatLngs, controller.precision);
           var polylineOptions = scope.gmGetPolylineOptions({object: object});
           objectHash[hash] = object;
 
           // check if the polyline exists first (methods needs to be created)
-          // if (!controller.hasPolyline(scope.$id, hash))
-          {
+          if (!controller.hasPolyline(scope.$id, hash)) {
             var options = {};
             angular.extend(options, polylineOptions, {path: lineLatLngs});
 
             controller.addPolyline(scope.$id, options);
-            var polyline = controller.getPolyline(scope.id, hash);
+            var polyline = controller.getPolyline(scope.$id, hash);
 
             angular.forEach(handlers, function(handler, event) {
               controller.addListener(polyline, event, function() {
