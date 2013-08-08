@@ -42,7 +42,7 @@
  * <iframe style="width: 100%; height: 400px" src="http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL" frameborder="0" allowfullscreen="allowfullscreen">
  * </iframe>
  *
- * @author Dylan Price <the.dylan.price@gmail.com>
+ * Author: Dylan Price <the.dylan.price@gmail.com>
  */
 (function() {
   angular.module('AngularGM', []).
