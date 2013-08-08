@@ -16,11 +16,11 @@ array's length, the markers will also update.</p>
      gm-objects="{expression}"
      gm-get-lat-lng="{expression}"
      gm-get-marker-options="{expression}"
-     gm-events="{string}"
+     gm-events="{expression}"
      gm-on-*event*="{expression}"&gt;
    ...
 &lt;/ANY&gt;</pre>
-as class<pre class="prettyprint linenums">&lt;ANY class="gm-markers gm-objects: {expression}; gm-get-lat-lng: {expression}; gm-get-marker-options: {expression}; gm-events: {string}; gm-on-*event*: {expression};"&gt;
+as class<pre class="prettyprint linenums">&lt;ANY class="gm-markers gm-objects: {expression}; gm-get-lat-lng: {expression}; gm-get-marker-options: {expression}; gm-events: {expression}; gm-on-*event*: {expression};"&gt;
    ...
 &lt;/ANY&gt;</pre>
 <h3 id="Parameters">Parameters</h3>
@@ -52,7 +52,7 @@ an object from  <code class="plain">gm-objects</code> , evaluates to a
 <a href="https://developers.google.com/maps/documentation/javascript/reference#MarkerOptions">google.maps.MarkerOptions</a>
 object.  Your object can be accessed through the variable  <code class="plain">object</code> . If
 unspecified, google maps api defaults will be used.</p></li>
-<li><code class="plain">gm-events – {string} – </code>
+<li><code class="plain">gm-events – {expression} – </code>
 <p>a variable in the current scope that is used to
 simulate events on markers. Setting this variable to an object of the form 
 <pre class="prettyprint linenums">    [

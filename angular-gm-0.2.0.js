@@ -91,16 +91,16 @@
  * @description
  * A directive for creating a google.maps.InfoWindow.  
  *
- * + @param {string} gm-info-window name of scope variable to store the
+ * @param {expression} gm-info-window scope variable to store the
  * [google.maps.InfoWindow](https://developers.google.com/maps/documentation/javascript/reference#InfoWindow)
  * in. Does not have to already exist.
  *
- * + @param {expression} gm-info-window-options object in the current scope
+ * @param {expression} gm-info-window-options object in the current scope
  * that is a
  * [google.maps.InfoWindowOptions](https://developers.google.com/maps/documentation/javascript/reference#InfoWindowOptions)
  * object. If unspecified, google maps api defaults will be used.
  *
- * + @param {expression} gm-on-*event* an angular expression which evaluates to an
+ * @param {expression} gm-on-*event* an angular expression which evaluates to an
  * event handler. This handler will be attached to the InfoWindow's \*event\*
  * event.  The variable `infoWindow` evaluates to the InfoWindow.  For example:
  * ```html
@@ -109,8 +109,6 @@
  * will call your myCloseclickFn whenever the InfoWindow is clicked closed. You
  * may have multiple `gm-on-*event*` handlers, but only one for each type of
  * event.
- *
- * @module gmInfoWindow
  */
 (function () {
 
@@ -204,20 +202,20 @@
  * maps/instances of the directive.
  *
  *
- * @param {string} gm-center name for a center variable in the current scope.
- * The value will be a google.maps.LatLng object.
+ * @param {expression} gm-center center variable in the current scope.  The
+ * value will be a google.maps.LatLng object.
  *
  *
- * @param {string} gm-zoom name for a zoom variable in the current scope.
- * Value will be an integer.
+ * @param {expression} gm-zoom zoom variable in the current scope.  Value will
+ * be an integer.
  *
  *
- * @param {string} gm-bounds name for a bounds variable in the current scope.
- * Value will be a google.maps.LatLngBounds object.
+ * @param {expression} gm-bounds bounds variable in the current scope.  Value
+ * will be a google.maps.LatLngBounds object.
  *
  *
- * @param {string} gm-map-type-id name for a mapTypeId variable in the current
- * scope.  Value will be a string.
+ * @param {expression} gm-map-type-id mapTypeId variable in the current scope.
+ * Value will be a string.
  *
  *
  * @param {expression} gm-map-options object in the current scope that is a
@@ -434,7 +432,7 @@
  * unspecified, google maps api defaults will be used.
  *
  *
- * @param {string} gm-events a variable in the current scope that is used to
+ * @param {expression} gm-events a variable in the current scope that is used to
  * simulate events on markers. Setting this variable to an object of the form 
  * ```js
  *     [

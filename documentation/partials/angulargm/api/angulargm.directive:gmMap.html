@@ -17,14 +17,14 @@ ignored.</p>
 <h2 id="Usage">Usage</h2>
 <div class="usage">as attribute<pre class="prettyprint linenums">&lt;ANY gm-map
      gm-map-id="{expression}"
-     gm-center="{string}"
-     gm-zoom="{string}"
-     gm-bounds="{string}"
-     gm-map-type-id="{string}"
+     gm-center="{expression}"
+     gm-zoom="{expression}"
+     gm-bounds="{expression}"
+     gm-map-type-id="{expression}"
      gm-map-options="{expression}"&gt;
    ...
 &lt;/ANY&gt;</pre>
-as class<pre class="prettyprint linenums">&lt;ANY class="gm-map gm-map-id: {expression}; gm-center: {string}; gm-zoom: {string}; gm-bounds: {string}; gm-map-type-id: {string}; gm-map-options: {expression};"&gt;
+as class<pre class="prettyprint linenums">&lt;ANY class="gm-map gm-map-id: {expression}; gm-center: {expression}; gm-zoom: {expression}; gm-bounds: {expression}; gm-map-type-id: {expression}; gm-map-options: {expression};"&gt;
    ...
 &lt;/ANY&gt;</pre>
 <h3 id="Parameters">Parameters</h3>
@@ -33,18 +33,18 @@ as class<pre class="prettyprint linenums">&lt;ANY class="gm-map gm-map-id: {expr
 string id for the map, e.g.  <code class="plain">'map_canvas'</code>  or  <code class="plain">myMapId</code>  where myMapId is a
 variable in the current scope. This allows you to have multiple
 maps/instances of the directive.</p></li>
-<li><code class="plain">gm-center – {string} – </code>
-<p>name for a center variable in the current scope.
-The value will be a google.maps.LatLng object.</p></li>
-<li><code class="plain">gm-zoom – {string} – </code>
-<p>name for a zoom variable in the current scope.
-Value will be an integer.</p></li>
-<li><code class="plain">gm-bounds – {string} – </code>
-<p>name for a bounds variable in the current scope.
-Value will be a google.maps.LatLngBounds object.</p></li>
-<li><code class="plain">gm-map-type-id – {string} – </code>
-<p>name for a mapTypeId variable in the current
-scope.  Value will be a string.</p></li>
+<li><code class="plain">gm-center – {expression} – </code>
+<p>center variable in the current scope.  The
+value will be a google.maps.LatLng object.</p></li>
+<li><code class="plain">gm-zoom – {expression} – </code>
+<p>zoom variable in the current scope.  Value will
+be an integer.</p></li>
+<li><code class="plain">gm-bounds – {expression} – </code>
+<p>bounds variable in the current scope.  Value
+will be a google.maps.LatLngBounds object.</p></li>
+<li><code class="plain">gm-map-type-id – {expression} – </code>
+<p>mapTypeId variable in the current scope.
+Value will be a string.</p></li>
 <li><code class="plain">gm-map-options – {expression} – </code>
 <p>object in the current scope that is a
 google.maps.MapOptions object. If unspecified, will use the values in

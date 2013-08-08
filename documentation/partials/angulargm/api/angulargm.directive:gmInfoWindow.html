@@ -3,17 +3,29 @@
  )</span>
 </h1>
 <div><h2 id="Description">Description</h2>
-<div class="description"><p>A directive for creating a google.maps.InfoWindow.  </p>
-
-<ul>
-<li><p>@param {string} gm-info-window name of scope variable to store the
+<div class="description"><p>A directive for creating a google.maps.InfoWindow.  </p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage">as attribute<pre class="prettyprint linenums">&lt;ANY gm-info-window
+     gm-info-window="{expression}"
+     gm-info-window-options="{expression}"
+     gm-on-*event*="{expression}"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+as class<pre class="prettyprint linenums">&lt;ANY class="gm-info-window gm-info-window: {expression}; gm-info-window-options: {expression}; gm-on-*event*: {expression};"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code class="plain">gm-info-window – {expression} – </code>
+<p>scope variable to store the
 <a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindow">google.maps.InfoWindow</a>
 in. Does not have to already exist.</p></li>
-<li><p>@param {expression} gm-info-window-options object in the current scope
+<li><code class="plain">gm-info-window-options – {expression} – </code>
+<p>object in the current scope
 that is a
 <a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindowOptions">google.maps.InfoWindowOptions</a>
 object. If unspecified, google maps api defaults will be used.</p></li>
-<li><p>@param {expression} gm-on-<em>event</em> an angular expression which evaluates to an
+<li><code class="plain">gm-on-*event* – {expression} – </code>
+<p>an angular expression which evaluates to an
 event handler. This handler will be attached to the InfoWindow's *event*
 event.  The variable  <code class="plain">infoWindow</code>  evaluates to the InfoWindow.  For example:
 <pre class="prettyprint linenums">gm-on-closeclick="myCloseclickFn(infoWindow)"
@@ -21,13 +33,6 @@ event.  The variable  <code class="plain">infoWindow</code>  evaluates to the In
 will call your myCloseclickFn whenever the InfoWindow is clicked closed. You
 may have multiple  <code class="plain">gm-on-*event*</code>  handlers, but only one for each type of
 event.</p></li>
-</ul></div>
-<h2 id="Usage">Usage</h2>
-<div class="usage">as attribute<pre class="prettyprint linenums">&lt;ANY gm-info-window&gt;
-   ...
-&lt;/ANY&gt;</pre>
-as class<pre class="prettyprint linenums">&lt;ANY class="gm-info-window"&gt;
-   ...
-&lt;/ANY&gt;</pre>
+</ul>
 </div>
 </div>
