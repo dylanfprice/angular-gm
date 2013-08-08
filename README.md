@@ -17,7 +17,7 @@ AngularGM is a set of directives for embedding Google Maps in your application u
 
 ## Documentation and Examples
 
-+ [JSDoc](http://dylanfprice.github.com/angular-gm/docs/module-AngularGM.html)
++ [Documentation](http://angulargm.herokuapp.com/documentation/angulargm/api/angulargm)
 + [Example Plunkers](http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL)
 
 
@@ -28,7 +28,7 @@ Include the required libraries
 <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-<script src="//dylanfprice.github.com/angular-gm/angular-gm-0.1.1.min.js"></script>
+<script src="//angulargm.herokuapp.com/angular-gm-0.2.0.min.js"></script>
 ```
 
 Declare a dependency on the `AngularGM` module
@@ -38,7 +38,7 @@ var app = angular.module('myModule', ['AngularGM']);
 
 Make a map
 ```html
-<gm-map gm-map-id="'myMap'" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" style="width:500px;height:500px;"></gm-map>
+<gm-map gm-map-id="'myMap'" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-type-id="mapTypeId" style="width:500px;height:500px;"></gm-map>
 ```
 
 
@@ -79,9 +79,20 @@ Much of the gmInfoWindow directive code is from the [ui-map](https://github.com/
 
 ## Changelog
 
+### v0.2.0
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/06cb6c21fa8b5753e53ff3209bf37f770a3e14a9) &bull; Add option override the Marker constructor. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/f0d44debaae2c3f1231f54480a4b3840c392399f) &bull; Fixes #4. Map options reset when angulargmMapController is re-instantiated. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/b5ca9d653f8fd391e4a87bf0ecc03db53f31f3a3) &bull; Resize must be triggered before MapOptions are resetted 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/3979163640fbc0bdca37764ff8f786c612ef5509) &bull; Added mapTypeId to gmMap. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/e34b216202507116c6123f7c86e866104f622111) &bull; Updated testing config for latest version 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/d9fa914ca80486cac0231a116f2b85885745a266) &bull; Versioned devDependencies. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/afad5f67585b7fac0865d4dd9fa947c862a646dc) &bull; Switched documentation to docular. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/8cb84094fd77da8e71ccd31b2575911887086cff) &bull; Removed jsdoc. 
+
 ### v0.1.1
 + If you use the getMapPromise method of [angulargmContainer](http://dylanfprice.github.io/angular-gm/docs/module-angulargmContainer.html), you may want to make sure your configuration is in a [run](http://docs.angularjs.org/api/angular.Module#run) function. If you do configuration in a controller it will get re-run on the same map instance every time the controller is re-instantiated.
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/a715cd14a44519d5f7473ee0d485781b9ca1c46b) &bull; Added gmMapResize event to gmMap. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/4736ba9abd741f17333d60285f047bb380a2cc75) &bull; Make gmMarkersRedraw event more flexible. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/bf97b1c4f99d2f7f88998e1bb6d0c512e687775b) &bull; Fixes #3. Reuse google map instances. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/03ab919f6e00ef9b5eb033202b7f2183ce944b79) &bull; Update to angular 1.0.7. 
+
