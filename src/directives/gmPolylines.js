@@ -1,9 +1,5 @@
 'use strict';
 
-// lines
-// lat/lng per
-// Stroke opts: colour, opacity, weight
-
 (function () {
 
   angular.module('AngularGM').
@@ -27,40 +23,59 @@
 
       // fn for updating polylines from objects
       var updatePolylines = function(scope, objects) {
-          console.log('updating lines?', objects);
+        var objectHash = {};
 
-          var objectHash = {};
+        angular.forEach(objects, function(object, i) {
+          var path = scope.gmGetPath({object: object});
+          var lineLatLngs = [];
+          var hash = '';
 
-          angular.forEach(objects, function(object, i) {
-            var path = scope.gmGetPath({object: object});
-            var lineLatLngs = [];
-            var hash = '';
-
-            angular.forEach(path, function(latlng, j) {
-              var position = objToLatLng(latlng);
-              if (null === position) {
-                  $log.warn('Unable to generate lat/lng from ', latlng);
-                  return;
-              }
-
-              lineLatLngs.push(position);
-              hash += position.toUrlValue(controller.precision);
-            });
-
-            var polylineOptions = scope.gmGetPolylineOptions({object: object});
-            objectHash[hash] = object;
-
-            // check if the polyline exists first
-            {
-              var options = {};
-              angular.extend(options, polylineOptions, {path: lineLatLngs});
-
-              controller.addPolyline(scope.$id, options);
+          angular.forEach(path, function(latlng, j) {
+            var position = objToLatLng(latlng);
+            if (null === position) {
+                $log.warn('Unable to generate lat/lng from ', latlng);
+                return;
             }
-          });
-      }
 
-      // remove 'orphaned' polylines
+            lineLatLngs.push(position);
+            hash += position.toUrlValue(controller.precision);
+          });
+
+          var polylineOptions = scope.gmGetPolylineOptions({object: object});
+          objectHash[hash] = object;
+
+          // check if the polyline exists first (methods needs to be created)
+          // if (!controller.hasPolyline(scope.$id, hash))
+          {
+            var options = {};
+            angular.extend(options, polylineOptions, {path: lineLatLngs});
+
+            controller.addPolyline(scope.$id, options);
+return; // until I update controller with these methods
+            var polyline = controller.getPolyline($scope.id, hash);
+
+            angular.forEach(handlers, function(handler, event) {
+              controller.addListener(polyline, event, function() {
+                $timeout(function() {
+                  handler(scope.$parent.$parent, {
+                    object: object,
+                    polyline: polyline
+                  });
+                });
+              });
+            });
+          }
+        });
+
+        // remove 'orphaned' polylines
+        controller.forEachPolylineInScope(scope.$id, function(polyline, hash) {
+          if (!(hash in objectHash)) {
+            controller.removePolylineByHash(scope.$id, hash);
+          }
+        });
+
+        scope.$emit('gmPolylinesUpdated', attrs.gmObjects);
+      }; // end updatePolylines()
 
       scope.$watch('gmObjects().length', function(newValue, oldValue) {
         if (newValue != null && newValue !== oldValue) {

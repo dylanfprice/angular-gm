@@ -289,6 +289,21 @@
       return true;
     }
 
+    this.getPolyline = function (scopeId, hash) {
+
+    }
+
+    this.hasPolyline = function (scopeId, hash) {
+
+    }
+
+    this.forEachPolylineInScope = function(scopeId, fn) {
+
+    }
+
+    this.removePolylineByHash = function(scopeId, hash) {
+
+    }
 
     /**
      * @param {number} scope id
