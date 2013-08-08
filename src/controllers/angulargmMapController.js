@@ -46,6 +46,7 @@
       // 'private' properties
       this._map = this._createMap(mapId, mapDiv, config, gMContainer, $scope);
       this._markers = {};
+      this._polylines = {};
       this._listeners = [];
 
       // 'public' properties
@@ -279,32 +280,6 @@
       return true;
     };
 
-    this.addPolyline = function(scopeId, polylineOptions) {
-      var opts = {};
-      angular.extend(opts, polylineOptions);
-
-      // check each lat/lng
-      var polyline = new angulargmDefaults.polylineConstructor(opts);
-      polyline.setMap(this._map);
-      return true;
-    }
-
-    this.getPolyline = function (scopeId, hash) {
-
-    }
-
-    this.hasPolyline = function (scopeId, hash) {
-
-    }
-
-    this.forEachPolylineInScope = function(scopeId, fn) {
-
-    }
-
-    this.removePolylineByHash = function(scopeId, hash) {
-
-    }
-
     /**
      * @param {number} scope id
      * @param {number} lat
@@ -416,6 +391,49 @@
             }
         });
     };
+
+    this.addPolyline = function(scopeId, polylineOptions) {
+      var opts = angular.extend({}, polylineOptions);
+
+      if (!(opts.path) instanceof Array || opts.path.length < 2) {
+        throw 'polylineOptions does not have enough points to make a line';
+      }
+
+      angular.forEach(opts.path, function(point) {
+        if (!(point instanceof google.maps.LatLng)) {
+          throw 'An element in polylineOptions was found to not be a valid position';
+        }
+      });
+
+      var hash = '???';
+      var polyline = new angulargmDefaults.polylineConstructor(opts);
+      if (this.hasPolyline(scopeId, hash)) {
+          return false;
+      }
+
+      if (null == this._polylines[scopeId]) {
+        this._polylines[scopeId] = {};
+      }
+      this._polylines[scopeId][hash] = polyline;
+      polyline.setMap(this._map);
+      return true;
+    }
+
+    this.getPolyline = function (scopeId, hash) {
+
+    }
+
+    this.hasPolyline = function (scopeId, hash) {
+
+    }
+
+    this.forEachPolylineInScope = function(scopeId, fn) {
+
+    }
+
+    this.removePolylineByHash = function(scopeId, hash) {
+
+    }
 
     /**
      * Get current map.

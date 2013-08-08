@@ -51,8 +51,7 @@
             angular.extend(options, polylineOptions, {path: lineLatLngs});
 
             controller.addPolyline(scope.$id, options);
-return; // until I update controller with these methods
-            var polyline = controller.getPolyline($scope.id, hash);
+            var polyline = controller.getPolyline(scope.id, hash);
 
             angular.forEach(handlers, function(handler, event) {
               controller.addListener(polyline, event, function() {
