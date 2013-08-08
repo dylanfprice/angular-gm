@@ -47,7 +47,7 @@
  * unspecified, google maps api defaults will be used.
  *
  *
- * @param {string} gm-events a variable in the current scope that is used to
+ * @param {expression} gm-events a variable in the current scope that is used to
  * simulate events on markers. Setting this variable to an object of the form 
  * ```js
  *     [

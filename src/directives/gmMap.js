@@ -24,20 +24,20 @@
  * maps/instances of the directive.
  *
  *
- * @param {string} gm-center name for a center variable in the current scope.
- * The value will be a google.maps.LatLng object.
+ * @param {expression} gm-center center variable in the current scope.  The
+ * value will be a google.maps.LatLng object.
  *
  *
- * @param {string} gm-zoom name for a zoom variable in the current scope.
- * Value will be an integer.
+ * @param {expression} gm-zoom zoom variable in the current scope.  Value will
+ * be an integer.
  *
  *
- * @param {string} gm-bounds name for a bounds variable in the current scope.
- * Value will be a google.maps.LatLngBounds object.
+ * @param {expression} gm-bounds bounds variable in the current scope.  Value
+ * will be a google.maps.LatLngBounds object.
  *
  *
- * @param {string} gm-map-type-id name for a mapTypeId variable in the current
- * scope.  Value will be a string.
+ * @param {expression} gm-map-type-id mapTypeId variable in the current scope.
+ * Value will be a string.
  *
  *
  * @param {expression} gm-map-options object in the current scope that is a

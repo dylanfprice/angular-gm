@@ -8,7 +8,7 @@
  * @description
  * A directive for creating a google.maps.InfoWindow.  
  *
- * @param {string} gm-info-window name of scope variable to store the
+ * @param {expression} gm-info-window scope variable to store the
  * [google.maps.InfoWindow](https://developers.google.com/maps/documentation/javascript/reference#InfoWindow)
  * in. Does not have to already exist.
  *
