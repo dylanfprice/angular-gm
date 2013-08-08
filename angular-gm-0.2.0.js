@@ -194,7 +194,7 @@
  * ignored.
  *
  * If you need to get a handle on the google.maps.Map object, see
- * [angulargmContainer]
+ * {@link angulargm.service:angulargmContainer angulargmContainer}
  *
  * @param {expression} gm-map-id angular expression that evaluates to a unique
  * string id for the map, e.g. `'map_canvas'` or `myMapId` where myMapId is a
@@ -220,7 +220,7 @@
  *
  * @param {expression} gm-map-options object in the current scope that is a
  * google.maps.MapOptions object. If unspecified, will use the values in
- * angulargmDefaults.mapOptions. [angulargmDefaults] is a service, so it is
+ * angulargmDefaults.mapOptions. {@link angulargm.service:angulargmDefaults angulargmDefaults} is a service, so it is
  * both injectable and overrideable (using $provide.decorator).
  *
  */
