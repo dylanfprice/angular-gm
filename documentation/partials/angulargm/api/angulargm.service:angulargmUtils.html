@@ -1,0 +1,67 @@
+<h1><code ng:non-bindable="">angulargmUtils</code>
+<span class="hint">( service in module <code ng:non-bindable="">angulargm</code>
+ )</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>Common utility functions.</p></div>
+<div class="member method"><h2 id="Methods">Methods</h2>
+<ul class="methods"><li><h3 id="boundsEqual">boundsEqual(b1, b2)</h3>
+<div class="boundsequal"><h4 id="Parameters">Parameters</h4>
+<ul class="parameters"><li><code class="plain">b1 – {google.maps.LatLngBounds} – </code>
+<p>first</p></li>
+<li><code class="plain">b2 – {google.maps.LatLngBounds} – </code>
+<p>second</p></li>
+</ul>
+<h4 id="Returns">Returns</h4>
+<div class="returns"><code class="plain">{boolean}</code>
+– <p>true if b1 and b2 are 'very close'. If either are null
+or not google.maps.LatLngBounds objects returns false.</p></div>
+</div>
+</li>
+<li><h3 id="hasNaN">hasNaN(latLng)</h3>
+<div class="hasnan"><h4 id="Parameters">Parameters</h4>
+<ul class="parameters"><li><code class="plain">latLng – {google.maps.LatLng} – </code>
+<p>the LatLng</p></li>
+</ul>
+<h4 id="Returns">Returns</h4>
+<div class="returns"><code class="plain">{boolean}</code>
+– <p>true if either lat or lng of latLng is null or isNaN</p></div>
+</div>
+</li>
+<li><h3 id="latLngEqual">latLngEqual(l1, l2)</h3>
+<div class="latlngequal"><h4 id="Parameters">Parameters</h4>
+<ul class="parameters"><li><code class="plain">l1 – {google.maps.LatLng} – </code>
+<p>first</p></li>
+<li><code class="plain">l2 – {google.maps.LatLng} – </code>
+<p>second</p></li>
+</ul>
+<h4 id="Returns">Returns</h4>
+<div class="returns"><code class="plain">{boolean}</code>
+– <p>true if l1 and l2 are 'very close'. If either are null
+or not google.maps.LatLng objects returns false.</p></div>
+</div>
+</li>
+<li><h3 id="latLngToObj">latLngToObj(latLng)</h3>
+<div class="latlngtoobj"><h4 id="Parameters">Parameters</h4>
+<ul class="parameters"><li><code class="plain">latLng – {google.maps.LatLng} – </code>
+<p>the LatLng</p></li>
+</ul>
+<h4 id="Returns">Returns</h4>
+<div class="returns"><code class="plain">{Object}</code>
+– <p>object literal with 'lat' and 'lng' properties.</p></div>
+</div>
+</li>
+<li><h3 id="objToLatLng">objToLatLng(obj)</h3>
+<div class="objtolatlng"><h4 id="Parameters">Parameters</h4>
+<ul class="parameters"><li><code class="plain">obj – {Object} – </code>
+<p>of the form { lat: 40, lng: -120 } </p></li>
+</ul>
+<h4 id="Returns">Returns</h4>
+<div class="returns"><code class="plain">{google.maps.LatLng}</code>
+– <p>returns null if problems with obj (null,
+NaN, etc.)</p></div>
+</div>
+</li>
+</ul>
+</div>
+</div>

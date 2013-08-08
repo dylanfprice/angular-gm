@@ -1,0 +1,67 @@
+<h1></h1>
+<div><h1 id="startingupwithdocular">Starting Up With Docular</h2>
+
+<p><img src="http://www.jimmyco.com/wordpress/wp-content/uploads/2011/07/hey-brother.jpg"/></p>
+
+<ol>
+<li>http://nodejs.org/download/ Install NPM (ships with Nodejs)</li>
+<li>Install Grunt
+<pre class="prettyprint linenums lang-js">npm install grunt
+</pre></li>
+<li>Install grunt-docular npm package (create an npm project or install directly)
+<pre class="prettyprint linenums lang-js">{
+  "name": "test",
+  "version": "0.0.0",
+  "description": "ERROR: No README.md file found!",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "",
+  "license": "BSD",
+  "dependencies": {
+      "grunt-docular":"*"
+   }
+}
+</pre></li>
+<li>Create Gruntfile.js file
+<pre class="prettyprint linenums lang-js">module.exports = function(grunt) {
+
+    // Project configuration.
+    grunt.initConfig({
+
+        docular: {
+            showDocularDocs: true,
+            showAngularDocs: false,
+            groups: [
+                {
+                    groupTitle: 'Presentation',
+                    groupId: 'pres',
+                    groupIcon: 'icon-star',
+                    sections: [
+                        {
+                            id: "intro",
+                            title: "Inroduction",
+                            docs: [
+                                "intro/"
+                            ],
+                            scripts: [],
+                            rank : {}
+                        }
+                    ]
+                }
+            ]
+        }
+
+    });
+
+    // Load the plugin that provides the "docular" tasks.
+    grunt.loadNpmTasks('grunt-docular');
+
+    // Default task(s).
+    grunt.registerTask('default', ['docular']);
+
+};
+</pre></li>
+</ol></div>
