@@ -179,6 +179,8 @@
           controller.mapTrigger('resize');
         }
       });
+
+      controller.mapTrigger('resize');
     }
 
 
