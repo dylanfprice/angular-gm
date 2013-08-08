@@ -78,15 +78,17 @@ Much of the gmInfoWindow directive code is from the [ui-map](https://github.com/
   
 
 ## Changelog
+Note these are not comprehensive commit lists but represent what I consider the
+most significant changes. You can always see a full changelog with `git log
+v0.2.0..v0.1.1`.
 
 ### v0.2.0
++ AngularGM documentation is now being generated using [Docular](http://grunt-docular.com/). You can still [view the old docs](http://dylanfprice.github.io/angular-gm/docs/), as well as find the old docs and builds in the [gh-pages branch](https://github.com/dylanfprice/angular-gm/tree/gh-pages).
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/06cb6c21fa8b5753e53ff3209bf37f770a3e14a9) &bull; Add option override the Marker constructor. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/f0d44debaae2c3f1231f54480a4b3840c392399f) &bull; Fixes #4. Map options reset when angulargmMapController is re-instantiated. 
-+ [view commit](http://github.com/dylanfprice/angular-gm/commit/b5ca9d653f8fd391e4a87bf0ecc03db53f31f3a3) &bull; Resize must be triggered before MapOptions are resetted 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/3979163640fbc0bdca37764ff8f786c612ef5509) &bull; Added mapTypeId to gmMap. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/e34b216202507116c6123f7c86e866104f622111) &bull; Updated testing config for latest version 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/d9fa914ca80486cac0231a116f2b85885745a266) &bull; Versioned devDependencies. 
-+ [view commit](http://github.com/dylanfprice/angular-gm/commit/afad5f67585b7fac0865d4dd9fa947c862a646dc) &bull; Switched documentation to docular. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/8cb84094fd77da8e71ccd31b2575911887086cff) &bull; Removed jsdoc. 
 
 ### v0.1.1
