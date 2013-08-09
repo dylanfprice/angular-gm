@@ -452,18 +452,12 @@
         throw 'fn was null or undefined';
       }
 
-      var that = this;
-      var allPolylines = Object.keys(this._polylines).reduce(function(polylines, key) {
-        angular.forEach(that._polylines[key], function(polyline) {
-          polylines.push(polyline);
+      angular.forEach(this._polylines, function(polylines, scopeId) {
+        angular.forEach(polylines, function(polyline, hash) {
+          if (null != polyline) {
+            fn(polyline, hash);
+          }
         });
-        return polylines;
-      }, []);
-
-      angular.forEach(allPolylines, function(polyline, hash) {
-        if (null != polyline) {
-          fn(polyline, hash);
-        }
       });
     };
 
