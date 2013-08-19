@@ -89,8 +89,9 @@
       // watch gmEvents
 
       scope.$on('gmPolylinesRedraw', function(event, objectsName) {
-        if (objectsName == null || objectsName === attrs.gmObjects) {
+        if (undefined === objectsName) {
           updatePolylines(scope);
+        } else if (objectsName === attrs.gmObjects) {
           updatePolylines(scope, scope.gmObjects());
         }
       });

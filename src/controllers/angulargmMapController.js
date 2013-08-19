@@ -396,7 +396,7 @@
       var opts = angular.extend({}, polylineOptions);
 
       if (!(opts.path) instanceof Array || opts.path.length < 2) {
-        throw 'polylineOptions does not have enough points to make a line';
+        return;
       }
 
       angular.forEach(opts.path, function(point) {
@@ -432,7 +432,7 @@
     };
 
     this.hasPolyline = function (scopeId, hash) {
-      return (this.getPolyline(scopeId, hash) instanceof Array);
+      return (this.getPolyline(scopeId, hash) instanceof Object);
     };
 
     this.forEachPolylineInScope = function(scopeId, fn) {
