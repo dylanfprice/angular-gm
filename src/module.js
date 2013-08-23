@@ -65,6 +65,7 @@
    */
   value('angulargmDefaults', {
     'markerConstructor': google.maps.Marker,
+    'polylineConstructor': google.maps.Polyline,
     'mapOptions': {
       zoom : 8,
       center : new google.maps.LatLng(46, -120),

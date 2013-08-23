@@ -142,13 +142,28 @@
       return handlers;
     }
 
+    function createHash(object, precision) {
+      var hash = '';
+ 
+      if ((object instanceof google.maps.LatLng)) {
+        return object.toUrlValue(precision);
+      } else {
+        angular.forEach(object, function(child) {
+          hash += createHash(child, precision);
+        });
+      }
+ 
+      return hash;
+    }
+
     return {
       latLngEqual: latLngEqual,
       boundsEqual: boundsEqual,
       latLngToObj: latLngToObj,
       objToLatLng: objToLatLng,
       hasNaN: hasNaN,
-      getEventHandlers: getEventHandlers
+      getEventHandlers: getEventHandlers,
+      createHash: createHash
     };
   }]);
 })();
