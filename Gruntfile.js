@@ -83,7 +83,7 @@ module.exports = function(grunt) {
       groups: [
         {
           groupTitle: 'AngularGM Docs',
-          groupId: 'angulargm',
+          groupId: 'angulargm-<%= pkg.version %>',
           groupIcon: 'icon-map-marker',
           sections: [
             {
