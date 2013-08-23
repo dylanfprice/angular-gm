@@ -17,7 +17,7 @@ AngularGM is a set of directives for embedding Google Maps in your application u
 
 ## Documentation and Examples
 
-+ [Documentation](http://angulargm.herokuapp.com/documentation/angulargm/api/angulargm)
++ [Documentation](http://angulargm.herokuapp.com/documentation/angulargm-0.2.0/api/angulargm)
 + [Example Plunkers](http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL)
 
 
