@@ -7,7 +7,7 @@
 (function () {
   angular.module('AngularGM').
 
-  controller('angulargmMapController', 
+  controller('angulargmMapController',
     ['$scope', '$element', 'angulargmUtils', 'angulargmDefaults',
     'angulargmContainer',
 
@@ -27,7 +27,7 @@
     consts.precision = 3;
 
 
-    /* 
+    /*
      * Construct a new controller for the gmMap directive.
      * @param {angular.Scope} $scope
      * @param {angular.element} $element
@@ -42,10 +42,11 @@
       mapDiv.attr('id', mapId);
 
       var config = this._getConfig($scope, gMDefaults);
-      
+
       // 'private' properties
       this._map = this._createMap(mapId, mapDiv, config, gMContainer, $scope);
       this._markers = {};
+      this._polylines = {};
       this._listeners = [];
 
       // 'public' properties
@@ -63,13 +64,13 @@
              return this._map.getCenter();
            },
           set: function(center) {
-            if (hasNaN(center)) 
+            if (hasNaN(center))
               throw 'center contains null or NaN';
             var changed = !latLngEqual(this.center, center);
             if (changed) {
               this._map.panTo(center);
             }
-          } 
+          }
         },
 
         'zoom': {
@@ -78,7 +79,7 @@
             return this._map.getZoom();
           },
           set: function(zoom) {
-            if (!(zoom != null && !isNaN(zoom))) 
+            if (!(zoom != null && !isNaN(zoom)))
               throw 'zoom was null or NaN';
             var changed = this.zoom !== zoom;
             if (changed) {
@@ -95,7 +96,7 @@
           set: function(bounds) {
             var numbers = !hasNaN(bounds.getSouthWest()) &&
                           !hasNaN(bounds.getNorthEast());
-            if (!numbers) 
+            if (!numbers)
               throw 'bounds contains null or NaN';
 
             var changed = !(boundsEqual(this.bounds, bounds));
@@ -152,20 +153,20 @@
       return map;
     };
 
-        
+
     // Set up listeners to update this.dragging
     this._initDragListeners = function() {
       var self = this;
       this.addMapListener('dragstart', function () {
         self.dragging = true;
       });
-      
+
       this.addMapListener('idle', function () {
         self.dragging = false;
       });
-      
+
       this.addMapListener('drag', function() {
-        self.dragging = true;   
+        self.dragging = true;
       });
     };
 
@@ -179,12 +180,12 @@
       var self = this;
       angular.forEach(scopeIds, function(scopeId) {
         self.forEachMarkerInScope(scopeId, function(marker, hash) {
-          self.removeMarkerByHash(scopeId, hash);  
+          self.removeMarkerByHash(scopeId, hash);
         });
       });
     };
 
-    
+
     /**
      * Alias for google.maps.event.addListener(map, event, handler)
      * @param {string} event an event defined on google.maps.Map
@@ -204,7 +205,7 @@
      * @ignore
      */
     this.addMapListenerOnce = function(event, handler) {
-      google.maps.event.addListenerOnce(this._map, 
+      google.maps.event.addListenerOnce(this._map,
           event, handler);
     };
 
@@ -269,7 +270,7 @@
       if (this.hasMarker(scopeId, position.lat(), position.lng())) {
         return false;
       }
-      
+
       var hash = position.toUrlValue(this.precision);
       if (this._markers[scopeId] == null) {
           this._markers[scopeId] = {};
@@ -277,8 +278,7 @@
       this._markers[scopeId][hash] = marker;
       marker.setMap(this._map);
       return true;
-    };      
-
+    };
 
     /**
      * @param {number} scope id
@@ -311,7 +311,7 @@
       } else {
         return null;
       }
-    };  
+    };
 
 
     /**
@@ -390,6 +390,88 @@
                 fn(marker, hash);
             }
         });
+    };
+
+    this.addPolyline = function(scopeId, polylineOptions) {
+      var opts = angular.extend({}, polylineOptions);
+
+      if (!(opts.path) instanceof Array || opts.path.length < 2) {
+        return;
+      }
+
+      angular.forEach(opts.path, function(point) {
+        if (!(point instanceof google.maps.LatLng)) {
+          throw 'An element in polylineOptions was found to not be a valid position';
+        }
+      });
+
+      var hash = angulargmUtils.createHash(polylineOptions.path, this.precision);
+      if (this.hasPolyline(scopeId, hash)) {
+          return false;
+      }
+
+      var polyline = new angulargmDefaults.polylineConstructor(opts);
+      if (null == this._polylines[scopeId]) {
+        this._polylines[scopeId] = {};
+      }
+      this._polylines[scopeId][hash] = polyline;
+      polyline.setMap(this._map);
+      return true;
+    };
+
+    this.getPolyline = function (scopeId, hash) {
+      if (null == hash || '' == hash) {
+        throw 'no hash passed to lookup';
+      }
+
+      if (null != this._polylines[scopeId] && hash in this._polylines[scopeId]) {
+        return this._polylines[scopeId][hash];
+      } else {
+        return null;
+      }
+    };
+
+    this.hasPolyline = function (scopeId, hash) {
+      return (this.getPolyline(scopeId, hash) instanceof Object);
+    };
+
+    this.forEachPolylineInScope = function(scopeId, fn) {
+      if (null == fn) {
+        throw 'fn was null or undefined';
+      }
+
+      angular.forEach(this._polylines[scopeId], function(polyline, hash) {
+        if (null != polyline) {
+          fn(polyline, hash);
+        }
+      });
+    };
+
+    this.forEachPolyline = function(fn) {
+      if (null == fn) {
+        throw 'fn was null or undefined';
+      }
+
+      angular.forEach(this._polylines, function(polylines, scopeId) {
+        angular.forEach(polylines, function(polyline, hash) {
+          if (null != polyline) {
+            fn(polyline, hash);
+          }
+        });
+      });
+    };
+
+    this.removePolylineByHash = function(scopeId, hash) {
+      var removed = false;
+      var polyline = this._polylines[scopeId][hash];
+      if (polyline) {
+        polyline.setMap(null);
+        removed = true;
+      }
+
+      this._polylines[scopeId][hash] = null;
+      delete this._polylines[scopeId][hash];
+      return removed;
     };
 
     /**
