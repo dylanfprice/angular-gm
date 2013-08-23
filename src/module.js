@@ -52,7 +52,9 @@
    * angular.module('myModule').config(function($provide) {
    *   $provide.decorator('angulargmDefaults', function($delegate) {
    *     return angular.extend($delegate, {
+   *       'precision': 3,
    *       'markerConstructor': myCustomMarkerConstructor,
+   *       'polylineConstructor': myCustomPolylineConstructor,
    *       'mapOptions': {
    *         center: new google.maps.LatLng(55, 111),
    *         mapTypeId: google.maps.MapTypeId.SATELLITE,
@@ -64,6 +66,7 @@
    * ```
    */
   value('angulargmDefaults', {
+    'precision': 3,
     'markerConstructor': google.maps.Marker,
     'polylineConstructor': google.maps.Polyline,
     'mapOptions': {

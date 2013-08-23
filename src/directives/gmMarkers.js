@@ -131,6 +131,7 @@
     var latLngEqual = angulargmUtils.latLngEqual;
     var objToLatLng = angulargmUtils.objToLatLng;
     var getEventHandlers = angulargmUtils.getEventHandlers;
+    var createHash = angulargmUtils.createHash;
 
 
     function link(scope, element, attrs, controller) {
@@ -158,7 +159,7 @@
           var markerOptions = scope.gmGetMarkerOptions({object: object});
 
           // hash objects for quick access
-          var hash = position.toUrlValue(controller.precision);
+          var hash = angulargmUtils.createHash(position, controller.precision);
           objectHash[hash] = object;
 
           // add marker

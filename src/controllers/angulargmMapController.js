@@ -22,11 +22,6 @@
     var gMContainer = angulargmContainer;
 
 
-    /** constants */
-    var consts = {};
-    consts.precision = 3;
-
-
     /*
      * Construct a new controller for the gmMap directive.
      * @param {angular.Scope} $scope
@@ -54,7 +49,7 @@
 
       Object.defineProperties(this, {
         'precision': {
-          value: consts.precision,
+          value: gMDefaults.precision,
           writeable: false
         },
 
