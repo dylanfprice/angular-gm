@@ -415,7 +415,7 @@
     };
 
     this.getPolyline = function (scopeId, hash) {
-      if (null == hash || '' == hash) {
+      if (null == hash || '' === hash) {
         throw 'no hash passed to lookup';
       }
 
