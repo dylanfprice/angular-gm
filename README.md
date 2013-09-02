@@ -2,6 +2,8 @@
 
 AngularGM is a set of directives for embedding Google Maps in your application using the Google Maps Javascript API.
 
+[![Build Status](https://travis-ci.org/dylanfprice/angular-gm.png)](https://travis-ci.org/dylanfprice/angular-gm)
+
 [Example Plunkers](http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL)
 
 
