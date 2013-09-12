@@ -3,7 +3,8 @@ describe('angulargmUtils', function() {
       boundsEqual,
       latLngToObj,
       objToLatLng,
-      hasNaN;
+      hasNaN,
+      getEventHandlers;
 
   var latLngG,
       latLngObj;
@@ -18,6 +19,7 @@ describe('angulargmUtils', function() {
     latLngToObj = angulargmUtils.latLngToObj;
     objToLatLng = angulargmUtils.objToLatLng;
     hasNaN = angulargmUtils.hasNaN;
+    getEventHandlers = angulargmUtils.getEventHandlers;
 
     latLngG = new google.maps.LatLng(1, 2);
     latLngObj = {lat: 1, lng: 2};
@@ -120,6 +122,23 @@ describe('angulargmUtils', function() {
       expect(hasNaN(new google.maps.LatLng(1, 2))).toBeFalsy();
     });
 
+  });
+
+  describe('getEventHandlers', function() {
+    it('converts attributes that begin with gmOn', function() {
+      var attrs = {
+        'gmOnClick': function() {},
+        'gmMapId': '',
+        'gmOnZoomChanged': function() {}
+      }; // represents an Attribute object in the link function
+
+      var handlers = getEventHandlers(attrs);
+      expect(handlers).toEqual({
+        'click': jasmine.any(Function),
+        // Converts camelcased names to underscore spearated
+        'zoom_changed': jasmine.any(Function)
+      });
+    });
   });
 
 });

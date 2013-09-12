@@ -133,7 +133,10 @@
       // retrieve gm-on-___ handlers
       angular.forEach(attrs, function(value, key) {
         if (key.lastIndexOf('gmOn', 0) === 0) {
-          var event = angular.lowercase(key.substring(4));
+          var event = angular.lowercase(
+            key.substring(4)
+              .replace(/(?!^)([A-Z])/g, '_$&')
+          );
           var fn = $parse(value);
           handlers[event] = fn;
         }
