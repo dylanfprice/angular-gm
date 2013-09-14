@@ -127,6 +127,31 @@ describe('angulargmMapController', function() {
     expect(callCount).toEqual(1);
   });
 
+  it('keeps map listeners in a hash', function() {
+    var listeners = mapCtrl._listeners;
+    expect(listeners.click).toBeUndefined();
+    expect(listeners.center_changed).toBeUndefined();
+
+    mapCtrl.addMapListener('center_changed', function() {});
+    mapCtrl.addMapListener('click', function() {});
+    expect(listeners.click).not.toBeUndefined();
+    expect(listeners.center_changed).not.toBeUndefined();
+  });
+
+  it('removes listeners if they are overwritten', function() {
+    spyOn(google.maps.event, 'removeListener').andCallThrough();
+
+    var aFunc = function() {};
+    var anotherFunc = function() {};
+
+    mapCtrl.addMapListener('click', aFunc);
+    var listener = mapCtrl._listeners.click;
+
+    mapCtrl.addMapListener('click', anotherFunc);
+    expect(google.maps.event.removeListener).toHaveBeenCalledWith(listener);
+    expect(mapCtrl._listeners.click).toBeDefined();
+  });
+
 
   it('adds generic listeners', function() {
     var called = false;
