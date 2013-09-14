@@ -45,6 +45,19 @@
  * angulargmDefaults.mapOptions. {@link angulargm.service:angulargmDefaults angulargmDefaults} is a service, so it is
  * both injectable and overrideable (using $provide.decorator).
  *
+ *  * @param {expression} gm-on-*event* an angular expression which evaluates to
+ * an event handler. This handler will be attached to each marker's \*event\*
+ * event.  The variables 'map' and 'event' evaluate to the map and the
+ * [google.maps.MouseEvent](https://developers.google.com/maps/documentation/javascript/reference#MouseEvent),
+ * respectively. The map is always passed in, but the MouseEvent is only passed in if the event emits it.  For example:
+ * ```html
+ * gm-on-click="myClickFn(map, event)"
+ * ```
+ * will call your `myClickFn` whenever the map is clicked.  You may have
+ * multiple `gm-on-*event*` handlers, but only one for each type of event.  For events that have an underscore in their
+ * name, such as 'center_changed', write it as 'gm-on-center-changed'.
+ *
+ *
  */
 
 /**
