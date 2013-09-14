@@ -142,15 +142,18 @@ describe('angulargmMapController', function() {
   });
 
   it('keeps multiple listeners on an event', function() {
-    var aFunc = function() {};
-    var anotherFunc = function() {};
+    var aFunc = jasmine.createSpy('firstFunc');
+    var anotherFunc = jasmine.createSpy('secondFunc');
 
     mapCtrl.addMapListener('click', aFunc);
-    var listener = mapCtrl._listeners.click;
     mapCtrl.addMapListener('click', anotherFunc);
 
     expect(angular.isArray(mapCtrl._listeners.click)).toBeTruthy();
     expect(mapCtrl._listeners.click.length).toEqual(2);
+
+    mapCtrl.mapTrigger('click');
+    expect(aFunc).toHaveBeenCalled();
+    expect(anotherFunc).toHaveBeenCalled();
   });
 
   it('adds generic listeners', function() {
