@@ -121,6 +121,9 @@ describe('angulargmMapController', function() {
     mapCtrl.addMapListenerOnce('center_changed', function() {
       callCount++;
     });
+    // Does not get added to the listeners hash
+    expect(mapCtrl._listeners.center_changed).not.toBeDefined();
+
     google.maps.event.trigger(mapCntr.getMap(scope.gmMapId()), 'center_changed');
     google.maps.event.trigger(mapCntr.getMap(scope.gmMapId()), 'center_changed');
 
@@ -138,20 +141,17 @@ describe('angulargmMapController', function() {
     expect(listeners.center_changed).not.toBeUndefined();
   });
 
-  it('removes listeners if they are overwritten', function() {
-    spyOn(google.maps.event, 'removeListener').andCallThrough();
-
+  it('keeps multiple listeners on an event', function() {
     var aFunc = function() {};
     var anotherFunc = function() {};
 
     mapCtrl.addMapListener('click', aFunc);
     var listener = mapCtrl._listeners.click;
-
     mapCtrl.addMapListener('click', anotherFunc);
-    expect(google.maps.event.removeListener).toHaveBeenCalledWith(listener);
-    expect(mapCtrl._listeners.click).toBeDefined();
-  });
 
+    expect(angular.isArray(mapCtrl._listeners.click)).toBeTruthy();
+    expect(mapCtrl._listeners.click.length).toEqual(2);
+  });
 
   it('adds generic listeners', function() {
     var called = false;

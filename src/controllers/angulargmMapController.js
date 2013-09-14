@@ -168,7 +168,9 @@
 
     this._destroy = function() {
       angular.forEach(this._listeners, function(listener) {
-        google.maps.event.removeListener(listener);
+        angular.forEach(listener, function(l) {
+          google.maps.event.removeListener(l);
+        });
       });
       this._listeners = {};
 
@@ -191,10 +193,11 @@
     this.addMapListener = function(event, handler) {
       var listener = google.maps.event.addListener(this._map, event, handler);
 
-      if (this._listeners[event] !== undefined) {
-        google.maps.event.removeListener(this._listeners[event])
+      if (this._listeners[event] === undefined) {
+        this._listeners[event] = [];
       }
-      this._listeners[event] = listener;
+
+      this._listeners[event].push(listener);
     };
 
 
