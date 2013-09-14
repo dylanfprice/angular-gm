@@ -62,9 +62,10 @@
 (function () {
   angular.module('AngularGM').
 
-  directive('gmMap', ['$timeout', function ($timeout) {
+  directive('gmMap', ['$timeout', 'angulargmUtils', function ($timeout, angulargmUtils) {
   
     /** link function **/
+    var getEventHandlers = angulargmUtils.getEventHandlers;
 
     function link(scope, element, attrs, controller) {
       // initialize scope
@@ -103,6 +104,8 @@
         hasMapTypeId = true;
       }
 
+      var handlers = getEventHandlers(attrs); // map events -> handlers
+
       var updateScope = function() {
         $timeout(function () {
           if (hasCenter || hasZoom || hasBounds || hasMapTypeId) {
@@ -127,6 +130,29 @@
         });
       };
 
+      /*
+      var map = controller.getMap();
+      var registerListeners = function() {
+        angular.forEach(handlers, function(handler, event) {
+          controller.addMapListener(event, function() {
+            var locals = {
+              map: map
+            };
+            if (arguments[0] !== undefined) {
+              locals.event = arguments[0];
+            }
+            $timeout(function() {
+              handler(scope.$parent, locals);
+            });
+          });
+        });
+      };
+
+      $timeout(registerListeners);
+      */
+
+      // Add event listeners to the map
+      // We also have to make sure to call updateScope so any scope variables bound to the map get updated
       controller.addMapListener('drag', updateScope);
       controller.addMapListener('zoom_changed', updateScope);
       controller.addMapListener('center_changed', updateScope);
