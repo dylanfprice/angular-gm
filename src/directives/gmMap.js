@@ -130,36 +130,36 @@
         });
       };
 
-      /*
-      var map = controller.getMap();
-      var registerListeners = function() {
-        angular.forEach(handlers, function(handler, event) {
-          controller.addMapListener(event, function() {
-            var locals = {
-              map: map
-            };
-            if (arguments[0] !== undefined) {
-              locals.event = arguments[0];
-            }
-            $timeout(function() {
-              handler(scope.$parent, locals);
-            });
-          });
-        });
-      };
-
-      $timeout(registerListeners);
-      */
 
       // Add event listeners to the map
-      // We also have to make sure to call updateScope so any scope variables bound to the map get updated
       controller.addMapListener('drag', updateScope);
       controller.addMapListener('zoom_changed', updateScope);
       controller.addMapListener('center_changed', updateScope);
       controller.addMapListener('bounds_changed', updateScope);
       controller.addMapListener('maptypeid_changed', updateScope);
       controller.addMapListener('resize', updateScope);
-      
+
+      // Add user supplied callbacks
+      var map = controller.getMap(attrs.gmMapId);
+      angular.forEach(handlers, function(handler, event) {
+        controller.addMapListener(event, function(ev) {
+          // pass the map in
+          var locals = {
+            map: map
+          };
+          // And optionally a MouseEvent object if it exists
+          if (ev !== undefined) {
+            locals.event = ev;
+          }
+
+          $timeout(function() {
+            handler(scope.$parent, locals);
+          });
+        });
+      });
+
+
+
       if (hasCenter) {
         scope.$watch('gmCenter', function (newValue, oldValue) {
           var changed = (newValue !== oldValue);

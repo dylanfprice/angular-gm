@@ -13,9 +13,12 @@ describe('gmMap', function() {
     // compile angulargm directive
     elm = angular.element(
       '<gm-map gm-map-id="mapId" gm-center="pCenter"' +
-        'gm-zoom="pZoom" gm-bounds="pBounds" gm-map-type-id="pMapTypeId"' +
-        'gm-map-options="mapOptions" gm-on-click="clickCallback" ' +
-        'gm-on-center-changed="center_changedCallback"></gm-map>');
+        'gm-zoom="pZoom"' +
+        'gm-bounds="pBounds"' +
+        'gm-map-type-id="pMapTypeId"' +
+        'gm-map-options="mapOptions"' +
+        'gm-on-click="clickCallback(map, event)" ' +
+        'gm-on-center-changed="center_changedCallback(map)"></gm-map>');
 
     scope = $rootScope.$new();
     scope.mapOptions = {
@@ -24,10 +27,8 @@ describe('gmMap', function() {
       mapTypeId: google.maps.MapTypeId.TERRAIN
     }
     scope.mapId = 'test';
-    scope.clickCallback = function() {
-    };
-    scope.center_changedCallback = function() {
-    };
+    scope.clickCallback = jasmine.createSpy('clickCb');
+    scope.center_changedCallback = jasmine.createSpy('centerChangedCb');
 
     $compile(elm)(scope);
     scope.$digest();
@@ -46,9 +47,6 @@ describe('gmMap', function() {
     mapCtrl = elm.controller('gmMap');
 
     spyOn(mapCtrl, 'mapTrigger').andCallThrough();
-    spyOn(mapCtrl, 'addMapListener').andCallThrough();
-    spyOn(scope, 'clickCallback');
-    spyOn(scope, 'center_changedCallback');
 
     var center, zoom, bounds;
     Object.defineProperties(mapCtrl, {
@@ -236,26 +234,24 @@ describe('gmMap', function() {
   });
 
   it('sets up event handlers of on-* attributes on the map', function() {
-    // A couple of annoying issues here
-    // 1) The attach listener cycle for the map is different, so the spy is attached too late to catch the call to
-    // addMapListener.  The way around this is to have a $timeout call in the directive, which is actually unnecessary
-    // 2) Some event names have an underscore in them, but this is being stripped out by Angular when it parses the attrs
-    // for the element.  Not sure
-//   expect(mapCtrl.addMapListener).toHaveBeenCalledWith('click', jasmine.any(Function));
-//    expect(mapCtrl.addMapListener).toHaveBeenCalledWith('center_changed', jasmine.any(Function));
+    expect(mapCtrl._listeners.click).toBeDefined();
+    expect(mapCtrl._listeners.center_changed).toBeDefined();
   });
 
-  /*
-  it('always passes the map through to event handlers, and MouseEvent objects when available', inject(function($timeout) {
-    google.maps.event.trigger(map, 'click');
+  it('calls the user specified handlers with a map and MouseEvent if applicable', inject(function($timeout) {
+    var mouseEvent = {
+      stop: null,
+      latLng: new google.maps.LatLng(1, 1)
+    };
+
+    google.maps.event.trigger(map, 'click', mouseEvent);
     $timeout.flush();
-    expect(scope.clickCallback).toHaveBeenCalledWith(map, jasmine.any(google.maps.MouseEvent));
+    expect(scope.clickCallback).toHaveBeenCalledWith(map, mouseEvent);
 
     google.maps.event.trigger(map, 'center_changed');
     $timeout.flush();
     expect(scope.center_changedCallback).toHaveBeenCalledWith(map);
 
   }));
-  */
 
 });
