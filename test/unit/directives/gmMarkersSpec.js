@@ -28,11 +28,12 @@ describe('gmMarkers', function() {
     // compile angulargmMarkers directive
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
                             '<gm-markers ' +
-                              'gm-objects="people"' + 
+                              'gm-objects="people"' +
                               'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' + 
                               'gm-get-marker-options="getOpts(object)"' + 
                               'gm-events="markerEvents"' +
                               'gm-on-click="selected = {person: object, marker: marker}"' +
+                              'gm-on-position-changed="posChanged = {marker: marker}"' +
                               'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' + 
                             '</gm-markers>' + 
                           '</gm-map>');
@@ -205,6 +206,7 @@ describe('gmMarkers', function() {
   it('sets up event handlers for on-* attributes', function() {
     expect(mapCtrl.addListener).toHaveBeenCalledWith(jasmine.any(Object), 'click', jasmine.any(Function));
     expect(mapCtrl.addListener).toHaveBeenCalledWith(jasmine.any(Object), 'mouseover', jasmine.any(Function));
+    expect(mapCtrl.addListener).toHaveBeenCalledWith(jasmine.any(Object), 'position_changed', jasmine.any(Function));
   });
 
 

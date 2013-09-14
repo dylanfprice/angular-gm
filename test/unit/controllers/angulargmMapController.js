@@ -121,12 +121,40 @@ describe('angulargmMapController', function() {
     mapCtrl.addMapListenerOnce('center_changed', function() {
       callCount++;
     });
+    // Does not get added to the listeners hash
+    expect(mapCtrl._listeners.center_changed).not.toBeDefined();
+
     google.maps.event.trigger(mapCntr.getMap(scope.gmMapId()), 'center_changed');
     google.maps.event.trigger(mapCntr.getMap(scope.gmMapId()), 'center_changed');
 
     expect(callCount).toEqual(1);
   });
 
+  it('keeps map listeners in a hash', function() {
+    var listeners = mapCtrl._listeners;
+    expect(listeners.click).toBeUndefined();
+    expect(listeners.center_changed).toBeUndefined();
+
+    mapCtrl.addMapListener('center_changed', function() {});
+    mapCtrl.addMapListener('click', function() {});
+    expect(listeners.click).not.toBeUndefined();
+    expect(listeners.center_changed).not.toBeUndefined();
+  });
+
+  it('keeps multiple listeners on an event', function() {
+    var aFunc = jasmine.createSpy('firstFunc');
+    var anotherFunc = jasmine.createSpy('secondFunc');
+
+    mapCtrl.addMapListener('click', aFunc);
+    mapCtrl.addMapListener('click', anotherFunc);
+
+    expect(angular.isArray(mapCtrl._listeners.click)).toBeTruthy();
+    expect(mapCtrl._listeners.click.length).toEqual(2);
+
+    mapCtrl.mapTrigger('click');
+    expect(aFunc).toHaveBeenCalled();
+    expect(anotherFunc).toHaveBeenCalled();
+  });
 
   it('adds generic listeners', function() {
     var called = false;

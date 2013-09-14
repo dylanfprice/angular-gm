@@ -42,7 +42,7 @@
       this._map = this._createMap(mapId, mapDiv, config, gMContainer, $scope);
       this._markers = {};
       this._polylines = {};
-      this._listeners = [];
+      this._listeners = {};
 
       // 'public' properties
       this.dragging = false;
@@ -168,8 +168,11 @@
 
     this._destroy = function() {
       angular.forEach(this._listeners, function(listener) {
-        google.maps.event.removeListener(listener);
+        angular.forEach(listener, function(l) {
+          google.maps.event.removeListener(l);
+        });
       });
+      this._listeners = {};
 
       var scopeIds = Object.keys(this._markers);
       var self = this;
@@ -189,7 +192,12 @@
      */
     this.addMapListener = function(event, handler) {
       var listener = google.maps.event.addListener(this._map, event, handler);
-      this._listeners.push(listener);
+
+      if (this._listeners[event] === undefined) {
+        this._listeners[event] = [];
+      }
+
+      this._listeners[event].push(listener);
     };
 
 
