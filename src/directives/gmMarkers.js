@@ -77,6 +77,8 @@
  * ```
  * will call your `myClickFn` whenever a marker is clicked.  You may have
  * multiple `gm-on-*event*` handlers, but only one for each type of event.
+ * For events that have an underscore in their name, such as
+ * 'position_changed', write it as 'gm-on-position-changed'.
  */
 
 /**
