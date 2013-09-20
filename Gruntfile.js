@@ -80,6 +80,7 @@ module.exports = function(grunt) {
       }
     },
     docular : {
+      docular_webapp_target : "dist/doc/",
       groups: [
         {
           groupTitle: 'AngularGM Docs',
