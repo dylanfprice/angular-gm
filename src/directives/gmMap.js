@@ -45,7 +45,7 @@
  * angulargmDefaults.mapOptions. {@link angulargm.service:angulargmDefaults angulargmDefaults} is a service, so it is
  * both injectable and overrideable (using $provide.decorator).
  *
- *  * @param {expression} gm-on-*event* an angular expression which evaluates to
+ * @param {expression} gm-on-*event* an angular expression which evaluates to
  * an event handler. This handler will be attached to each marker's \*event\*
  * event.  The variables 'map' and 'event' evaluate to the map and the
  * [google.maps.MouseEvent](https://developers.google.com/maps/documentation/javascript/reference#MouseEvent),
