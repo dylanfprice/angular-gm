@@ -62,6 +62,11 @@ You can build the latest version using `grunt`.
 $ grunt build
 ```
 
+You can also view the latest documentation on your local machine.
+```bash
+$ grunt docular-server
+```
+
 Pull Requests welcome!
 
 
