@@ -264,7 +264,7 @@ ul.breadcrumb li:first-child .divider {display:none;}
 /*============ HOME STYLING ============*/
 
 .documentation-groups {margin-bottom: 50px;}
-.documentation-group li {text-shadow: -1px -1px 1px #fff;}
+.documentation-group li {text-shadow: -1px -1px 1px #fff; margin-bottom:5px;}
 .documentation-group {background:#eee; padding:15px; -moz-border-radius:10px; border-radius:10px; margin-bottom:10px;}
 .documentation-group h2 {text-shadow:-1px -1px 1px #fff;}
 .documentation-group h2 i {color:#CCC; text-shadow: 1px 1px 1px #666; margin-left:5px;}

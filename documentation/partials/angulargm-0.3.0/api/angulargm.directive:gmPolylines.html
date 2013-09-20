@@ -1,0 +1,97 @@
+<h1><code ng:non-bindable="">gmPolylines</code>
+<span class="hint">( directive in module <code ng:non-bindable="">angulargm</code>
+ )</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>A directive for adding polylines to a  <code class="plain">gmMap</code> . You may have multiple per  <code class="plain">gmMap</code> .</p>
+
+<p>To use, you specify an array of custom objects and tell the directive how to
+extract location data from them. A polyline will be created for each of your
+objects. If you assign a new array to your scope variable or change the
+array's length, the polylines will also update.</p>
+
+<p>Only the  <code class="plain">gm-objects</code>  and  <code class="plain">gm-get-path</code>  attributes are required.</p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage">as attribute<pre class="prettyprint linenums">&lt;ANY gm-polylines
+     gm-objects="{expression}"
+     gm-get-path="{expression}"
+     gm-get-polyline-options="{expression}"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+as class<pre class="prettyprint linenums">&lt;ANY class="gm-polylines gm-objects: {expression}; gm-get-path: {expression}; gm-get-polyline-options: {expression};"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code class="plain">gm-objects – {expression} – </code>
+<p>an array of objects in the current scope.
+These can be any objects you wish to attach to polylines, the only requirement
+is that they have a uniform method of accessing a lat and lng.</p></li>
+<li><code class="plain">gm-get-path – {expression} – </code>
+<p>an angular expression that given an object
+from  <code class="plain">gm-objects</code> , evaluates to an array of objects with lat and lng
+properties. Your object can be accessed through the variable  <code class="plain">object</code> .  For
+example, if your controller has
+<pre class="prettyprint linenums">...
+$scope.myObjects = [
+  { id: 0, path: [ { lat: 5, lng: 5}, {lat: 4, lng: 4} ]},
+  { id: 1, path: [ { lat: 6, lng: 6}, {lat: 7, lng: 7} ]}
+]
+...
+</pre>
+then in the  <code class="plain">gm-polylines</code>  directive you would put
+<pre class="prettyprint linenums">...
+gm-objects="myObjects"
+gm-get-path="object.path"
+...
+</pre></li>
+<li><code class="plain">gm-get-polyline-options – {expression} – </code>
+<p>an angular expression that given
+an object from  <code class="plain">gm-objects</code> , evaluates to a
+<a href="https://developers.google.com/maps/documentation/javascript/reference#PolylineOptions">google.maps.PolylineOptions</a>
+object.  Your object can be accessed through the variable  <code class="plain">object</code> . If
+unspecified, google maps api defaults will be used.</p></li>
+</ul>
+</div>
+<div class="member event"><h2 id="Events">Events</h2>
+<ul class="events"><li><h3 id="gmPolylinesRedraw">gmPolylinesRedraw</h3>
+<div class="gmpolylinesredraw"><p>Force the gmPolylines directive to clear and redraw all polylines.</p><div class="inline"><h4 id="Listen.on.">Listen on:</h4>
+<div class="listen-on-">current gmPolylines scope</div>
+</div>
+<h4 id="Parameters">Parameters</h4>
+<ul class="parameters"><li><code class="plain">objects – {string} – </code>
+<p>Not required. The name of the scope variable which
+holds the objects to redraw polylines for, i.e. what you set  <code class="plain">gm-objects</code>  to.
+It is useful because there may be multiple instances of the  <code class="plain">gmPolylines</code> 
+directive. If not specified, all instances of gmPolylines which are child
+scopes will redraw their polylines.</p></li>
+</ul>
+<h4 id="Example">Example</h4>
+<div class="example"><pre class="prettyprint linenums">$scope.$broadcast('gmPolylinesRedraw', 'myObjects');
+</pre></div>
+</div>
+</li>
+<li><h3 id="gmPolylinesUpdated">gmPolylinesUpdated</h3>
+<div class="gmpolylinesupdated"><p>Emitted when polylines are updated.</p><div class="inline"><h4 id="Type.">Type:</h4>
+<div class="type-">emit</div>
+</div>
+<div class="inline"><h4 id="Target.">Target:</h4>
+<div class="target-">current gmPolylines scope</div>
+</div>
+<h4 id="Parameters">Parameters</h4>
+<ul class="parameters"><li><code class="plain">objects – {string} – </code>
+<p>the name of the scope variable which holds the
+objects the gmPolylines directive was constructed with. This is what
+ <code class="plain">gm-objects</code>  was set to.</p></li>
+</ul>
+<h4 id="Example">Example</h4>
+<div class="example"><pre class="prettyprint linenums">$scope.$on('gmPolylinesUpdated', function(event, objects) {
+    if (objects === 'myObjects') {
+      ...
+    }
+});
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>

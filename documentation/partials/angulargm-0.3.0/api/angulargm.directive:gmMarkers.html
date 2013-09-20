@@ -1,0 +1,128 @@
+<h1><code ng:non-bindable="">gmMarkers</code>
+<span class="hint">( directive in module <code ng:non-bindable="">angulargm</code>
+ )</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>A directive for adding markers to a  <code class="plain">gmMap</code> . You may have multiple per  <code class="plain">gmMap</code> .</p>
+
+<p>To use, you specify an array of custom objects and tell the directive how to
+extract location data from them. A marker will be created for each of your
+objects. If you assign a new array to your scope variable or change the
+array's length, the markers will also update.</p>
+
+<p>Only the  <code class="plain">gm-objects</code>  and  <code class="plain">gm-get-lat-lng</code>  attributes are required.</p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage">as attribute<pre class="prettyprint linenums">&lt;ANY gm-markers
+     gm-objects="{expression}"
+     gm-get-lat-lng="{expression}"
+     gm-get-marker-options="{expression}"
+     gm-events="{expression}"
+     gm-on-*event*="{expression}"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+as class<pre class="prettyprint linenums">&lt;ANY class="gm-markers gm-objects: {expression}; gm-get-lat-lng: {expression}; gm-get-marker-options: {expression}; gm-events: {expression}; gm-on-*event*: {expression};"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code class="plain">gm-objects – {expression} – </code>
+<p>an array of objects in the current scope.
+These can be any objects you wish to attach to markers, the only requirement
+is that they have a uniform method of accessing a lat and lng.</p></li>
+<li><code class="plain">gm-get-lat-lng – {expression} – </code>
+<p>an angular expression that given an object from
+ <code class="plain">gm-objects</code> , evaluates to an object with lat and lng properties. Your
+object can be accessed through the variable  <code class="plain">object</code> .  For example, if
+your controller has
+<pre class="prettyprint linenums">...
+$scope.myObjects = [
+  { id: 0, location: { lat: 5, lng: 5} }, 
+  { id: 1, location: { lat: 6, lng: 6} }
+]
+...
+</pre>
+then in the  <code class="plain">gm-markers</code>  directive you would put
+<pre class="prettyprint linenums">...
+gm-objects="myObjects"
+gm-get-lat-lng="{ lat: object.location.lat, lng: object.location.lng }"
+...
+</pre></li>
+<li><code class="plain">gm-get-marker-options – {expression} – </code>
+<p>an angular expression that given
+an object from  <code class="plain">gm-objects</code> , evaluates to a
+<a href="https://developers.google.com/maps/documentation/javascript/reference#MarkerOptions">google.maps.MarkerOptions</a>
+object.  Your object can be accessed through the variable  <code class="plain">object</code> . If
+unspecified, google maps api defaults will be used.</p></li>
+<li><code class="plain">gm-events – {expression} – </code>
+<p>a variable in the current scope that is used to
+simulate events on markers. Setting this variable to an object of the form 
+<pre class="prettyprint linenums">    [
+      {
+        event: 'click',
+        locations: [new google.maps.LatLng(45, -120), ...]
+      },
+      ...
+    ]
+</pre>
+will generate the named events on the markers at the given locations, if a
+marker at each location exists. Note: when setting the  <code class="plain">gm-events</code>  variable,
+you must set it to a new object for the changes to be detected.  Code like
+<pre class="prettyprint linenums">myEvent[0]["locations"] = [new google.maps.LatLng(45,-120)]
+</pre> 
+will not work.</p></li>
+<li><code class="plain">gm-on-*event* – {expression} – </code>
+<p>an angular expression which evaluates to
+an event handler. This handler will be attached to each marker's *event*
+event.  The variables 'object' and 'marker' evaluate to your object and the
+<a href="https://developers.google.com/maps/documentation/javascript/reference#Marker">google.maps.Marker</a>,
+respectively. For example: 
+<pre class="prettyprint linenums">gm-on-click="myClickFn(object, marker)"
+</pre>
+will call your  <code class="plain">myClickFn</code>  whenever a marker is clicked.  You may have
+multiple  <code class="plain">gm-on-*event*</code>  handlers, but only one for each type of event.
+For events that have an underscore in their name, such as
+'position_changed', write it as 'gm-on-position-changed'.</p></li>
+</ul>
+</div>
+<div class="member event"><h2 id="Events">Events</h2>
+<ul class="events"><li><h3 id="gmMarkersRedraw">gmMarkersRedraw</h3>
+<div class="gmmarkersredraw"><p>Force the gmMarkers directive to clear and redraw all markers.</p><div class="inline"><h4 id="Listen.on.">Listen on:</h4>
+<div class="listen-on-">current gmMarkers scope</div>
+</div>
+<h4 id="Parameters">Parameters</h4>
+<ul class="parameters"><li><code class="plain">objects – {string} – </code>
+<p>Not required. The name of the scope variable which
+holds the objects to redraw markers for, i.e. what you set  <code class="plain">gm-objects</code>  to.
+It is useful because there may be multiple instances of the  <code class="plain">gmMarkers</code> 
+directive. If not specified, all instances of gmMarkers which are child
+scopes will redraw their markers.</p></li>
+</ul>
+<h4 id="Example">Example</h4>
+<div class="example"><pre class="prettyprint linenums">$scope.$broadcast('gmMarkersRedraw', 'myObjects');
+</pre></div>
+</div>
+</li>
+<li><h3 id="gmMarkersUpdated">gmMarkersUpdated</h3>
+<div class="gmmarkersupdated"><p>Emitted when markers are updated.</p><div class="inline"><h4 id="Type.">Type:</h4>
+<div class="type-">emit</div>
+</div>
+<div class="inline"><h4 id="Target.">Target:</h4>
+<div class="target-">current gmMarkers scope</div>
+</div>
+<h4 id="Parameters">Parameters</h4>
+<ul class="parameters"><li><code class="plain">objects – {string} – </code>
+<p>the name of the scope variable which holds the
+objects the gmMarkers directive was constructed with. This is what
+ <code class="plain">gm-objects</code>  was set to.</p></li>
+</ul>
+<h4 id="Example">Example</h4>
+<div class="example"><pre class="prettyprint linenums">$scope.$on('gmMarkersUpdated', function(event, objects) {
+    if (objects === 'myObjects') {
+      ...
+    }
+});
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>

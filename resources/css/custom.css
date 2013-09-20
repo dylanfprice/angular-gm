@@ -6,7 +6,7 @@
 .partial-home .hero-unit { -moz-box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.4); -webkit-box-shadow:0px 1px 5px rgba(0, 0, 0, 0.4); box-shadow:0px 1px 5px rgba(0, 0, 0, 0.4);}
 .partial-home .hero-unit h1 {margin-bottom:0;}
 .partial-home h2 {margin-bottom:10px; margin-top:30px;}
-.partial-home .documentation-groups h2 {margin-top:0; margin-bottom:0px;}
+.partial-home .documentation-groups h2 {margin-top:0; margin-bottom:10px;}
 
 /* CSS from: http://www.red-team-design.com/css3-ordered-list-styles */
 
