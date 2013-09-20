@@ -15,6 +15,7 @@ AngularGM is a set of directives for embedding Google Maps in your application u
 + Bind custom objects to markers
 + Listen for and generate events on markers/objects
 + Create InfoWindows which compile Angular expressions (credit goes to [ui-map](https://github.com/angular-ui/ui-map) for this feature)
++ Create polylines
 
 
 ## Documentation and Examples
