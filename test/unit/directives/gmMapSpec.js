@@ -9,10 +9,16 @@ describe('gmMap', function() {
   });
 
 
-  beforeEach(inject(function($rootScope, $compile, angulargmContainer, angulargmUtils) {
+  beforeEach(inject(function($rootScope, $compile, angulargmContainer, angulargmUtils, $timeout) {
     // compile angulargm directive
-    elm = angular.element('<gm-map gm-map-id="mapId" gm-center="pCenter" gm-zoom="pZoom" gm-bounds="pBounds" gm-map-type-id="pMapTypeId" gm-map-options="mapOptions">' +
-                          '</gm-map>');
+    elm = angular.element(
+      '<gm-map gm-map-id="mapId" gm-center="pCenter"' +
+        'gm-zoom="pZoom"' +
+        'gm-bounds="pBounds"' +
+        'gm-map-type-id="pMapTypeId"' +
+        'gm-map-options="mapOptions"' +
+        'gm-on-click="clickCallback(map, event)" ' +
+        'gm-on-center-changed="center_changedCallback(map)"></gm-map>');
 
     scope = $rootScope.$new();
     scope.mapOptions = {
@@ -21,6 +27,9 @@ describe('gmMap', function() {
       mapTypeId: google.maps.MapTypeId.TERRAIN
     }
     scope.mapId = 'test';
+    scope.clickCallback = jasmine.createSpy('clickCb');
+    scope.center_changedCallback = jasmine.createSpy('centerChangedCb');
+
     $compile(elm)(scope);
     scope.$digest();
 
@@ -36,7 +45,9 @@ describe('gmMap', function() {
     
     // get MapController
     mapCtrl = elm.controller('gmMap');
+
     spyOn(mapCtrl, 'mapTrigger').andCallThrough();
+
     var center, zoom, bounds;
     Object.defineProperties(mapCtrl, {
       'center': {
@@ -61,6 +72,8 @@ describe('gmMap', function() {
     mapCtrl.zoom = initZoom;
     mapCtrl.bounds = initBounds;
     mapCtrl.mapTypeId = initMapTypeId;
+
+    $timeout.flush()
   }));
 
 
@@ -220,5 +233,25 @@ describe('gmMap', function() {
     expect(mapCtrl.mapTrigger).not.toHaveBeenCalled();
   });
 
+  it('sets up event handlers of on-* attributes on the map', function() {
+    expect(mapCtrl._listeners.click).toBeDefined();
+    expect(mapCtrl._listeners.center_changed).toBeDefined();
+  });
+
+  it('calls the user specified handlers with a map and MouseEvent if applicable', inject(function($timeout) {
+    var mouseEvent = {
+      stop: null,
+      latLng: new google.maps.LatLng(1, 1)
+    };
+
+    google.maps.event.trigger(map, 'click', mouseEvent);
+    $timeout.flush();
+    expect(scope.clickCallback).toHaveBeenCalledWith(map, mouseEvent);
+
+    google.maps.event.trigger(map, 'center_changed');
+    $timeout.flush();
+    expect(scope.center_changedCallback).toHaveBeenCalledWith(map);
+
+  }));
 
 });
