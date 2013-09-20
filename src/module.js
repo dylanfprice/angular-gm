@@ -7,29 +7,6 @@
  * @description
  * Module for embedding Google Maps into AngularJS applications. 
  *
- *
- * # API Documentation
- * See...
- *
- * + {@link angulargm.directive:gmMap gmMap} for usage of the `gm-map`
- * directive
- *
- * + {@link angulargm.directive:gmMarkers gmMarkers} for usage of the
- * `gm-markers` directive
- *
- * + {@link angulargm.directive:gmInfoWindow gmInfoWindow} for usage of the
- * `gm-info-window` directive
- *
- * + {@link angulargm.service:angulargmContainer angulargmContainer} if you
- * need to run custom configuration on the map, e.g. add new map types
- *
- * + {@link angulargm.service:angulargmDefaults angulargmDefaults} to override
- * the default map options
- *
- * + {@link angulargm.service:angulargmUtils angulargmUtils} to use utility
- * functions for LatLng and LatLngBounds
- *
- *
  * # Example Plunkers ([fullscreen](http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL))
  *  
  * <iframe style="width: 100%; height: 400px" src="http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL" frameborder="0" allowfullscreen="allowfullscreen">
