@@ -89,6 +89,15 @@ Note these are not comprehensive commit lists but represent what I consider the
 most significant changes. You can always see a full changelog with `git log
 v0.2.0..v0.1.1`.
 
+### 0.3.0
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/69d79899f5da13d5c7c00da4e64efdce775ff2d6) &bull; [Polylines] Init polylines directive 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/39da12fd0eb1dccb4554b8b4c7704b128f0b3a76) &bull; Generate docs based on angulargm version. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/aca653b9a32482a3b8e21a784f24db729ef6c1c9) &bull; Fixes #10. Allow configuring precision. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/db2ff045737dff0a085b6d8e5a34d80daaad0ada) &bull; Adding travis build config. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/76ae49c6031e745707902b98364aa1392296f0d1) &bull; Added travis build status to README. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/0abe30e34d4c748cefb44e09520d1f2c663bbbd9) &bull; getEventHandlers should convert camelcase to underscored event names 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/eaf1f217b640d3ab7c103d6f17e8c5e8b74bbfa5) &bull; turns out Google Maps can have more than one listener on an event, so keep track of all of them instead of removing earlier listeners 
+
 ### v0.2.0
 + AngularGM documentation is now being generated using [Docular](http://grunt-docular.com/). You can still [view the old docs](http://dylanfprice.github.io/angular-gm/docs/), as well as find the old docs and builds in the [gh-pages branch](https://github.com/dylanfprice/angular-gm/tree/gh-pages).
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/06cb6c21fa8b5753e53ff3209bf37f770a3e14a9) &bull; Add option override the Marker constructor. 
@@ -107,4 +116,5 @@ v0.2.0..v0.1.1`.
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/4736ba9abd741f17333d60285f047bb380a2cc75) &bull; Make gmMarkersRedraw event more flexible. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/bf97b1c4f99d2f7f88998e1bb6d0c512e687775b) &bull; Fixes #3. Reuse google map instances. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/03ab919f6e00ef9b5eb033202b7f2183ce944b79) &bull; Update to angular 1.0.7. 
+
 
