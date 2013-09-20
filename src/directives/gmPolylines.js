@@ -20,10 +20,10 @@
  * is that they have a uniform method of accessing a lat and lng.
  *
  *
- * @param {expression} gm-get-path an angular expression that given an object from
- * `gm-objects`, evaluates to objects with lat and lng properties. Your
- * object can be accessed through the variable `object`.  For example, if
- * your controller has
+ * @param {expression} gm-get-path an angular expression that given an object
+ * from `gm-objects`, evaluates to an array of objects with lat and lng
+ * properties. Your object can be accessed through the variable `object`.  For
+ * example, if your controller has
  * ```js
  * ...
  * $scope.myObjects = [
@@ -46,17 +46,6 @@
  * object.  Your object can be accessed through the variable `object`. If
  * unspecified, google maps api defaults will be used.
  *
- *
- * @param {expression} gm-on-*event* an angular expression which evaluates to
- * an event handler. This handler will be attached to each marker's \*event\*
- * event.  The variables 'object' and 'marker' evaluate to your object and the
- * [google.maps.Marker](https://developers.google.com/maps/documentation/javascript/reference#Polyline),
- * respectively. For example:
- * ```html
- * gm-on-click="myClickFn(object, marker)"
- * ```
- * will call your `myClickFn` whenever a marker is clicked.  You may have
- * multiple `gm-on-*event*` handlers, but only one for each type of event.
  */
 
 /**
@@ -65,13 +54,13 @@
  * @eventOf angulargm.directive:gmPolylines
  * @eventType listen on current gmPolylines scope
  *
- * @description Force the gmPolylines directive to clear and redraw all markers.
+ * @description Force the gmPolylines directive to clear and redraw all polylines.
  *
  * @param {string} objects Not required. The name of the scope variable which
- * holds the objects to redraw markers for, i.e. what you set `gm-objects` to.
+ * holds the objects to redraw polylines for, i.e. what you set `gm-objects` to.
  * It is useful because there may be multiple instances of the `gmPolylines`
  * directive. If not specified, all instances of gmPolylines which are child
- * scopes will redraw their markers.
+ * scopes will redraw their polylines.
  *
  * @example
  * ```js
