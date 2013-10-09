@@ -280,7 +280,17 @@
       }
       this._markers[scopeId][hash] = marker;
       marker.setMap(this._map);
+
       return true;
+    };
+
+    /**
+     * Adds markers to the container
+     * @param {number} scope id
+     */
+    this.updateContainerMarkers = function(scopeId) {
+      var mapId = $scope.gmMapId();
+      gMContainer.setMarkers(mapId, this._markers[scopeId]);
     };
 
     /**

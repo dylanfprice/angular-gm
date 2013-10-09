@@ -203,6 +203,9 @@
           controller.removeMarkerByHash(scope.$id, markerHash);
         });
 
+        //update markers in container
+        controller.updateContainerMarkers(scope.$id)
+
         scope.$emit('gmMarkersUpdated', attrs.gmObjects);
       }; // end updateMarkers()
 

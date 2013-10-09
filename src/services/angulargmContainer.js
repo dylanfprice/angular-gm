@@ -24,12 +24,10 @@
  * ```
  */
 (function () {
-  angular.module('AngularGM').
-
-  factory('angulargmContainer', ['$q', function($q) {
+  angular.module('AngularGM').factory('angulargmContainer', ['$q', function($q) {
     var maps = {};
     var defers = {};
-
+    var markers = {};
     /**
      * Add a map to the container.
      * @param {string} mapId the unique identifier for the map
@@ -57,6 +55,24 @@
      */
     function getMap(mapId) {
       return maps[mapId];
+    }
+
+    /**
+     * Adds markers to the container.
+     * @param {string} mapId the unique id of the map
+     * @param {[google.maps.Marker]} markers to be added to the container
+     */
+    function setMarkers(mapId, newMarkers) {
+      markers[mapId] = newMarkers
+    }
+    /**
+     * Get markers from the container.
+     * @param {string} mapId the unique id of the map
+     * @return {google.maps.Marker|undefined} the markers, or undefined if there are no
+     *   markers for mapId
+     */
+    function getMarkers(mapId) {
+      return markers[mapId];
     }
 
     /**
@@ -102,6 +118,8 @@
       addMap: addMap,
       getMap: getMap,
       getMapPromise: getMapPromise,
+      setMarkers: setMarkers,
+      getMarkers: getMarkers,
       removeMap: removeMap,
       clear: clear
     };
