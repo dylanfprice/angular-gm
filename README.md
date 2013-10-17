@@ -92,6 +92,9 @@ Note these are not comprehensive commit lists but represent what I consider the
 most significant changes. You can always see a full changelog with `git log
 v0.2.0..v0.1.1`.
 
+### 0.3.1
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/8a2ee4b274e4d091e008ae3f5691331748707dbd) &bull; Guard angulargmDefaults in a function so it only gets run if AngularGM is loaded. 
+
 ### 0.3.0
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/69d79899f5da13d5c7c00da4e64efdce775ff2d6) &bull; [Polylines] Init polylines directive 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/39da12fd0eb1dccb4554b8b4c7704b128f0b3a76) &bull; Generate docs based on angulargm version. 
@@ -119,5 +122,4 @@ v0.2.0..v0.1.1`.
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/4736ba9abd741f17333d60285f047bb380a2cc75) &bull; Make gmMarkersRedraw event more flexible. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/bf97b1c4f99d2f7f88998e1bb6d0c512e687775b) &bull; Fixes #3. Reuse google map instances. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/03ab919f6e00ef9b5eb033202b7f2183ce944b79) &bull; Update to angular 1.0.7. 
-
 
