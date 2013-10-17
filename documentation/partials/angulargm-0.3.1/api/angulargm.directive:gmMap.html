@@ -1,0 +1,83 @@
+<h1><code ng:non-bindable="">gmMap</code>
+<span class="hint">( directive in module <code ng:non-bindable="">angulargm</code>
+ )</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>A directive for embedding google maps into your app. </p>
+
+ <code class="plain">gm-map-id</code>  is required. The  <code class="plain">gm-center</code> ,  <code class="plain">gm-zoom</code> ,  <code class="plain">gm-bounds</code> , and
+ <code class="plain">gm-map-type-id</code>  variables do not have to exist in the current scope--they
+will be created if necessary. All three have bi-directional association,
+i.e.  drag or zoom the map and they will update, update them and the map
+will change.  However, any initial state of these three variables will be
+ignored.</p>
+
+<p>If you need to get a handle on the google.maps.Map object, see
+<a href="documentation/angulargm-0.3.1/api/angulargm.service:angulargmContainer">angulargmContainer</a></p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage">as attribute<pre class="prettyprint linenums">&lt;ANY gm-map
+     gm-map-id="{expression}"
+     gm-center="{expression}"
+     gm-zoom="{expression}"
+     gm-bounds="{expression}"
+     gm-map-type-id="{expression}"
+     gm-map-options="{expression}"
+     gm-on-*event*="{expression}"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+as class<pre class="prettyprint linenums">&lt;ANY class="gm-map gm-map-id: {expression}; gm-center: {expression}; gm-zoom: {expression}; gm-bounds: {expression}; gm-map-type-id: {expression}; gm-map-options: {expression}; gm-on-*event*: {expression};"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code class="plain">gm-map-id – {expression} – </code>
+<p>angular expression that evaluates to a unique
+string id for the map, e.g.  <code class="plain">'map_canvas'</code>  or  <code class="plain">myMapId</code>  where myMapId is a
+variable in the current scope. This allows you to have multiple
+maps/instances of the directive.</p></li>
+<li><code class="plain">gm-center – {expression} – </code>
+<p>center variable in the current scope.  The
+value will be a google.maps.LatLng object.</p></li>
+<li><code class="plain">gm-zoom – {expression} – </code>
+<p>zoom variable in the current scope.  Value will
+be an integer.</p></li>
+<li><code class="plain">gm-bounds – {expression} – </code>
+<p>bounds variable in the current scope.  Value
+will be a google.maps.LatLngBounds object.</p></li>
+<li><code class="plain">gm-map-type-id – {expression} – </code>
+<p>mapTypeId variable in the current scope.
+Value will be a string.</p></li>
+<li><code class="plain">gm-map-options – {expression} – </code>
+<p>object in the current scope that is a
+google.maps.MapOptions object. If unspecified, will use the values in
+angulargmDefaults.mapOptions. <a href="documentation/angulargm-0.3.1/api/angulargm.service:angulargmDefaults">angulargmDefaults</a> is a service, so it is
+both injectable and overrideable (using $provide.decorator).</p></li>
+<li><code class="plain">gm-on-*event* – {expression} – </code>
+<p>an angular expression which evaluates to
+an event handler. This handler will be attached to each marker's *event*
+event.  The variables 'map' and 'event' evaluate to the map and the
+<a href="https://developers.google.com/maps/documentation/javascript/reference#MouseEvent">google.maps.MouseEvent</a>,
+respectively. The map is always passed in, but the MouseEvent is only passed in if the event emits it.  For example:
+<pre class="prettyprint linenums">gm-on-click="myClickFn(map, event)"
+</pre>
+will call your  <code class="plain">myClickFn</code>  whenever the map is clicked.  You may have
+multiple  <code class="plain">gm-on-*event*</code>  handlers, but only one for each type of event.  For events that have an underscore in their
+name, such as 'center_changed', write it as 'gm-on-center-changed'.</p></li>
+</ul>
+</div>
+<div class="member event"><h2 id="Events">Events</h2>
+<ul class="events"><li><h3 id="gmMapResize">gmMapResize</h3>
+<div class="gmmapresize"><div class="inline"><h4 id="Listen.on.">Listen on:</h4>
+<div class="listen-on-">current gmMap scope</div>
+</div>
+<h4 id="Parameters">Parameters</h4>
+<ul class="parameters"><li><code class="plain">mapId – {string} – </code>
+<p>Required. The id of your map.</p></li>
+</ul>
+<h4 id="Example">Example</h4>
+<div class="example"><pre class="prettyprint linenums">$scope.$broadcast('gmMapResize', 'myMapId')
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
