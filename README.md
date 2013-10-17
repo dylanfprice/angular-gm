@@ -75,7 +75,7 @@ Pull Requests welcome!
 
 ## Author
 
-**Dylan Price** (http://github.com/dylanfprice)
+**Dylan Price** (the.dylan.price@gmail.com, http://github.com/dylanfprice)
 
 
 ## Credits
