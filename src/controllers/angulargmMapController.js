@@ -284,6 +284,28 @@
       return true;
     };
 
+      this.addMarkerById = function(scopeId, markerOptions) {
+        var opts = {};
+        angular.extend(opts, markerOptions);
+
+        if (!(opts.position instanceof google.maps.LatLng)) {
+          throw 'markerOptions did not contain a position';
+        }
+        if (opts.id === null || opts.id === undefined) {
+          throw 'markerOptions did not contain a id';
+        }
+
+        var marker = new angulargmDefaults.markerConstructor(opts);
+        var hash = markerOptions.id
+
+        if (this._markers[scopeId] == null) {
+          this._markers[scopeId] = {};
+        }
+        this._markers[scopeId][hash] = marker;
+        marker.setMap(this._map);
+
+        return true;
+      };
     /**
      * Adds markers to the container
      * @param {number} scope id
@@ -304,6 +326,9 @@
       return (this.getMarker(scopeId, lat, lng) instanceof google.maps.Marker);
     };
 
+      this.hasMarkerById = function(scopeId, id) {
+        return (this.getMarkerById(scopeId, id) instanceof google.maps.Marker);
+      };
 
     /**
      * @param {number} scope id
@@ -326,6 +351,17 @@
       }
     };
 
+      this.getMarkerById = function (scopeId, id) {
+        if (id === null)
+          throw 'id was null';
+
+        var hash = id
+        if (this._markers[scopeId] != null && hash in this._markers[scopeId]) {
+          return this._markers[scopeId][hash];
+        } else {
+          return null;
+        }
+      };
 
     /**
      * @param {number} scope id

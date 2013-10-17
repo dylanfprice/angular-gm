@@ -207,6 +207,7 @@ describe('angulargmMapController', function() {
   describe('marker functions', function() {
     var position, positionSame, positionVeryClose, position2;
     var markerOptions, markerOptionsSame, markerOptionsVeryClose, markerOptions2;
+    var markerOptionsId1, markerOptionsId2, markerOptionsId3;
 
     beforeEach(function() {
       position = new google.maps.LatLng(1, 2);
@@ -227,6 +228,17 @@ describe('angulargmMapController', function() {
       };
       markerOptions2 = {
         position: position2
+      };
+
+      markerOptionsId1 = {
+        position: position,
+        id: 1
+      };
+      markerOptionsId2 = {
+        id: 2
+      };
+      markerOptionsId3 = {
+        position: position,
       };
 
       mapCtrl.addMarker(scope, markerOptions);
@@ -259,7 +271,6 @@ describe('angulargmMapController', function() {
 
     });
 
-
     describe('getMarker', function() {
 
       it('retrieves markers that are on the map', function() {
@@ -286,7 +297,6 @@ describe('angulargmMapController', function() {
       });
 
     });
-
 
     describe('removeMarker', function() {
 
@@ -323,6 +333,73 @@ describe('angulargmMapController', function() {
         called = true;
       });
       expect(called).toBeFalsy();
+    });
+
+  });
+
+  describe('markerById functions', function() {
+    var position, position2;
+    var markerOptionsId1, markerOptionsId2, markerOptionsId3;
+
+    beforeEach(function() {
+      position = new google.maps.LatLng(1, 2);
+      position2 = new google.maps.LatLng(3, 4);
+
+      scope = 'scope';
+
+      markerOptionsId1 = {
+        position: position,
+        id: 1
+      };
+      markerOptionsId2 = {
+        id: 2
+      };
+      markerOptionsId3 = {
+        position: position,
+      };
+
+//      mapCtrl.addMarker(scope, markerOptionsId1);
+    });
+
+    describe('addMarkerById', function() {
+
+      it('adds new markers to the map', function() {
+        var added = mapCtrl.addMarkerById(scope, markerOptionsId1);
+        expect(added).toBeTruthy();
+      });
+
+      it('does replace markers already on the map', function() {
+        mapCtrl.addMarker(scope, markerOptionsId1);
+        var added = mapCtrl.addMarkerById(scope, markerOptionsId1);
+        expect(added).toBeTruthy();
+      });
+
+      it('does not add markers with no position', function() {
+        mapCtrl.addMarker(scope, markerOptionsId1);
+        var added = angular.bind(this, mapCtrl.addMarkerById, scope, markerOptionsId2);
+        expect(added).toThrow();
+      });
+
+      it('does not add markers with no id', function() {
+        mapCtrl.addMarker(scope, markerOptionsId1);
+        var added = angular.bind(this, mapCtrl.addMarkerById, scope, markerOptionsId3);
+        expect(added).toThrow();
+      });
+    });
+
+    describe('getMarkerById', function() {
+
+      it('retrieves markers that are on the map', function() {
+        mapCtrl.addMarkerById(scope, markerOptionsId1);
+        var marker = mapCtrl.getMarkerById(scope, markerOptionsId1.id);
+        expect(marker.getPosition()).toEqual(markerOptionsId1.position);
+      });
+
+      it('returns null for marker not on the map', function() {
+        var marker = mapCtrl.getMarkerById(scope, markerOptionsId2.id);
+        expect(marker).toBeNull();
+      });
+
     });
 
   });
