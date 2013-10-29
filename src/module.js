@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @doc module
  * @name angulargm
@@ -15,6 +13,8 @@
  * Author: Dylan Price <the.dylan.price@gmail.com>
  */
 (function() {
+'use strict';
+
   angular.module('AngularGM', []).
 
   /**

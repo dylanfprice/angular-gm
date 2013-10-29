@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @ngdoc directive
  * @name angulargm.directive:gmMap
@@ -73,6 +71,8 @@
  */
 
 (function () {
+'use strict';
+
   angular.module('AngularGM').
 
   directive('gmMap', ['$timeout', 'angulargmUtils', function ($timeout, angulargmUtils) {

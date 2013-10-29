@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @ngdoc directive
  * @name angulargm.directive:gmInfoWindow
@@ -28,6 +26,7 @@
  * event.
  */
 (function () {
+'use strict';
 
   angular.module('AngularGM').
 

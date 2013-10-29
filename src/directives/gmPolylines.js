@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @ngdoc directive
  * @name angulargm.directive:gmPolylines
@@ -91,6 +89,7 @@
  */
 
 (function () {
+'use strict';
 
   angular.module('AngularGM').
 

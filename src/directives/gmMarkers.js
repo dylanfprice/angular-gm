@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @ngdoc directive
  * @name angulargm.directive:gmMarkers
@@ -124,6 +122,8 @@
  */
 
 (function () {
+'use strict';
+
   angular.module('AngularGM').
 
   directive('gmMarkers', ['$log', '$parse', '$timeout', 'angulargmUtils', 

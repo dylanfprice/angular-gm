@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @ngdoc service
  * @name angulargm.service:angulargmContainer
@@ -24,6 +22,8 @@
  * ```
  */
 (function () {
+'use strict';
+
   angular.module('AngularGM').
 
   factory('angulargmContainer', ['$q', function($q) {

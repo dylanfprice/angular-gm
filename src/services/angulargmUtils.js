@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @ngdoc service
  * @name angulargm.service:angulargmUtils
@@ -8,6 +6,8 @@
  * Common utility functions.
  */
 (function () {
+'use strict';
+
   angular.module('AngularGM').
 
   factory('angulargmUtils', ['$parse', function($parse) {
