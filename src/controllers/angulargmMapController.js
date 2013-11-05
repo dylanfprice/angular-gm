@@ -178,7 +178,7 @@
       var self = this;
       angular.forEach(scopeIds, function(scopeId) {
         self.forEachMarkerInScope(scopeId, function(marker, hash) {
-          self.removeMarkerByHash(scopeId, hash);
+          self.removeMarkerById(scopeId, hash);
         });
       });
     };
@@ -260,48 +260,24 @@
      * @throw if markerOptions does not have all required options (i.e. position)
      * @ignore
      */
-    this.addMarker = function(scopeId, markerOptions) {
-      var opts = {};
-      angular.extend(opts, markerOptions);
-
-      if (!(opts.position instanceof google.maps.LatLng)) {
-        throw 'markerOptions did not contain a position';
-      }
-
-      var marker = new angulargmDefaults.markerConstructor(opts);
-      var position = marker.getPosition();
-      if (this.hasMarker(scopeId, position.lat(), position.lng())) {
-        return false;
-      }
-
-      var hash = position.toUrlValue(this.precision);
-      if (this._markers[scopeId] == null) {
-          this._markers[scopeId] = {};
-      }
-      this._markers[scopeId][hash] = marker;
-      marker.setMap(this._map);
-
-      return true;
-    };
-
-      this.addMarkerById = function(scopeId, markerOptions) {
+      this.addMarkerById = function(scopeId, id, markerOptions) {
         var opts = {};
         angular.extend(opts, markerOptions);
 
         if (!(opts.position instanceof google.maps.LatLng)) {
           throw 'markerOptions did not contain a position';
         }
-        if (opts.id === null || opts.id === undefined) {
+        if (id === null || id === undefined) {
           throw 'markerOptions did not contain a id';
         }
 
         var marker = new angulargmDefaults.markerConstructor(opts);
-        var hash = markerOptions.id
+//        var hash = markerOptions.id
 
         if (this._markers[scopeId] == null) {
           this._markers[scopeId] = {};
         }
-        this._markers[scopeId][hash] = marker;
+        this._markers[scopeId][id] = marker;
         marker.setMap(this._map);
 
         return true;
@@ -322,10 +298,6 @@
      * @return {boolean} true if there is a marker with the given lat and lng
      * @ignore
      */
-    this.hasMarker = function(scopeId, lat, lng) {
-      return (this.getMarker(scopeId, lat, lng) instanceof google.maps.Marker);
-    };
-
       this.hasMarkerById = function(scopeId, id) {
         return (this.getMarkerById(scopeId, id) instanceof google.maps.Marker);
       };
@@ -338,26 +310,12 @@
      *   no such marker exists
      * @ignore
      */
-    this.getMarker = function (scopeId, lat, lng) {
-      if (lat == null || lng == null)
-        throw 'lat or lng was null';
-
-      var latLng = new google.maps.LatLng(lat, lng);
-      var hash = latLng.toUrlValue(this.precision);
-      if (this._markers[scopeId] != null && hash in this._markers[scopeId]) {
-        return this._markers[scopeId][hash];
-      } else {
-        return null;
-      }
-    };
-
       this.getMarkerById = function (scopeId, id) {
         if (id === null)
           throw 'id was null';
 
-        var hash = id
-        if (this._markers[scopeId] != null && hash in this._markers[scopeId]) {
-          return this._markers[scopeId][hash];
+        if (this._markers[scopeId] != null && id in this._markers[scopeId]) {
+          return this._markers[scopeId][id];
         } else {
           return null;
         }
@@ -371,14 +329,11 @@
      *   happened
      * @ignore
      */
-    this.removeMarker = function(scopeId, lat, lng) {
-      if (lat == null || lng == null)
-        throw 'lat or lng was null';
+    this.removeMarker = function(scopeId, id) {
+      if (id === null)
+        throw 'id was null';
 
-      var latLng = new google.maps.LatLng(lat, lng);
-
-      var hash = latLng.toUrlValue(this.precision);
-      return this.removeMarkerByHash(scopeId, hash);
+      return this.removeMarkerById(scopeId, id);
     };
 
     /**
@@ -389,15 +344,15 @@
      *   happened
      * @ignore
      */
-    this.removeMarkerByHash = function(scopeId, hash) {
+    this.removeMarkerById = function(scopeId, id) {
         var removed = false;
-        var marker = this._markers[scopeId][hash];
+        var marker = this._markers[scopeId][id];
         if (marker) {
             marker.setMap(null);
             removed = true;
         }
-        this._markers[scopeId][hash] = null;
-        delete this._markers[scopeId][hash];
+        this._markers[scopeId][id] = null;
+        delete this._markers[scopeId][id];
         return removed;
     };
 
@@ -412,10 +367,10 @@
       if (fn == null) { throw 'fn was null or undefined'; }
       var that = this;
       var allMarkers = Object.keys(this._markers).reduce(function(markers, key){
-          angular.forEach(that._markers[key], function(marker){
-              markers.push(marker);
-          });
-          return markers;
+        angular.forEach(that._markers[key], function(marker){
+          markers.push(marker);
+        });
+        return markers;
       }, []);
       angular.forEach(allMarkers, function(marker, hash) {
         if (marker != null) {
@@ -433,12 +388,12 @@
      * @ignore
      */
     this.forEachMarkerInScope = function(scopeId, fn) {
-        if (fn == null) { throw 'fn was null or undefined'; }
-        angular.forEach(this._markers[scopeId], function(marker, hash) {
-            if (marker != null) {
-                fn(marker, hash);
-            }
-        });
+      if (fn == null) { throw 'fn was null or undefined'; }
+      angular.forEach(this._markers[scopeId], function(marker, hash) {
+        if (marker != null) {
+          fn(marker, hash);
+        }
+      });
     };
 
     this.addPolyline = function(scopeId, polylineOptions) {

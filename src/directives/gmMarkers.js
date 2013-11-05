@@ -142,6 +142,8 @@
         throw 'gmObjects attribute required';
       } else if (!('gmGetLatLng' in attrs)) {
         throw 'gmGetLatLng attribute required';
+      } else if (!('gmGetId' in attrs)) {
+        throw 'gmGetId attribute required';
       }
 
       var handlers = getEventHandlers(attrs); // map events -> handlers
@@ -153,6 +155,8 @@
 
         angular.forEach(objects, function(object, i) {
           var latLngObj = scope.gmGetLatLng({object: object});
+          var id = scope.gmGetId({object: object});
+
           var position = objToLatLng(latLngObj);
           if (position == null) {
             return;
@@ -161,30 +165,17 @@
           var markerOptions = scope.gmGetMarkerOptions({object: object});
 
           // hash objects for quick access
-          var hasId = !(typeof(markerOptions.id) == 'undefined' || markerOptions.id == null)
+          objectHash[id] = object;
 
-          var hash
-          if (hasId) hash = markerOptions.id;
-          else hash = angulargmUtils.createHash(position, controller.precision);
-
-          objectHash[hash] = object;
-
-          // add marker
-          var markerExists
-          if (hasId) markerExists = (controller.getMarkerById(scope.$id, markerOptions.id))
-          else markerExists = (controller.hasMarker(scope.$id, latLngObj.lat, latLngObj.lng))
+          var markerExists = (controller.getMarkerById(scope.$id, id));
 
           if (!markerExists) {
 
             var options = {};
             angular.extend(options, markerOptions, {position: position});
 
-            if (hasId) controller.addMarkerById(scope.$id, options);
-            else controller.addMarker(scope.$id, options);
-
-            var marker
-            if (hasId) marker = controller.getMarkerById(scope.$id, hash);
-            else marker = controller.getMarker(scope.$id, latLngObj.lat, latLngObj.lng);
+            controller.addMarkerById(scope.$id, id, options);
+            var marker = controller.getMarkerById(scope.$id, id);
 
             // set up marker event handlers
             angular.forEach(handlers, function(handler, event) {
@@ -206,18 +197,18 @@
         // remove 'orphaned' markers
         var orphaned = [];
         
-        controller.forEachMarkerInScope(scope.$id, function(marker, hash) {
-          if (!(hash in objectHash)) {
-            orphaned.push(hash);
+        controller.forEachMarkerInScope(scope.$id, function(marker, id) {
+          if (!(id in objectHash)) {
+            orphaned.push(id);
           }
         });
 
         angular.forEach(orphaned, function(markerHash, i) {
-          controller.removeMarkerByHash(scope.$id, markerHash);
+          controller.removeMarkerById(scope.$id, markerHash);
         });
 
         //update markers in container
-        controller.updateContainerMarkers(scope.$id)
+        controller.updateContainerMarkers(scope.$id);
 
         scope.$emit('gmMarkersUpdated', attrs.gmObjects);
       }; // end updateMarkers()
@@ -285,6 +276,7 @@
       scope: {
         gmObjects: '&',
         gmGetLatLng: '&',
+        gmGetId: '&',
         gmGetMarkerOptions: '&',
         gmEvents: '&',
         gmEventsbyid: '&'

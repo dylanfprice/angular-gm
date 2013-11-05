@@ -63,7 +63,7 @@
      * @param {[google.maps.Marker]} markers to be added to the container
      */
     function setMarkers(mapId, newMarkers) {
-      markers[mapId] = newMarkers
+      markers[mapId] = newMarkers;
     }
     /**
      * Get markers from the container.
@@ -87,7 +87,7 @@
       if (markers[mapId] !== undefined)
         return markers[mapId][id];
       else
-        return undefined
+        return undefined;
     }
 
     /**
