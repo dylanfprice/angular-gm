@@ -66,19 +66,9 @@
         });
       });
 
-      /**
-       * The info window's contents dont' need to be on the dom anymore,
-       * google maps has them stored. So we just replace the infowindow
-       * element with an empty div. (we don't just straight remove it from
-       * the dom because straight removing things from the dom can mess up
-       * angular) 
-       */
-      element.replaceWith('<div></div>');
-
       //Decorate infoWindow.open to $compile contents before opening
       var _open = infoWindow.open;
       infoWindow.open = function open(map, anchor) {
-        $compile(element.contents())(scope);
         _open.call(infoWindow, map, anchor);
       };
     }
