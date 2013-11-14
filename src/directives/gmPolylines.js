@@ -11,14 +11,14 @@
  * objects. If you assign a new array to your scope variable or change the
  * array's length, the polylines will also update.
  *
- * Only the `gm-objects` and `gm-get-path` attributes are required.
+ * Only the `gm-objects`, `gm-id` and `gm-path` attributes are required.
  *
  * @param {expression} gm-objects an array of objects in the current scope.
  * These can be any objects you wish to attach to polylines, the only requirement
- * is that they have a uniform method of accessing a lat and lng.
+ * is that they have a uniform method of accessing an id and a path.
  *
  *
- * @param {expression} gm-get-path an angular expression that given an object
+ * @param {expression} gm-path an angular expression that given an object
  * from `gm-objects`, evaluates to an array of objects with lat and lng
  * properties. Your object can be accessed through the variable `object`.  For
  * example, if your controller has
@@ -38,12 +38,44 @@
  * ...
  * ```
  *
- * @param {expression} gm-get-polyline-options an angular expression that given
+ * @param {expression} gm-polyline-options an angular expression that given
  * an object from `gm-objects`, evaluates to a
  * [google.maps.PolylineOptions](https://developers.google.com/maps/documentation/javascript/reference#PolylineOptions)
  * object.  Your object can be accessed through the variable `object`. If
  * unspecified, google maps api defaults will be used.
  *
+ * @param {expression} gm-events a variable in the current scope that is used to
+ * simulate events on polylines. Setting this variable to an object of the form 
+ * ```js
+ *     [
+ *       {
+ *         event: 'click',
+ *         ids: [id1, ...]
+ *       },
+ *       ...
+ *     ]
+ * ```
+ * will generate the named events on the polylines with the given ids, if a
+ * polyline with each id exists. Note: when setting the `gm-events` variable, you
+ * must set it to a new object for the changes to be detected.  Code like
+ * ```js
+ * myEvents[0]["ids"] = [0]
+ * ``` 
+ * will not work.
+ *                      
+ *
+ * @param {expression} gm-on-*event* an angular expression which evaluates to
+ * an event handler. This handler will be attached to each polyline's \*event\*
+ * event.  The variables 'object' and 'polyline' evaluate to your object and the
+ * [google.maps.Polyline](https://developers.google.com/maps/documentation/javascript/reference#Polyline),
+ * respectively. For example: 
+ * ```html
+ * gm-on-click="myClickFn(object, polyline)"
+ * ```
+ * will call your `myClickFn` whenever a polyline is clicked.  You may have
+ * multiple `gm-on-*event*` handlers, but only one for each type of event.
+ * For events that have an underscore in their name, such as
+ * 'position_changed', write it as 'gm-on-position-changed'.
  */
 
 /**
@@ -104,21 +136,24 @@
       // check attrs
       if (!('gmObjects' in attrs)) {
         throw 'gmObjects attribute required';
-      } else if (!('gmGetPath' in attrs)) {
-        throw 'gmGetPath attribute required';
+      } else if (!('gmId' in attrs)) {
+        throw 'gmId attribute required';
+      } else if (!('gmPath' in attrs)) {
+        throw 'gmPath attribute required';
       }
 
-      var handlers = getEventHandlers(attrs); // map events -> handlers
 
       // fn for updating polylines from objects
       var updatePolylines = function(scope, objects) {
-        var objectHash = {};
 
-        angular.forEach(objects, function(object, i) {
-          var path = scope.gmGetPath({object: object});
+        var handlers = getEventHandlers(attrs); // map events -> handlers
+        var objectCache = {};
+
+        angular.forEach(objects, function(object) {
+          var path = scope.gmPath({object: object});
           var lineLatLngs = [];
 
-          angular.forEach(path, function(latlng, j) {
+          angular.forEach(path, function(latlng) {
             var position = objToLatLng(latlng);
             if (null === position) {
                 $log.warn('Unable to generate lat/lng from ', latlng);
@@ -128,17 +163,15 @@
             lineLatLngs.push(position);
           });
 
-          var hash = angulargmUtils.createHash(lineLatLngs, controller.precision);
-          var polylineOptions = scope.gmGetPolylineOptions({object: object});
-          objectHash[hash] = object;
+          var polylineOptions = scope.gmPolylineOptions({object: object});
+          objectCache[id] = object;
 
-          // check if the polyline exists first (methods needs to be created)
-          if (!controller.hasPolyline(scope.$id, hash)) {
+          if (!controller.hasPolyline(scope.$id, id)) {
             var options = {};
             angular.extend(options, polylineOptions, {path: lineLatLngs});
 
-            controller.addPolyline(scope.$id, options);
-            var polyline = controller.getPolyline(scope.$id, hash);
+            controller.addPolyline(scope.$id, id, options);
+            var polyline = controller.getPolyline(scope.$id, id);
 
             angular.forEach(handlers, function(handler, event) {
               controller.addListener(polyline, event, function() {
@@ -154,14 +187,30 @@
         });
 
         // remove 'orphaned' polylines
-        controller.forEachPolylineInScope(scope.$id, function(polyline, hash) {
-          if (!(hash in objectHash)) {
-            controller.removePolylineByHash(scope.$id, hash);
+        controller.forEachPolylineInScope(scope.$id, function(polyline, id) {
+          if (!(hash in objectCache)) {
+            controller.removePolyline(scope.$id, id);
           }
         });
 
         scope.$emit('gmPolylinesUpdated', attrs.gmObjects);
       }; // end updatePolylines()
+      
+      // watch gmEvents
+      scope.$watch('gmEvents()', function(newValue, oldValue) {
+        if (newValue != null && newValue !== oldValue) {
+          angular.forEach(newValue, function(eventObj) {
+            var event = eventObj.event;
+            var ids = eventObj.ids;
+            angular.forEach(ids, function(id) {
+              var polyline = controller.getPolyline(scope.$id, id);
+              if (polyline != null) {
+                $timeout(angular.bind(this, controller.trigger, polyline, event));
+              }
+            });
+          });
+        }
+      });
 
       scope.$watch('gmObjects().length', function(newValue, oldValue) {
         if (newValue != null && newValue !== oldValue) {
@@ -190,8 +239,10 @@
       priority: 100,
       scope: {
         gmObjects: '&',
-        gmGetPath: '&',
-        gmGetPolylineOptions: '&',
+        gmId: '&',
+        gmPath: '&',
+        gmPolylineOptions: '&',
+        gmEvents: '&'
       },
       require: '^gmMap',
       link: link

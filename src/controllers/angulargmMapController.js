@@ -355,7 +355,7 @@
       });
     };
 
-    this.addPolyline = function(scopeId, polylineOptions) {
+    this.addPolyline = function(scopeId, id, polylineOptions) {
       var opts = angular.extend({}, polylineOptions);
 
       if (!(opts.path) instanceof Array || opts.path.length < 2) {
@@ -368,8 +368,7 @@
         }
       });
 
-      var hash = angulargmUtils.createHash(polylineOptions.path, this.precision);
-      if (this.hasPolyline(scopeId, hash)) {
+      if (this.hasPolyline(scopeId, id)) {
           return false;
       }
 
@@ -377,25 +376,25 @@
       if (null == this._polylines[scopeId]) {
         this._polylines[scopeId] = {};
       }
-      this._polylines[scopeId][hash] = polyline;
+      this._polylines[scopeId][id] = polyline;
       polyline.setMap(this._map);
       return true;
     };
 
-    this.getPolyline = function (scopeId, hash) {
-      if (null == hash || '' === hash) {
-        throw 'no hash passed to lookup';
+    this.getPolyline = function (scopeId, id) {
+      if (null == id || '' === id) {
+        throw 'no id passed to lookup';
       }
 
-      if (null != this._polylines[scopeId] && hash in this._polylines[scopeId]) {
-        return this._polylines[scopeId][hash];
+      if (null != this._polylines[scopeId] && id in this._polylines[scopeId]) {
+        return this._polylines[scopeId][id];
       } else {
         return null;
       }
     };
 
-    this.hasPolyline = function (scopeId, hash) {
-      return (this.getPolyline(scopeId, hash) instanceof Object);
+    this.hasPolyline = function (scopeId, id) {
+      return (this.getPolyline(scopeId, id) instanceof Object);
     };
 
     this.forEachPolylineInScope = function(scopeId, fn) {
@@ -403,9 +402,9 @@
         throw 'fn was null or undefined';
       }
 
-      angular.forEach(this._polylines[scopeId], function(polyline, hash) {
+      angular.forEach(this._polylines[scopeId], function(polyline, id) {
         if (null != polyline) {
-          fn(polyline, hash);
+          fn(polyline, id);
         }
       });
     };
@@ -416,24 +415,24 @@
       }
 
       angular.forEach(this._polylines, function(polylines, scopeId) {
-        angular.forEach(polylines, function(polyline, hash) {
+        angular.forEach(polylines, function(polyline, id) {
           if (null != polyline) {
-            fn(polyline, hash);
+            fn(polyline, id);
           }
         });
       });
     };
 
-    this.removePolylineByHash = function(scopeId, hash) {
+    this.removePolyline = function(scopeId, id) {
       var removed = false;
-      var polyline = this._polylines[scopeId][hash];
+      var polyline = this._polylines[scopeId][id];
       if (polyline) {
         polyline.setMap(null);
         removed = true;
       }
 
-      this._polylines[scopeId][hash] = null;
-      delete this._polylines[scopeId][hash];
+      this._polylines[scopeId][id] = null;
+      delete this._polylines[scopeId][id];
       return removed;
     };
 
