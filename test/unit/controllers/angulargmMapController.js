@@ -203,104 +203,78 @@ describe('angulargmMapController', function() {
     expect(callCount).toEqual(1);
   });
 
-
   describe('marker functions', function() {
-    var position, positionSame, positionVeryClose, position2;
-    var markerOptions, markerOptionsSame, markerOptionsVeryClose, markerOptions2;
+    var position
+    var id, id2
+    var markerOptions
 
     beforeEach(function() {
       position = new google.maps.LatLng(1, 2);
-      positionSame = new google.maps.LatLng(1.0004, 2.0004);
-      positionVeryClose = new google.maps.LatLng(1.0005, 2.0005);
-      position2 = new google.maps.LatLng(3, 4);
-
+      id = 1;
+      id2 = 2;
       scope = 'scope';
 
       markerOptions = {
         position: position
       };
-      markerOptionsSame = {
-        position: positionSame
-      };
-      markerOptionsVeryClose = {
-        position: positionVeryClose
-      };
-      markerOptions2 = {
-        position: position2
-      };
 
-      mapCtrl.addMarker(scope, markerOptions);
+      mapCtrl.addMarkerById(scope, id, markerOptions);
     });
 
-    describe('addMarker', function() {
+    describe('addMarkerById', function() {
 
       it('adds new markers to the map', function() {
-        added = mapCtrl.addMarker(scope, markerOptions2);
+        var added = mapCtrl.addMarkerById(scope, id, markerOptions);
         expect(added).toBeTruthy();
       });
 
-      
-      it('does not add markers already on the map', function() {
-        var added = mapCtrl.addMarker(scope, markerOptions);
-        expect(added).toBeFalsy();
-      });
-
-
-      it('adds markers which differ by at least 0.0005', function() {
-        var added = mapCtrl.addMarker(scope, markerOptionsVeryClose);
+      it('does replace markers already on the map', function() {
+        mapCtrl.addMarkerById(scope, id, markerOptions);
+        var added = mapCtrl.addMarkerById(scope, id, markerOptions);
         expect(added).toBeTruthy();
       });
 
-
-      it('does not add markers which differ less than 0.0005', function() {
-        var added = mapCtrl.addMarker(scope, markerOptionsSame);
-        expect(added).toBeFalsy();
+      it('does not add markers with no position', function() {
+        mapCtrl.addMarkerById(scope, id, markerOptions);
+        var added = angular.bind(this, mapCtrl.addMarkerById, scope, id, markerOptions);
+        expect(added).toThrow();
       });
 
+      it('does not add markers with no id', function() {
+        mapCtrl.addMarkerById(scope, id, markerOptions);
+        var added = angular.bind(this, mapCtrl.addMarkerById, scope, markerOptions);
+        expect(added).toThrow();
+      });
     });
 
-
-    describe('getMarker', function() {
+    describe('getMarkerById', function() {
 
       it('retrieves markers that are on the map', function() {
-        var marker = mapCtrl.getMarker(scope, position.lat(), position.lng());
+        mapCtrl.addMarkerById(scope, id, markerOptions);
+        var marker = mapCtrl.getMarkerById(scope, id);
         expect(marker.getPosition()).toEqual(markerOptions.position);
       });
-
 
       it('returns null for marker not on the map', function() {
-        var marker = mapCtrl.getMarker(scope, position2.lat(), position2.lng());
-        expect(marker).toBeNull();
-      });
-
-
-      it('retrives markers given a lat and lng that are within 0.0005', function() {
-        var marker = mapCtrl.getMarker(scope, positionSame.lat(), positionSame.lng());
-        expect(marker.getPosition()).toEqual(markerOptions.position);
-      });
-
-
-      it('does not retrieve marker given lat and lng more than 0.0005 away', function() {
-        var marker = mapCtrl.getMarker(scope, positionVeryClose.lat(), positionVeryClose.lng());
+        var marker = mapCtrl.getMarkerById(scope, id2);
         expect(marker).toBeNull();
       });
 
     });
-
 
     describe('removeMarker', function() {
 
       it('removes markers from the map', function() {
-        var removed = mapCtrl.removeMarker(scope, position.lat(), position.lng());
+        var removed = mapCtrl.removeMarker(scope, id);
         expect(removed).toBeTruthy();
-        expect(mapCtrl.getMarker(scope, position.lat(), position.lng())).toBeNull();
+        expect(mapCtrl.getMarkerById(scope, id)).toBeNull();
       });
 
 
       it('does not remove markers not on the map', function() {
-        var removed = mapCtrl.removeMarker(scope, position2.lat(), position2.lng());
+        var removed = mapCtrl.removeMarker(scope, id2);
         expect(removed).toBeFalsy();
-        expect(mapCtrl.getMarker(scope, position.lat(), position.lng())).not.toBeNull();
+        expect(mapCtrl.getMarkerById(scope, id)).not.toBeNull();
       });
 
     });
@@ -324,6 +298,5 @@ describe('angulargmMapController', function() {
       });
       expect(called).toBeFalsy();
     });
-
   });
 });

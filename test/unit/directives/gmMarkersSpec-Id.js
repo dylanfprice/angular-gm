@@ -1,4 +1,4 @@
-describe('gmMarkers', function() {
+describe('gmMarkers-id', function() {
   var elm, scope, markersScopeId, mapCtrl;
   var objToLatLng;
   var $timeout;
@@ -11,40 +11,41 @@ describe('gmMarkers', function() {
     // set up scopes
     scope = $rootScope.$new();
     scope.people = [
-      {name: '0', lat: 1, lng: 2, id: 0},
-      {name: '3', lat: 4, lng: 5, id: 3}
+      {name: '0', lat: 1, lng: 2},
+      {name: '3', lat: 4, lng: 5}
     ];
     scope.getOpts = function(person) {
       return {
         key: 'value',
-        title: person.name
+        title: person.name,
+        id: person.name
       };
     };
     scope.mapId = 'test';
-
+  
     $timeout = _$timeout_;
     objToLatLng = angulargmUtils.objToLatLng;
 
     // compile angulargmMarkers directive
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
-      '<gm-markers ' +
-      'gm-objects="people"' +
-      'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' +
-      'gm-get-id="object.id"' +
-      'gm-get-marker-options="getOpts(object)"' +
-      'gm-eventsbyid="markerEvents"' +
-      'gm-on-click="selected = {person: object, marker: marker}"' +
-      'gm-on-position-changed="posChanged = {marker: marker}"' +
-      'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' +
-      '</gm-markers>' +
-      '</gm-map>');
+                            '<gm-markers ' +
+                              'gm-objects="people"' +
+                              'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' + 
+                              'gm-get-marker-options="getOpts(object)"' +
+                              'gm-eventsbyid="markerEvents"' +
+                              'gm-on-click="selected = {person: object, marker: marker}"' +
+                              'gm-on-position-changed="posChanged = {marker: marker}"' +
+                              'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' +
+                            '</gm-markers>' + 
+                          '</gm-map>');
 
     $compile(elm)(scope);
 
     mapCtrl = elm.controller('gmMap');
+    spyOn(mapCtrl, 'addMarker').andCallThrough();
     spyOn(mapCtrl, 'addMarkerById').andCallThrough();
     spyOn(mapCtrl, 'removeMarker').andCallThrough();
-    spyOn(mapCtrl, 'removeMarkerById').andCallThrough();
+    spyOn(mapCtrl, 'removeMarkerByHash').andCallThrough();
     spyOn(mapCtrl, 'trigger').andCallThrough();
     spyOn(mapCtrl, 'addListener').andCallThrough();
 
@@ -56,14 +57,13 @@ describe('gmMarkers', function() {
 
   it('requires the gmObjects attribute', inject(function($compile) {
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
-      '<gm-markers ' +
-      'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' +
-      'gm-get-id="{id:object.id}"' +
-      'gm-get-marker-options="getOpts(object)"' +
-      'gm-on-click="selected = {person: object, marker: marker}"' +
-      'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' +
-      '</gm-markers>' +
-      '</gm-map>');
+                            '<gm-markers ' +
+                              'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' + 
+                              'gm-get-marker-options="getOpts(object)"' + 
+                              'gm-on-click="selected = {person: object, marker: marker}"' +
+                              'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' + 
+                            '</gm-markers>' + 
+                          '</gm-map>');
 
     scope = scope.$new();
     scope.mapId = 'test2';
@@ -73,35 +73,19 @@ describe('gmMarkers', function() {
 
   it('requires the gmGetLatLng attribute', inject(function($compile) {
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
-      '<gm-markers ' +
-      'gm-objects="people"' +
-      'gm-get-id="{id:object.id}"' +
-      'gm-get-marker-options="getOpts(object)"' +
-      'gm-on-click="selected = {person: object, marker: marker}"' +
-      'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' +
-      '</gm-markers>' +
-      '</gm-map>');
+                            '<gm-markers ' +
+                              'gm-objects="people"' + 
+                              'gm-get-marker-options="getOpts(object)"' + 
+                              'gm-on-click="selected = {person: object, marker: marker}"' +
+                              'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' + 
+                            '</gm-markers>' + 
+                          '</gm-map>');
 
     scope = scope.$new();
     scope.mapId = 'test3';
     expect(angular.bind(this, $compile(elm), scope)).toThrow();
   }));
 
-  it('requires the gmGetId attribute', inject(function($compile) {
-    elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
-      '<gm-markers ' +
-      'gm-objects="people"' +
-      'gm-get-lat-lng="{lat:object.lat,lng:object.lng}"' +
-      'gm-get-marker-options="getOpts(object)"' +
-      'gm-on-click="selected = {person: object, marker: marker}"' +
-      'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' +
-      '</gm-markers>' +
-      '</gm-map>');
-
-    scope = scope.$new();
-    scope.mapId = 'test4';
-    expect(angular.bind(this, $compile(elm), scope)).toThrow();
-  }));
 
   describe('objects', function() {
 
@@ -109,28 +93,27 @@ describe('gmMarkers', function() {
     it('initializes markers with objects', function() {
       var position1 = objToLatLng(scope.people[0]);
       var position2 = objToLatLng(scope.people[1]);
-      expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, jasmine.any(Number), {key: 'value', title: jasmine.any(String), position: position1});
-      expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, jasmine.any(Number), {key: 'value', title: jasmine.any(String), position: position2});
+      expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, {key: 'value', title: jasmine.any(String), id: jasmine.any(String), position: position1});
+      expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, {key: 'value', title: jasmine.any(String), id: jasmine.any(String), position: position2});
     });
 
-
+    
     it('updates markers with new objects', function() {
-      scope.people.push({name: '6', lat: 7, lng: 8, id: 6});
+      scope.people.push({name: '6', lat: 7, lng: 8});
       var position = objToLatLng(scope.people[2]);
       scope.$digest();
-      expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, jasmine.any(Number), {key: 'value', title: jasmine.any(String), position: position});
+      expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, {key: 'value', title: jasmine.any(String), id: jasmine.any(String), position: position});
     });
 
 
     it('updates markers when objects replaced with objects of same length', function() {
-
       var length = scope.people.length;
       scope.people = [];
       for (var i = 0; i < length; i++) {
-        scope.people.push({name: 'new' + i, lat: i, lng: i, id: (i+10)});
+        scope.people.push({name: 'new' + i, lat: i, lng: i});
       }
       scope.$digest();
-      expect(mapCtrl.removeMarkerById.calls.length).toEqual(length);
+      expect(mapCtrl.removeMarkerByHash.calls.length).toEqual(length);
       expect(mapCtrl.addMarkerById.calls.length).toEqual(length * 2);
     });
 
@@ -139,13 +122,14 @@ describe('gmMarkers', function() {
       var person = scope.people.pop();
       scope.$digest();
       var position = new google.maps.LatLng(person.lat, person.lng);
-      expect(mapCtrl.removeMarkerById).toHaveBeenCalledWith(markersScopeId, '3');
+      //person.name is same as the id used for the hash
+      expect(mapCtrl.removeMarkerByHash).toHaveBeenCalledWith(markersScopeId, person.name);
     });
 
 
     it('does not add duplicate markers', function() {
       var origLength = scope.people.length;
-      scope.people.push({name: '0', lat: 2, lng: 3, id: 0});
+      scope.people.push({name: '0', lat: 2, lng: 3});
       scope.$digest();
       expect(mapCtrl.addMarkerById.callCount).toEqual(origLength);
     });
@@ -157,13 +141,13 @@ describe('gmMarkers', function() {
       scope.$digest();
       expect(mapCtrl.addMarkerById.callCount).toEqual(origLength);
     });
-
+    
   });
 
 
   it('retrieves marker options', function() {
-    expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, jasmine.any(Number), {key: 'value', title: '0', position: jasmine.any(Object)});
-    expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, jasmine.any(Number), {key: 'value', title: '3', position: jasmine.any(Object)});
+    expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, {key: 'value', title: '0', id: jasmine.any(String), position: jasmine.any(Object)});
+    expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, {key: 'value', title: '3', id: jasmine.any(String), position: jasmine.any(Object)});
   });
 
 
@@ -257,13 +241,14 @@ describe('gmMarkers', function() {
     scope.getOpts = function(person) {
       return {
         key: 'differentValue',
-        title: person.name
+        title: person.name,
+        id: person.name
       };
     };
     scope.$broadcast('gmMarkersRedraw', 'people');
 
-    expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, jasmine.any(Number), {key: 'differentValue', title: jasmine.any(String), position: position1});
-    expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, jasmine.any(Number), {key: 'differentValue', title: jasmine.any(String), position: position2});
+    expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, {key: 'differentValue', title: jasmine.any(String), id: jasmine.any(String), position: position1});
+    expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, {key: 'differentValue', title: jasmine.any(String), id: jasmine.any(String), position: position2});
   });
 
 
@@ -273,13 +258,14 @@ describe('gmMarkers', function() {
     scope.getOpts = function(person) {
       return {
         key: 'differentValue',
-        title: person.name
+        title: person.name,
+        id: person.name
       };
     };
     scope.$broadcast('gmMarkersRedraw');
 
-    expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, jasmine.any(Number), {key: 'differentValue', title: jasmine.any(String), position: position1});
-    expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, jasmine.any(Number), {key: 'differentValue', title: jasmine.any(String), position: position2});
+    expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, {key: 'differentValue', title: jasmine.any(String), id: jasmine.any(String), position: position1});
+    expect(mapCtrl.addMarkerById).toHaveBeenCalledWith(markersScopeId, {key: 'differentValue', title: jasmine.any(String), id: jasmine.any(String), position: position2});
   });
 
 

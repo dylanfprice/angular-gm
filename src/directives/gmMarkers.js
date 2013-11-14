@@ -142,6 +142,8 @@
         throw 'gmObjects attribute required';
       } else if (!('gmGetLatLng' in attrs)) {
         throw 'gmGetLatLng attribute required';
+      } else if (!('gmGetId' in attrs)) {
+        throw 'gmGetId attribute required';
       }
 
       var handlers = getEventHandlers(attrs); // map events -> handlers
@@ -153,6 +155,8 @@
 
         angular.forEach(objects, function(object, i) {
           var latLngObj = scope.gmGetLatLng({object: object});
+          var id = scope.gmGetId({object: object});
+
           var position = objToLatLng(latLngObj);
           if (position == null) {
             return;
@@ -161,17 +165,17 @@
           var markerOptions = scope.gmGetMarkerOptions({object: object});
 
           // hash objects for quick access
-          var hash = angulargmUtils.createHash(position, controller.precision);
-          objectHash[hash] = object;
+          objectHash[id] = object;
 
-          // add marker
-          if (!controller.hasMarker(scope.$id, latLngObj.lat, latLngObj.lng)) {
+          var markerExists = (controller.getMarkerById(scope.$id, id));
+
+          if (!markerExists) {
 
             var options = {};
             angular.extend(options, markerOptions, {position: position});
 
-            controller.addMarker(scope.$id, options);
-            var marker = controller.getMarker(scope.$id, latLngObj.lat, latLngObj.lng);
+            controller.addMarkerById(scope.$id, id, options);
+            var marker = controller.getMarkerById(scope.$id, id);
 
             // set up marker event handlers
             angular.forEach(handlers, function(handler, event) {
@@ -193,15 +197,18 @@
         // remove 'orphaned' markers
         var orphaned = [];
         
-        controller.forEachMarkerInScope(scope.$id, function(marker, hash) {
-          if (!(hash in objectHash)) {
-            orphaned.push(hash);
+        controller.forEachMarkerInScope(scope.$id, function(marker, id) {
+          if (!(id in objectHash)) {
+            orphaned.push(id);
           }
         });
 
         angular.forEach(orphaned, function(markerHash, i) {
-          controller.removeMarkerByHash(scope.$id, markerHash);
+          controller.removeMarkerById(scope.$id, markerHash);
         });
+
+        //update markers in container
+        controller.updateContainerMarkers(scope.$id);
 
         scope.$emit('gmMarkersUpdated', attrs.gmObjects);
       }; // end updateMarkers()
@@ -235,6 +242,22 @@
         }
       });
 
+      // watch gmEventsbyid
+      scope.$watch('gmEventsbyid()', function(newValue, oldValue) {
+        if (newValue != null && newValue !== oldValue) {
+          angular.forEach(newValue, function(eventObj) {
+            var event = eventObj.event;
+            var ids = eventObj.id;
+            angular.forEach(ids, function(id) {
+              var marker = controller.getMarkerById(scope.$id, id);
+              if (marker != null) {
+                $timeout(angular.bind(this, controller.trigger, marker, event));
+              }
+            });
+          });
+        }
+      });
+
       scope.$on('gmMarkersRedraw', function(event, objectsName) {
         if (objectsName == null || objectsName === attrs.gmObjects) {
           updateMarkers(scope);
@@ -253,8 +276,10 @@
       scope: {
         gmObjects: '&',
         gmGetLatLng: '&',
+        gmGetId: '&',
         gmGetMarkerOptions: '&',
-        gmEvents: '&'
+        gmEvents: '&',
+        gmEventsbyid: '&'
       },
       require: '^gmMap',
       link: link
