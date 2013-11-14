@@ -265,7 +265,7 @@
         gmId: '&',
         gmPosition: '&',
         gmMarkerOptions: '&',
-        gmEvents: '&',
+        gmEvents: '&'
       },
       require: '^gmMap',
       link: link
