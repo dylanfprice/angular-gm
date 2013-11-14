@@ -151,6 +151,7 @@
 
         angular.forEach(objects, function(object) {
           var path = scope.gmPath({object: object});
+          var id = scope.gmId({object: object});
           var lineLatLngs = [];
 
           angular.forEach(path, function(latlng) {
@@ -188,7 +189,7 @@
 
         // remove 'orphaned' polylines
         controller.forEachPolylineInScope(scope.$id, function(polyline, id) {
-          if (!(hash in objectCache)) {
+          if (!(id in objectCache)) {
             controller.removePolyline(scope.$id, id);
           }
         });

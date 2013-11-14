@@ -162,9 +162,9 @@
     function assertDefined(value, name) {
       if (value === undefined || value === null) {
         if (name) {
-          throw name + ' was: ' + value
+          throw name + ' was: ' + value;
         } else {
-          throw 'value was: ' + value
+          throw 'value was: ' + value;
         }
       }
     }
