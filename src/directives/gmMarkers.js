@@ -15,7 +15,7 @@
  *
  * @param {expression} gm-objects an array of objects in the current scope.
  * These can be any objects you wish to attach to markers, the only requirement
- * is that they have a uniform method of accessing a lat and lng.
+ * is that they have a uniform method of accessing an id and a position.
  *
  *
  * @param {expression} gm-id an angular expression that given an object from
