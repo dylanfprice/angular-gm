@@ -204,59 +204,61 @@ describe('angulargmMapController', function() {
   });
 
   describe('marker functions', function() {
-    var position
-    var id, id2
-    var markerOptions
+    var position,
+        id,
+        id2,
+        scope,
+        scope2,
+        markerOptions;
+
 
     beforeEach(function() {
       position = new google.maps.LatLng(1, 2);
       id = 1;
       id2 = 2;
       scope = 'scope';
+      scope2 = 'scope2';
 
       markerOptions = {
         position: position
       };
 
-      mapCtrl.addMarkerById(scope, id, markerOptions);
     });
 
-    describe('addMarkerById', function() {
+    describe('addMarker', function() {
 
       it('adds new markers to the map', function() {
-        var added = mapCtrl.addMarkerById(scope, id, markerOptions);
+        var added = mapCtrl.addMarker(scope, id, markerOptions);
         expect(added).toBeTruthy();
       });
 
-      it('does replace markers already on the map', function() {
-        mapCtrl.addMarkerById(scope, id, markerOptions);
-        var added = mapCtrl.addMarkerById(scope, id, markerOptions);
-        expect(added).toBeTruthy();
+      it('does not replace markers already on the map', function() {
+        mapCtrl.addMarker(scope, id, markerOptions);
+        var added = mapCtrl.addMarker(scope, id, markerOptions);
+        expect(added).toBeFalsy();
       });
 
       it('does not add markers with no position', function() {
-        mapCtrl.addMarkerById(scope, id, markerOptions);
-        var added = angular.bind(this, mapCtrl.addMarkerById, scope, id, markerOptions);
+        var added = angular.bind(this, mapCtrl.addMarker, scope, id, {});
         expect(added).toThrow();
       });
 
       it('does not add markers with no id', function() {
-        mapCtrl.addMarkerById(scope, id, markerOptions);
-        var added = angular.bind(this, mapCtrl.addMarkerById, scope, markerOptions);
+        var added = angular.bind(this, mapCtrl.addMarker, scope, null, markerOptions);
         expect(added).toThrow();
       });
     });
 
-    describe('getMarkerById', function() {
+    describe('getMarker', function() {
 
       it('retrieves markers that are on the map', function() {
-        mapCtrl.addMarkerById(scope, id, markerOptions);
-        var marker = mapCtrl.getMarkerById(scope, id);
+        mapCtrl.addMarker(scope, id, markerOptions);
+        var marker = mapCtrl.getMarker(scope, id);
         expect(marker.getPosition()).toEqual(markerOptions.position);
       });
 
       it('returns null for marker not on the map', function() {
-        var marker = mapCtrl.getMarkerById(scope, id2);
+        var marker = mapCtrl.getMarker(scope, id2);
         expect(marker).toBeNull();
       });
 
@@ -264,34 +266,51 @@ describe('angulargmMapController', function() {
 
     describe('removeMarker', function() {
 
+      beforeEach(function() {
+        mapCtrl.addMarker(scope, id, markerOptions);
+      });
+
       it('removes markers from the map', function() {
         var removed = mapCtrl.removeMarker(scope, id);
         expect(removed).toBeTruthy();
-        expect(mapCtrl.getMarkerById(scope, id)).toBeNull();
+        expect(mapCtrl.getMarker(scope, id)).toBeNull();
       });
 
 
       it('does not remove markers not on the map', function() {
         var removed = mapCtrl.removeMarker(scope, id2);
         expect(removed).toBeFalsy();
-        expect(mapCtrl.getMarkerById(scope, id)).not.toBeNull();
+        expect(mapCtrl.getMarker(scope, id)).not.toBeNull();
       });
 
     });
 
 
     it('can apply a function to each marker', function() {
+      mapCtrl.addMarker(scope, id, markerOptions);
+      mapCtrl.addMarker(scope2, id, markerOptions);
       markers = [];
       mapCtrl.forEachMarker(function(marker) {
         markers.push(marker);
       });
-      expect(markers.length).toEqual(1);
+      expect(markers.length).toEqual(2);
       expect(markers[0].getPosition()).toEqual(markerOptions.position);
+      expect(markers[1].getPosition()).toEqual(markerOptions.position);
+    });
+
+
+    it('can apply a function to each marker in a scope', function() {
+      mapCtrl.addMarker(scope, id, markerOptions);
+      mapCtrl.addMarker(scope2, id, markerOptions);
+      markers = [];
+      mapCtrl.forEachMarkerInScope(scope, function(marker) {
+        markers.push(marker);
+      });
+      expect(markers.length).toEqual(1);
     });
 
 
     it('does not apply a function to removed markers', function() {
-      mapCtrl.removeMarker(scope, 1, 2);
       var called = false;
       mapCtrl.forEachMarker(function(marker) {
         called = true;

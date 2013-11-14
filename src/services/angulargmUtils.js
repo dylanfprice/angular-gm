@@ -159,6 +159,16 @@
       return hash;
     }
 
+    function assertDefined(value, name) {
+      if (value === undefined || value === null) {
+        if (name) {
+          throw name + ' was: ' + value
+        } else {
+          throw 'value was: ' + value
+        }
+      }
+    }
+
     return {
       latLngEqual: latLngEqual,
       boundsEqual: boundsEqual,
@@ -166,7 +176,8 @@
       objToLatLng: objToLatLng,
       hasNaN: hasNaN,
       getEventHandlers: getEventHandlers,
-      createHash: createHash
+      createHash: createHash,
+      assertDefined: assertDefined
     };
   }]);
 })();

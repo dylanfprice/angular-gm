@@ -18,9 +18,7 @@
     var latLngEqual = angulargmUtils.latLngEqual;
     var boundsEqual = angulargmUtils.boundsEqual;
     var hasNaN = angulargmUtils.hasNaN;
-    var gMDefaults = angulargmDefaults;
-    var gMContainer = angulargmContainer;
-
+    var assertDefined = angulargmUtils.assertDefined;
 
     /*
      * Construct a new controller for the gmMap directive.
@@ -36,10 +34,10 @@
       var mapDiv = angular.element($element[0].firstChild);
       mapDiv.attr('id', mapId);
 
-      var config = this._getConfig($scope, gMDefaults);
+      var config = this._getConfig($scope, angulargmDefaults);
 
       // 'private' properties
-      this._map = this._createMap(mapId, mapDiv, config, gMContainer, $scope);
+      this._map = this._createMap(mapId, mapDiv, config, angulargmContainer, $scope);
       this._markers = {};
       this._polylines = {};
       this._listeners = {};
@@ -49,7 +47,7 @@
 
       Object.defineProperties(this, {
         'precision': {
-          value: gMDefaults.precision,
+          value: angulargmDefaults.precision,
           writeable: false
         },
 
@@ -123,9 +121,9 @@
 
 
     // Retrieve google.maps.MapOptions
-    this._getConfig = function($scope, gMDefaults) {
+    this._getConfig = function($scope, angulargmDefaults) {
       // Get config or defaults
-      var defaults = gMDefaults.mapOptions;
+      var defaults = angulargmDefaults.mapOptions;
       var config = {};
       angular.extend(config, defaults, $scope.gmMapOptions());
       return config;
@@ -133,11 +131,11 @@
 
 
     // Create the map and add to angulargmContainer
-    this._createMap = function(id, element, config, gMContainer) {
-      var map = gMContainer.getMap(id);
+    this._createMap = function(id, element, config, angulargmContainer) {
+      var map = angulargmContainer.getMap(id);
       if (!map) {
         map = new google.maps.Map(element[0], config);
-        gMContainer.addMap(id, map);
+        angulargmContainer.addMap(id, map);
       } else {
         var div = map.getDiv();
         element.replaceWith(div);
@@ -178,7 +176,7 @@
       var self = this;
       angular.forEach(scopeIds, function(scopeId) {
         self.forEachMarkerInScope(scopeId, function(marker, hash) {
-          self.removeMarkerById(scopeId, hash);
+          self.removeMarker(scopeId, hash);
         });
       });
     };
@@ -188,7 +186,6 @@
      * Alias for google.maps.event.addListener(map, event, handler)
      * @param {string} event an event defined on google.maps.Map
      * @param {Function} a handler for the event
-     * @ignore
      */
     this.addMapListener = function(event, handler) {
       var listener = google.maps.event.addListener(this._map, event, handler);
@@ -205,7 +202,6 @@
      * Alias for google.maps.event.addListenerOnce(map, event, handler)
      * @param {string} event an event defined on google.maps.Map
      * @param {Function} a handler for the event
-     * @ignore
      */
     this.addMapListenerOnce = function(event, handler) {
       google.maps.event.addListenerOnce(this._map,
@@ -215,7 +211,6 @@
 
     /**
      * Alias for google.maps.event.addListener(object, event, handler)
-     * @ignore
      */
     this.addListener = function(object, event, handler) {
       google.maps.event.addListener(object, event, handler);
@@ -224,7 +219,6 @@
 
     /**
      * Alias for google.maps.event.addListenerOnce(object, event, handler)
-     * @ignore
      */
     this.addListenerOnce = function(object, event, handler) {
       google.maps.event.addListenerOnce(object, event, handler);
@@ -234,7 +228,6 @@
     /**
      * Alias for google.maps.event.trigger(map, event)
      * @param {string} event an event defined on google.maps.Map
-     * @ignore
      */
     this.mapTrigger = function(event) {
       google.maps.event.trigger(this._map, event);
@@ -243,36 +236,34 @@
 
     /**
      * Alias for google.maps.event.trigger(object, event)
-     * @ignore
      */
     this.trigger = function(object, event) {
       google.maps.event.trigger(object, event);
     };
 
-
     /**
      * Adds a new marker to the map.
-     * @param {number} scope id
-     * @param {google.maps.MarkerOptions} markerOptions
      * @return {boolean} true if a marker was added, false if there was already
-     *   a marker at this position. 'at this position' means delta_lat and
-     *   delta_lng are < 0.0005
-     * @throw if markerOptions does not have all required options (i.e. position)
-     * @ignore
+     *   a marker with the given id     
+     * @throw if any arguments are null/undefined or markerOptions does not
+     *   have all the required options (i.e. position)
      */
-      this.addMarkerById = function(scopeId, id, markerOptions) {
+    this.addMarker = function(scopeId, id, markerOptions) {
         var opts = {};
         angular.extend(opts, markerOptions);
+
+        assertDefined(scopeId, 'scopeId');
+        assertDefined(id, 'id');
 
         if (!(opts.position instanceof google.maps.LatLng)) {
           throw 'markerOptions did not contain a position';
         }
-        if (id === null || id === undefined) {
-          throw 'markerOptions did not contain a id';
+
+        if (this.hasMarker(scopeId, id)) {
+          return false;
         }
 
         var marker = new angulargmDefaults.markerConstructor(opts);
-//        var hash = markerOptions.id
 
         if (this._markers[scopeId] == null) {
           this._markers[scopeId] = {};
@@ -281,117 +272,85 @@
         marker.setMap(this._map);
 
         return true;
-      };
-    /**
-     * Adds markers to the container
-     * @param {number} scope id
-     */
-    this.updateContainerMarkers = function(scopeId) {
-      var mapId = $scope.gmMapId();
-      gMContainer.setMarkers(mapId, this._markers[scopeId]);
+    };
+
+    this.hasMarker = function(scopeId, id) {
+      assertDefined(scopeId, 'scopeId');
+      assertDefined(id, 'id');
+      return (this.getMarker(scopeId, id) instanceof google.maps.Marker);
     };
 
     /**
-     * @param {number} scope id
-     * @param {number} lat
-     * @param {number} lng
-     * @return {boolean} true if there is a marker with the given lat and lng
-     * @ignore
+     * @return {google.maps.Marker} the marker with the given id, or null if no
+     *   such marker exists
      */
-      this.hasMarkerById = function(scopeId, id) {
-        return (this.getMarkerById(scopeId, id) instanceof google.maps.Marker);
-      };
+    this.getMarker = function (scopeId, id) {
+      assertDefined(scopeId, 'scopeId');
+      assertDefined(id, 'id');
+
+      if (this._markers[scopeId] != null && id in this._markers[scopeId]) {
+        return this._markers[scopeId][id];
+      } else {
+        return null;
+      }
+    };
 
     /**
-     * @param {number} scope id
-     * @param {number} lat
-     * @param {number} lng
-     * @return {google.maps.Marker} the marker at given lat and lng, or null if
-     *   no such marker exists
-     * @ignore
-     */
-      this.getMarkerById = function (scopeId, id) {
-        if (id === null)
-          throw 'id was null';
-
-        if (this._markers[scopeId] != null && id in this._markers[scopeId]) {
-          return this._markers[scopeId][id];
-        } else {
-          return null;
-        }
-      };
-
-    /**
-     * @param {number} scope id
-     * @param {number} lat
-     * @param {number} lng
      * @return {boolean} true if a marker was removed, false if nothing
      *   happened
-     * @ignore
      */
     this.removeMarker = function(scopeId, id) {
-      if (id === null)
-        throw 'id was null';
+      assertDefined(scopeId, 'scopeId');
+      assertDefined(id, 'id');
 
-      return this.removeMarkerById(scopeId, id);
+      var removed = false;
+      var marker = this._markers[scopeId][id];
+      if (marker) {
+          marker.setMap(null);
+          removed = true;
+      }
+      this._markers[scopeId][id] = null;
+      delete this._markers[scopeId][id];
+      return removed;
     };
 
     /**
-     *
-     * @param {number} scope id
-     * @param {string} hash
-     * @returns {boolean} true if a marker was removed, false if nothing
-     *   happened
-     * @ignore
-     */
-    this.removeMarkerById = function(scopeId, id) {
-        var removed = false;
-        var marker = this._markers[scopeId][id];
-        if (marker) {
-            marker.setMap(null);
-            removed = true;
-        }
-        this._markers[scopeId][id] = null;
-        delete this._markers[scopeId][id];
-        return removed;
-    };
-
-
-    /**
-     * Applies a function to each marker.
+     * Applies a function to each marker on the map.
      * @param {Function} fn will called with marker as first argument
      * @throw if fn is null or undefined
-     * @ignore
      */
     this.forEachMarker = function(fn) {
-      if (fn == null) { throw 'fn was null or undefined'; }
-      var that = this;
-      var allMarkers = Object.keys(this._markers).reduce(function(markers, key){
-        angular.forEach(that._markers[key], function(marker){
-          markers.push(marker);
+      assertDefined(fn, 'fn');
+
+      var self = this;
+      var scopeIds = Object.keys(this._markers);
+      var allMarkers = scopeIds.reduce(function(accumulator, scopeId) {
+        angular.forEach(self._markers[scopeId], function(marker) {
+          accumulator.push(marker);
         });
-        return markers;
+        return accumulator;
       }, []);
-      angular.forEach(allMarkers, function(marker, hash) {
+
+      angular.forEach(allMarkers, function(marker, id) {
         if (marker != null) {
-          fn(marker, hash);
+          fn(marker, id);
         }
       });
     };
 
 
     /**
-     * Applies a function to each marker.
+     * Applies a function to each marker in a scope.
      * @param {number} scope id
      * @param {Function} fn will called with marker as first argument
      * @throw if fn is null or undefined
-     * @ignore
      */
     this.forEachMarkerInScope = function(scopeId, fn) {
-      if (fn == null) { throw 'fn was null or undefined'; }
-      angular.forEach(this._markers[scopeId], function(marker, hash) {
+      assertDefined(fn, 'fn');
+
+      angular.forEach(this._markers[scopeId], function(marker, id) {
         if (marker != null) {
-          fn(marker, hash);
+          fn(marker, id);
         }
       });
     };
@@ -478,13 +437,9 @@
       return removed;
     };
 
-    /**
-     * Get current map.
-     * @returns {object}
-     * @ignore
-     */
+
     this.getMap = function() {
-        return this._map;
+      return this._map;
     };
 
     /** Instantiate controller */

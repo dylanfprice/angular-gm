@@ -77,9 +77,10 @@
 
   directive('gmMap', ['$timeout', 'angulargmUtils', function ($timeout, angulargmUtils) {
   
-    /** link function **/
+    /** aliases **/
     var getEventHandlers = angulargmUtils.getEventHandlers;
 
+    /** link function **/
     function link(scope, element, attrs, controller) {
       // initialize scope
       if (!angular.isDefined(scope.gmCenter)) {
@@ -117,8 +118,6 @@
         hasMapTypeId = true;
       }
 
-      var handlers = getEventHandlers(attrs); // map events -> handlers
-
       var updateScope = function() {
         $timeout(function () {
           if (hasCenter || hasZoom || hasBounds || hasMapTypeId) {
@@ -154,6 +153,7 @@
 
       // Add user supplied callbacks
       var map = controller.getMap(attrs.gmMapId);
+      var handlers = getEventHandlers(attrs); // map events -> handlers
       angular.forEach(handlers, function(handler, event) {
         controller.addMapListener(event, function(ev) {
           // pass the map in
