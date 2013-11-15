@@ -175,11 +175,20 @@
       });
       this._listeners = {};
 
-      var scopeIds = Object.keys(this._markers);
       var self = this;
-      angular.forEach(scopeIds, function(scopeId) {
+      angular.forEach(Object.keys(this._markers), function(scopeId) {
         self.forEachMarkerInScope(scopeId, function(marker, hash) {
           self.removeMarkerByHash(scopeId, hash);
+        });
+      });
+      angular.forEach(Object.keys(this._polylines), function(scopeId) {
+        self.forEachPolylineInScope(scopeId, function(polyline, hash) {
+          self.removePolylineByHash(scopeId, hash);
+        });
+      });
+      angular.forEach(Object.keys(this._polygons), function(scopeId) {
+        self.forEachPolygonInScope(scopeId, function(polygon, hash) {
+          self.removePolygonByHash(scopeId, hash);
         });
       });
     };
