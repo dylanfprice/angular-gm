@@ -47,6 +47,7 @@
       'precision': 3,
       'markerConstructor': google.maps.Marker,
       'polylineConstructor': google.maps.Polyline,
+      'polygonConstructor': google.maps.Polygon,
       'mapOptions': {
         zoom : 8,
         center : new google.maps.LatLng(46, -120),

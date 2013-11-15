@@ -42,6 +42,7 @@
       this._map = this._createMap(mapId, mapDiv, config, gMContainer, $scope);
       this._markers = {};
       this._polylines = {};
+      this._polygons = {};
       this._listeners = {};
 
       // 'public' properties
@@ -174,11 +175,20 @@
       });
       this._listeners = {};
 
-      var scopeIds = Object.keys(this._markers);
       var self = this;
-      angular.forEach(scopeIds, function(scopeId) {
+      angular.forEach(Object.keys(this._markers), function(scopeId) {
         self.forEachMarkerInScope(scopeId, function(marker, hash) {
           self.removeMarkerByHash(scopeId, hash);
+        });
+      });
+      angular.forEach(Object.keys(this._polylines), function(scopeId) {
+        self.forEachPolylineInScope(scopeId, function(polyline, hash) {
+          self.removePolylineByHash(scopeId, hash);
+        });
+      });
+      angular.forEach(Object.keys(this._polygons), function(scopeId) {
+        self.forEachPolygonInScope(scopeId, function(polygon, hash) {
+          self.removePolygonByHash(scopeId, hash);
         });
       });
     };
@@ -475,6 +485,89 @@
       this._polylines[scopeId][hash] = null;
       delete this._polylines[scopeId][hash];
       return removed;
+    };
+
+    /* Begin Polygon Code */
+    this.addPolygon = function(scopeId, polygonOptions) {
+        var opts = angular.extend({}, polygonOptions);
+
+        if (!(opts.path) instanceof Array || opts.path.length < 2) {
+            return;
+        }
+
+        angular.forEach(opts.path, function(point) {
+            if (!(point instanceof google.maps.LatLng)) {
+                throw 'An element in polygonOptions was found to not be a valid position';
+            }
+        });
+
+        var hash = angulargmUtils.createHash(polygonOptions.path, this.precision);
+        if (this.hasPolygon(scopeId, hash)) {
+            return false;
+        }
+
+        var polygon = new angulargmDefaults.polygonConstructor(opts);
+        if (null == this._polygons[scopeId]) {
+            this._polygons[scopeId] = {};
+        }
+        this._polygons[scopeId][hash] = polygon;
+        polygon.setMap(this._map);
+        return true;
+    };
+
+    this.getPolygon = function (scopeId, hash) {
+        if (null == hash || '' === hash) {
+            throw 'no hash passed to lookup';
+        }
+
+        if (null != this._polygons[scopeId] && hash in this._polygons[scopeId]) {
+            return this._polygons[scopeId][hash];
+        } else {
+            return null;
+        }
+    };
+
+    this.hasPolygon = function (scopeId, hash) {
+        return (this.getPolygon(scopeId, hash) instanceof Object);
+    };
+
+    this.forEachPolygonInScope = function(scopeId, fn) {
+        if (null == fn) {
+            throw 'fn was null or undefined';
+        }
+
+        angular.forEach(this._polygons[scopeId], function(polygon, hash) {
+            if (null != polygon) {
+                fn(polygon, hash);
+            }
+        });
+    };
+
+    this.forEachPolygon = function(fn) {
+        if (null == fn) {
+            throw 'fn was null or undefined';
+        }
+
+        angular.forEach(this._polygons, function(polygons, scopeId) {
+            angular.forEach(polygons, function(polygon, hash) {
+                if (null != polygon) {
+                    fn(polygon, hash);
+                }
+            });
+        });
+    };
+
+    this.removePolygonByHash = function(scopeId, hash) {
+        var removed = false;
+        var polygon = this._polygons[scopeId][hash];
+        if (polygon) {
+            polygon.setMap(null);
+            removed = true;
+        }
+
+        this._polygons[scopeId][hash] = null;
+        delete this._polygons[scopeId][hash];
+        return removed;
     };
 
     /**
