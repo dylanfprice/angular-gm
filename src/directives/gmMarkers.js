@@ -173,15 +173,15 @@
           // cache objects for quick access
           objectCache[id] = object;
 
-          var markerExists = controller.hasMarker(scope.$id, id);
+          var markerExists = controller.hasElement('marker', scope.$id, id);
 
           if (!markerExists) {
 
             var options = {};
             angular.extend(options, markerOptions, {position: position});
 
-            controller.addMarker(scope.$id, id, options);
-            var marker = controller.getMarker(scope.$id, id);
+            controller.addElement('marker', scope.$id, id, options);
+            var marker = controller.getElement('marker', scope.$id, id);
 
             // set up marker event handlers
             angular.forEach(handlers, function(handler, event) {
@@ -203,14 +203,14 @@
         // remove 'orphaned' markers
         var orphaned = [];
         
-        controller.forEachMarkerInScope(scope.$id, function(marker, id) {
+        controller.forEachElementInScope('marker', scope.$id, function(marker, id) {
           if (!(id in objectCache)) {
             orphaned.push(id);
           }
         });
 
         angular.forEach(orphaned, function(id) {
-          controller.removeMarker(scope.$id, id);
+          controller.removeElement('marker', scope.$id, id);
         });
 
         scope.$emit('gmMarkersUpdated', attrs.gmObjects);
@@ -236,7 +236,7 @@
             var event = eventObj.event;
             var ids = eventObj.ids;
             angular.forEach(ids, function(id) {
-              var marker = controller.getMarker(scope.$id, id);
+              var marker = controller.getElement('marker', scope.$id, id);
               if (marker != null) {
                 $timeout(angular.bind(this, controller.trigger, marker, event));
               }

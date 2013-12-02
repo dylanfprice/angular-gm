@@ -167,12 +167,12 @@
           var polylineOptions = scope.gmPolylineOptions({object: object});
           objectCache[id] = object;
 
-          if (!controller.hasPolyline(scope.$id, id)) {
+          if (!controller.hasElement('polyline', scope.$id, id)) {
             var options = {};
             angular.extend(options, polylineOptions, {path: lineLatLngs});
 
-            controller.addPolyline(scope.$id, id, options);
-            var polyline = controller.getPolyline(scope.$id, id);
+            controller.addElement('polyline', scope.$id, id, options);
+            var polyline = controller.getElement('polyline', scope.$id, id);
 
             angular.forEach(handlers, function(handler, event) {
               controller.addListener(polyline, event, function() {
@@ -188,9 +188,9 @@
         });
 
         // remove 'orphaned' polylines
-        controller.forEachPolylineInScope(scope.$id, function(polyline, id) {
+        controller.forEachElementInScope('polyline', scope.$id, function(polyline, id) {
           if (!(id in objectCache)) {
-            controller.removePolyline(scope.$id, id);
+            controller.removeElement('polyline', scope.$id, id);
           }
         });
 
@@ -204,7 +204,7 @@
             var event = eventObj.event;
             var ids = eventObj.ids;
             angular.forEach(ids, function(id) {
-              var polyline = controller.getPolyline(scope.$id, id);
+              var polyline = controller.getElement('polyline', scope.$id, id);
               if (polyline != null) {
                 $timeout(angular.bind(this, controller.trigger, polyline, event));
               }

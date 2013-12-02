@@ -38,8 +38,7 @@
 
       // 'private' properties
       this._map = this._createMap(mapId, mapDiv, config, angulargmContainer, $scope);
-      this._markers = {};
-      this._polylines = {};
+      this._elements = {};
       this._listeners = {};
 
       // 'public' properties
@@ -172,11 +171,14 @@
       });
       this._listeners = {};
 
-      var scopeIds = Object.keys(this._markers);
       var self = this;
-      angular.forEach(scopeIds, function(scopeId) {
-        self.forEachMarkerInScope(scopeId, function(marker, hash) {
-          self.removeMarker(scopeId, hash);
+      var types = Object.keys(this._elements);
+      angular.forEach(types, function(type) {
+        var scopeIds = Object.keys(self._getElements(type));
+        angular.forEach(scopeIds, function(scopeId) {
+          self.forEachElementInScope(type, scopeId, function(element, id) {
+            self.removeElement(type, scopeId, id);
+          });
         });
       });
     };
@@ -241,201 +243,151 @@
       google.maps.event.trigger(object, event);
     };
 
+    this._newElement = function(type, opts) {
+        if (type === 'marker') {
+            if (!(opts.position instanceof google.maps.LatLng)) {
+              throw 'markerOptions did not contain a position';
+            }
+            return new angulargmDefaults.markerConstructor(opts);
+        } else if (type === 'polyline') {
+            if (!(opts.path instanceof Array)) {
+                throw 'polylineOptions did not contain a path';
+            }
+            return new angulargmDefaults.polylineConstructor(opts);
+        } else {
+          throw 'unrecognized type ' + type;
+        }
+    };
+
+    this._getElements = function(type) {
+        if (!(type in this._elements)) {
+            this._elements[type] = {};
+        }
+        return this._elements[type];
+    };
+
     /**
-     * Adds a new marker to the map.
-     * @return {boolean} true if a marker was added, false if there was already
-     *   a marker with the given id     
-     * @throw if any arguments are null/undefined or markerOptions does not
+     * Adds a new element to the map.
+     * @return {boolean} true if an element was added, false if there was already
+     *   an element with the given id     
+     * @throw if any arguments are null/undefined or elementOptions does not
      *   have all the required options (i.e. position)
      */
-    this.addMarker = function(scopeId, id, markerOptions) {
-        var opts = {};
-        angular.extend(opts, markerOptions);
-
+    this.addElement = function(type, scopeId, id, elementOptions) {
+        assertDefined(type, 'type');
         assertDefined(scopeId, 'scopeId');
         assertDefined(id, 'id');
 
-        if (!(opts.position instanceof google.maps.LatLng)) {
-          throw 'markerOptions did not contain a position';
-        }
-
-        if (this.hasMarker(scopeId, id)) {
+        if (this.hasElement(type, scopeId, id)) {
           return false;
         }
 
-        var marker = new angulargmDefaults.markerConstructor(opts);
+        var opts = {};
+        angular.extend(opts, elementOptions);
+        var element = this._newElement(type, opts);
 
-        if (this._markers[scopeId] == null) {
-          this._markers[scopeId] = {};
+        var elements = this._getElements(type);
+
+        if (elements[scopeId] == null) {
+          elements[scopeId] = {};
         }
-        this._markers[scopeId][id] = marker;
-        marker.setMap(this._map);
+        elements[scopeId][id] = element;
+        element.setMap(this._map);
 
         return true;
     };
 
-    this.hasMarker = function(scopeId, id) {
+    this.hasElement = function(type, scopeId, id) {
+      assertDefined(type, 'type');
       assertDefined(scopeId, 'scopeId');
       assertDefined(id, 'id');
-      return (this.getMarker(scopeId, id) instanceof google.maps.Marker);
+      return (this.getElement(type, scopeId, id) != null);
     };
 
     /**
-     * @return {google.maps.Marker} the marker with the given id, or null if no
-     *   such marker exists
+     * @return {google maps element} the element with the given id, or null if no
+     *   such element exists
      */
-    this.getMarker = function (scopeId, id) {
+    this.getElement = function (type, scopeId, id) {
+      assertDefined(type, 'type');
       assertDefined(scopeId, 'scopeId');
       assertDefined(id, 'id');
 
-      if (this._markers[scopeId] != null && id in this._markers[scopeId]) {
-        return this._markers[scopeId][id];
+      var elements = this._getElements(type);
+      if (elements[scopeId] != null && id in elements[scopeId]) {
+        return elements[scopeId][id];
       } else {
         return null;
       }
     };
 
     /**
-     * @return {boolean} true if a marker was removed, false if nothing
+     * @return {boolean} true if an element was removed, false if nothing
      *   happened
      */
-    this.removeMarker = function(scopeId, id) {
+    this.removeElement = function(type, scopeId, id) {
+      assertDefined(type, 'type');
       assertDefined(scopeId, 'scopeId');
       assertDefined(id, 'id');
 
+      var elements = this._getElements(type);
       var removed = false;
-      var marker = this._markers[scopeId][id];
-      if (marker) {
-          marker.setMap(null);
+      var element = elements[scopeId][id];
+      if (element) {
+          element.setMap(null);
           removed = true;
       }
-      this._markers[scopeId][id] = null;
-      delete this._markers[scopeId][id];
+      elements[scopeId][id] = null;
+      delete elements[scopeId][id];
       return removed;
     };
 
     /**
-     * Applies a function to each marker on the map.
-     * @param {Function} fn will called with marker as first argument
-     * @throw if fn is null or undefined
+     * Applies a function to each element on the map.
+     * @param {String} type of element, e.g. 'marker'
+     * @param {Function} fn will be called with element as first argument
+     * @throw if an argument is null or undefined
      */
-    this.forEachMarker = function(fn) {
+    this.forEachElement = function(type, fn) {
+      assertDefined(type, 'type');
       assertDefined(fn, 'fn');
 
-      var self = this;
-      var scopeIds = Object.keys(this._markers);
-      var allMarkers = scopeIds.reduce(function(accumulator, scopeId) {
-        angular.forEach(self._markers[scopeId], function(marker) {
-          accumulator.push(marker);
+      var elements = this._getElements(type);
+      var scopeIds = Object.keys(elements);
+      var allElements = scopeIds.reduce(function(accumulator, scopeId) {
+        angular.forEach(elements[scopeId], function(element) {
+          accumulator.push(element);
         });
         return accumulator;
       }, []);
 
-      angular.forEach(allMarkers, function(marker, id) {
-        if (marker != null) {
-          fn(marker, id);
+      angular.forEach(allElements, function(element, id) {
+        if (element != null) {
+          fn(element, id);
         }
       });
     };
 
 
     /**
-     * Applies a function to each marker in a scope.
+     * Applies a function to each element in a scope.
+     * @param {String} type of element, e.g. 'marker'
      * @param {number} scope id
      * @param {Function} fn will called with marker as first argument
-     * @throw if fn is null or undefined
+     * @throw if an argument is null or undefined
      */
-    this.forEachMarkerInScope = function(scopeId, fn) {
+    this.forEachElementInScope = function(type, scopeId, fn) {
+      assertDefined(type, 'type');
+      assertDefined(scopeId, 'scopeId');
       assertDefined(fn, 'fn');
 
-      angular.forEach(this._markers[scopeId], function(marker, id) {
-        if (marker != null) {
-          fn(marker, id);
+      var elements = this._getElements(type);
+      angular.forEach(elements[scopeId], function(element, id) {
+        if (element != null) {
+          fn(element, id);
         }
       });
     };
-
-    this.addPolyline = function(scopeId, id, polylineOptions) {
-      var opts = angular.extend({}, polylineOptions);
-
-      if (!(opts.path) instanceof Array || opts.path.length < 2) {
-        return;
-      }
-
-      angular.forEach(opts.path, function(point) {
-        if (!(point instanceof google.maps.LatLng)) {
-          throw 'An element in polylineOptions was found to not be a valid position';
-        }
-      });
-
-      if (this.hasPolyline(scopeId, id)) {
-          return false;
-      }
-
-      var polyline = new angulargmDefaults.polylineConstructor(opts);
-      if (null == this._polylines[scopeId]) {
-        this._polylines[scopeId] = {};
-      }
-      this._polylines[scopeId][id] = polyline;
-      polyline.setMap(this._map);
-      return true;
-    };
-
-    this.getPolyline = function (scopeId, id) {
-      if (null == id || '' === id) {
-        throw 'no id passed to lookup';
-      }
-
-      if (null != this._polylines[scopeId] && id in this._polylines[scopeId]) {
-        return this._polylines[scopeId][id];
-      } else {
-        return null;
-      }
-    };
-
-    this.hasPolyline = function (scopeId, id) {
-      return (this.getPolyline(scopeId, id) instanceof Object);
-    };
-
-    this.forEachPolylineInScope = function(scopeId, fn) {
-      if (null == fn) {
-        throw 'fn was null or undefined';
-      }
-
-      angular.forEach(this._polylines[scopeId], function(polyline, id) {
-        if (null != polyline) {
-          fn(polyline, id);
-        }
-      });
-    };
-
-    this.forEachPolyline = function(fn) {
-      if (null == fn) {
-        throw 'fn was null or undefined';
-      }
-
-      angular.forEach(this._polylines, function(polylines, scopeId) {
-        angular.forEach(polylines, function(polyline, id) {
-          if (null != polyline) {
-            fn(polyline, id);
-          }
-        });
-      });
-    };
-
-    this.removePolyline = function(scopeId, id) {
-      var removed = false;
-      var polyline = this._polylines[scopeId][id];
-      if (polyline) {
-        polyline.setMap(null);
-        removed = true;
-      }
-
-      this._polylines[scopeId][id] = null;
-      delete this._polylines[scopeId][id];
-      return removed;
-    };
-
 
     this.getMap = function() {
       return this._map;
