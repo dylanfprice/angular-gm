@@ -282,15 +282,16 @@
           return false;
         }
 
-        var opts = {};
-        angular.extend(opts, elementOptions);
-        var element = this._newElement(type, opts);
-
         var elements = this._getElements(type);
-
         if (elements[scopeId] == null) {
           elements[scopeId] = {};
         }
+
+        // google maps munges passed in options, so copy it first
+        // extend instead of copy to preserve value objects
+        var opts = {};
+        angular.extend(opts, elementOptions);
+        var element = this._newElement(type, opts);
         elements[scopeId][id] = element;
         element.setMap(this._map);
 
