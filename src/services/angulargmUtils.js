@@ -145,20 +145,6 @@
       return handlers;
     }
 
-    function createHash(object, precision) {
-      var hash = '';
- 
-      if ((object instanceof google.maps.LatLng)) {
-        return object.toUrlValue(precision);
-      } else {
-        angular.forEach(object, function(child) {
-          hash += createHash(child, precision);
-        });
-      }
- 
-      return hash;
-    }
-
     function assertDefined(value, name) {
       if (value === undefined || value === null) {
         if (name) {
@@ -176,7 +162,6 @@
       objToLatLng: objToLatLng,
       hasNaN: hasNaN,
       getEventHandlers: getEventHandlers,
-      createHash: createHash,
       assertDefined: assertDefined
     };
   }]);
