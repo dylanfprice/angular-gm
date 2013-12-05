@@ -158,7 +158,7 @@
         var options = {};
         angular.extend(options, markerOptions, {position: position});
         return options;
-      }
+      };
 
       // fn for updating markers from objects
       var updateMarkers = angulargmShape.updateElementsFactory(
