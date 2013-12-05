@@ -111,9 +111,9 @@ describe('gmMarkers', function() {
       var position1 = objToLatLng(scope.people[0]);
       var position2 = objToLatLng(scope.people[1]);
       expect(mapCtrl.addElement).toHaveBeenCalledWith('marker', markersScopeId, 
-        jasmine.any(Number), {key: 'value', title: jasmine.any(String), position: position1});
+        jasmine.any(String), {key: 'value', title: jasmine.any(String), position: position1});
       expect(mapCtrl.addElement).toHaveBeenCalledWith('marker', markersScopeId, 
-        jasmine.any(Number), {key: 'value', title: jasmine.any(String), position: position2});
+        jasmine.any(String), {key: 'value', title: jasmine.any(String), position: position2});
     });
 
 
@@ -122,7 +122,7 @@ describe('gmMarkers', function() {
       var position = objToLatLng(scope.people[2]);
       scope.$digest();
       expect(mapCtrl.addElement).toHaveBeenCalledWith('marker', markersScopeId, 
-        jasmine.any(Number), {key: 'value', title: jasmine.any(String), position: position});
+        jasmine.any(String), {key: 'value', title: jasmine.any(String), position: position});
     });
 
 
@@ -167,9 +167,9 @@ describe('gmMarkers', function() {
 
   it('retrieves marker options', function() {
     expect(mapCtrl.addElement).toHaveBeenCalledWith('marker', markersScopeId, 
-      jasmine.any(Number), {key: 'value', title: '0', position: jasmine.any(Object)});
+      jasmine.any(String), {key: 'value', title: '0', position: jasmine.any(Object)});
     expect(mapCtrl.addElement).toHaveBeenCalledWith('marker', markersScopeId, 
-      jasmine.any(Number), {key: 'value', title: '3', position: jasmine.any(Object)});
+      jasmine.any(String), {key: 'value', title: '3', position: jasmine.any(Object)});
   });
 
 
@@ -269,9 +269,9 @@ describe('gmMarkers', function() {
     scope.$broadcast('gmMarkersRedraw', 'people');
 
     expect(mapCtrl.addElement).toHaveBeenCalledWith('marker', markersScopeId, 
-      jasmine.any(Number), {key: 'differentValue', title: jasmine.any(String), position: position1});
+      jasmine.any(String), {key: 'differentValue', title: jasmine.any(String), position: position1});
     expect(mapCtrl.addElement).toHaveBeenCalledWith('marker', markersScopeId, 
-      jasmine.any(Number), {key: 'differentValue', title: jasmine.any(String), position: position2});
+      jasmine.any(String), {key: 'differentValue', title: jasmine.any(String), position: position2});
   });
 
 
@@ -287,9 +287,9 @@ describe('gmMarkers', function() {
     scope.$broadcast('gmMarkersRedraw');
 
     expect(mapCtrl.addElement).toHaveBeenCalledWith('marker', markersScopeId, 
-      jasmine.any(Number), {key: 'differentValue', title: jasmine.any(String), position: position1});
+      jasmine.any(String), {key: 'differentValue', title: jasmine.any(String), position: position1});
     expect(mapCtrl.addElement).toHaveBeenCalledWith('marker', markersScopeId, 
-      jasmine.any(Number), {key: 'differentValue', title: jasmine.any(String), position: position2});
+      jasmine.any(String), {key: 'differentValue', title: jasmine.any(String), position: position2});
   });
 
 

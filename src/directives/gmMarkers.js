@@ -133,88 +133,37 @@
 
   angular.module('AngularGM').
 
-  directive('gmMarkers', ['$log', '$parse', '$timeout', 'angulargmUtils', 
-    function($log, $parse, $timeout, angulargmUtils) {
+  directive('gmMarkers', 
+    ['$log', '$parse', '$timeout', 'angulargmUtils', 'angulargmShape',
+    function($log, $parse, $timeout, angulargmUtils, angulargmShape) {
 
     /** aliases */
-    var latLngEqual = angulargmUtils.latLngEqual;
     var objToLatLng = angulargmUtils.objToLatLng;
-    var getEventHandlers = angulargmUtils.getEventHandlers;
-    var createHash = angulargmUtils.createHash;
-
 
     function link(scope, element, attrs, controller) {
       // check attrs
-      if (!('gmObjects' in attrs)) {
-        throw 'gmObjects attribute required';
-      } else if (!('gmId' in attrs)) {
-        throw 'gmId attribute required';
-      } else if (!('gmPosition' in attrs)) {
-        throw 'gmPosition';
+      angulargmShape.checkRequiredAttributes(attrs);
+      if (!('gmPosition' in attrs)) {
+        throw 'gmPosition attribute required';
+      }
+
+      var markerOptions = function(object) {
+        var latLngObj = scope.gmPosition({object: object});
+        var position = objToLatLng(latLngObj);
+        if (position == null) {
+          return null;
+        }
+
+        var markerOptions = scope.gmMarkerOptions({object: object});
+        var options = {};
+        angular.extend(options, markerOptions, {position: position});
+        return options;
       }
 
       // fn for updating markers from objects
-      var updateMarkers = function(scope, objects) {
-
-        var handlers = getEventHandlers(attrs); // map events -> handlers
-        var objectCache = {};
-
-        angular.forEach(objects, function(object) {
-          var latLngObj = scope.gmPosition({object: object});
-          var id = scope.gmId({object: object});
-
-          var position = objToLatLng(latLngObj);
-          if (position == null) {
-            return;
-          }
-
-          var markerOptions = scope.gmMarkerOptions({object: object});
-
-          // cache objects for quick access
-          objectCache[id] = object;
-
-          var markerExists = controller.hasElement('marker', scope.$id, id);
-
-          if (!markerExists) {
-
-            var options = {};
-            angular.extend(options, markerOptions, {position: position});
-
-            controller.addElement('marker', scope.$id, id, options);
-            var marker = controller.getElement('marker', scope.$id, id);
-
-            // set up marker event handlers
-            angular.forEach(handlers, function(handler, event) {
-              controller.addListener(marker, event, function() {
-                $timeout(function() {
-                       // scope is this directive's isolate scope
-                       // scope.$parent is the scope of ng-transclude
-                       // scope.$parent.$parent is the one we want
-                  handler(scope.$parent.$parent, {
-                    object: object,
-                    marker: marker
-                  });
-                });
-              });
-            });
-          }
-        });
-
-        // remove 'orphaned' markers
-        var orphaned = [];
-        
-        controller.forEachElementInScope('marker', scope.$id, function(marker, id) {
-          if (!(id in objectCache)) {
-            orphaned.push(id);
-          }
-        });
-
-        angular.forEach(orphaned, function(id) {
-          controller.removeElement('marker', scope.$id, id);
-        });
-
-        scope.$emit('gmMarkersUpdated', attrs.gmObjects);
-      }; // end updateMarkers()
+      var updateMarkers = angulargmShape.updateElementsFactory(
+        'marker', scope, attrs, controller, markerOptions
+      );
 
       // watch objects
       scope.$watch('gmObjects().length', function(newValue, oldValue) {
