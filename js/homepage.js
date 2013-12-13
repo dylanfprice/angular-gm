@@ -154,7 +154,7 @@ angular.module('homepage', [])
                 '    ' + script.googlemaps +
                 '    ' + script.jquery.replace('></', '>\n    </') +
                 '    ' + script.angular.replace('></', '>\n    </') +
-                '    ' + script.angulargm +
+                '    ' + script.angulargm.replace('></', '>\n    </') +
                (attrs.resource ? ('    ' + script.resource.replace('></', '>\n    </')) : '') +
                (attrs.firebase ? ('    ' + script.firebase) : '') +
                 '__HEAD__' +
