@@ -150,6 +150,8 @@ angular.module('homepage', [])
               'index.html':
                 '<!doctype html>\n' +
                 '<html ng-app__MODULE__>\n' +
+                '  <!-- head omitted for brevity -->\n' +
+                /*
                 '  <head>\n' +
                 '    ' + script.googlemaps +
                 '    ' + script.jquery.replace('></', '>\n    </') +
@@ -159,6 +161,7 @@ angular.module('homepage', [])
                (attrs.firebase ? ('    ' + script.firebase) : '') +
                 '__HEAD__' +
                 '  </head>\n' +
+                */
                 '  <body>\n' +
                 '__BODY__' +
                 '  </body>\n' +
