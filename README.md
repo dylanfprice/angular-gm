@@ -31,7 +31,7 @@ Include the required libraries
 <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-<script src="//angulargm.herokuapp.com/angular-gm-0.3.1.min.js"></script>
+<script src="//angulargm.herokuapp.com/angular-gm-1.0.0.min.js"></script>
 ```
 
 Declare a dependency on the `AngularGM` module
