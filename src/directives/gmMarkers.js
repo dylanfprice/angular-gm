@@ -141,8 +141,7 @@
     var objToLatLng = angulargmUtils.objToLatLng;
 
     function link(scope, element, attrs, controller) {
-      // check attrs
-      angulargmShape.checkRequiredAttributes(attrs);
+      // check marker attrs
       if (!('gmPosition' in attrs)) {
         throw 'gmPosition attribute required';
       }
@@ -160,51 +159,10 @@
         return options;
       };
 
-      // fn for updating markers from objects
-      var updateMarkers = angulargmShape.updateElementsFactory(
+      angulargmShape.createShapeDirective(
         'marker', scope, attrs, controller, markerOptions
       );
-
-      // watch objects
-      scope.$watch('gmObjects().length', function(newValue, oldValue) {
-        if (newValue != null && newValue !== oldValue) {
-          updateMarkers(scope, scope.gmObjects());
-        }
-      });
-
-      scope.$watch('gmObjects()', function(newValue, oldValue) {
-        if (newValue != null && newValue !== oldValue) {
-          updateMarkers(scope, scope.gmObjects());
-        }
-      });
-
-      // watch gmEvents
-      scope.$watch('gmEvents()', function(newValue, oldValue) {
-        if (newValue != null && newValue !== oldValue) {
-          angular.forEach(newValue, function(eventObj) {
-            var event = eventObj.event;
-            var ids = eventObj.ids;
-            angular.forEach(ids, function(id) {
-              var marker = controller.getElement('marker', scope.$id, id);
-              if (marker != null) {
-                $timeout(angular.bind(this, controller.trigger, marker, event));
-              }
-            });
-          });
-        }
-      });
-
-      scope.$on('gmMarkersRedraw', function(event, objectsName) {
-        if (objectsName == null || objectsName === attrs.gmObjects) {
-          updateMarkers(scope);
-          updateMarkers(scope, scope.gmObjects());
-        }
-      });
-
-      // initialize markers
-      $timeout(angular.bind(null, updateMarkers, scope, scope.gmObjects()));
     }
-
 
     return {
       restrict: 'AE',

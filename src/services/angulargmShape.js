@@ -10,25 +10,12 @@
 
   angular.module('AngularGM').
 
-  /**
-   * angulargmShape 'owns' the following attributes related to shapes:
-   *   gmId
-   *   gmObjects
-   *   gmEvents
-   *   gmOn* (though some of this knowledge is in angulargmUtils as well)
-   *
-   * as well as the following events
-   *   gmShapeUpdated
-   *   gmShapeRedraw
-   *
-   * e.g. gmMarkersUpdated and gmMarkersRedraw 
-   */
   factory('angulargmShape', 
     ['$timeout', 'angulargmUtils', 
     function($timeout, angulargmUtils) {
 
     /**
-     *
+     * Check required attributes of a shape.
      */
     function checkRequiredAttributes(attrs) {
       if (!('gmObjects' in attrs)) {
@@ -39,7 +26,8 @@
     }
 
     /**
-     *
+     * Create a mapping from object id -> object.
+     * The object id is retrieved using scope.gmId
      */
     function _generateObjectCache(scope, objects) {
       var objectCache = {};
@@ -51,6 +39,10 @@
       return objectCache;
     }
 
+    /**
+     * Create new shapes and add them to the map for objects which are not
+     * currently on the map.
+     */
     function _addNewElements(type, scope, controller, handlers, objectCache, optionsFn) {
       angular.forEach(objectCache, function(object, id) {
         var elementExists = controller.hasElement(type, scope.$id, id);
@@ -81,6 +73,9 @@
       });
     }
 
+    /**
+     * Remove shape elements from the map which are no longer in objects.
+     */
     function _removeOrphanedElements(type, scope, controller, objectCache) {
       var orphaned = [];
       
@@ -95,13 +90,86 @@
       });
     }
 
+    /**
+     * _formatEventName('gmShapesUpdated', 'marker') -> 'gmMarkersUpdated'
+     */
     function _formatEventName(template, type) {
       var uppercasePluralType = type.charAt(0).toUpperCase() + type.slice(1) + 's';
-      return template.replace('Shape', uppercasePluralType);
+      return template.replace('Shapes', uppercasePluralType);
     }
 
-    function updateElementsFactory(type, scope, attrs, controller, elementOptions) {
-      function updateElements(scope, objects) {
+    /**
+     * Attach necessary watchers and listeners to scope to deal with:
+     * - updating objects
+     * - handling gmEvents
+     * - listening for events
+     */
+    function _attachEventListeners(type, scope, attrs, controller, updateElements) {
+ 
+      // watch objects
+      scope.$watch('gmObjects().length', function(newValue, oldValue) {
+        if (newValue != null && newValue !== oldValue) {
+          updateElements(scope, scope.gmObjects());
+        }
+      });
+
+      scope.$watch('gmObjects()', function(newValue, oldValue) {
+        if (newValue != null && newValue !== oldValue) {
+          updateElements(scope, scope.gmObjects());
+        }
+      });
+
+      // watch gmEvents
+      scope.$watch('gmEvents()', function(newValue, oldValue) {
+        if (newValue != null && newValue !== oldValue) {
+          angular.forEach(newValue, function(eventObj) {
+            var event = eventObj.event;
+            var ids = eventObj.ids;
+            angular.forEach(ids, function(id) {
+              var element = controller.getElement(type, scope.$id, id);
+              if (element != null) {
+                $timeout(angular.bind(this, controller.trigger, element, event));
+              }
+            });
+          });
+        }
+      });
+
+      scope.$on(_formatEventName('gmShapesRedraw', type), function(event, objectsName) {
+        if (objectsName == null || objectsName === attrs.gmObjects) {
+          updateElements(scope);
+          updateElements(scope, scope.gmObjects());
+        }
+      });
+    }
+
+    /**
+     * Takes care of setting up the directive for the given type of shape. 
+     * Assumes the following directive scope:
+     *   scope: {
+     *     gmId: '&',
+     *     gmObjects: '&',
+     *     gmEvents: '&'
+     *   },
+     *
+     * And the angulargmMapController:
+     *   require: '^gmMap',
+     *
+     * Also supports the following attributes:
+     *   gmOn* (though some of this knowledge is in angulargmUtils as well)
+     *
+     * As well as the following events
+     *   gmShapesUpdated
+     *   gmShapesRedraw
+     *
+     * (e.g. gmMarkersUpdated and gmMarkersRedraw)
+     *
+     * See gmMarkers for a complete example.
+     */
+    function createShapeDirective(type, scope, attrs, controller, elementOptions) {
+      checkRequiredAttributes(attrs);
+
+      var updateElements = function(scope, objects) {
         var objectCache = _generateObjectCache(scope, objects);
         var handlers = angulargmUtils.getEventHandlers(attrs); // map events -> handlers
 
@@ -112,15 +180,17 @@
 
         _removeOrphanedElements(type, scope, controller, objectCache);
 
-        scope.$emit(_formatEventName('gmShapeUpdated', type), attrs.gmObjects);
-      }
+        scope.$emit(_formatEventName('gmShapesUpdated', type), attrs.gmObjects);
+      };
 
-      return updateElements;
+      _attachEventListeners(type, scope, attrs, controller, updateElements);
+
+      // initialize elements
+      $timeout(angular.bind(null, updateElements, scope, scope.gmObjects()));
     }
 
     return {
-      checkRequiredAttributes: checkRequiredAttributes,
-      updateElementsFactory: updateElementsFactory
+      createShapeDirective: createShapeDirective
     };
   }]);
 })();
