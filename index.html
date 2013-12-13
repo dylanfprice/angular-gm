@@ -1,0 +1,54 @@
+---
+---
+
+<!DOCTYPE html>
+<html>
+
+  <head lang="en">
+    <meta charset="utf-8">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="css/prettify.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    <title>AngularGM Example</title>
+  </head>
+  
+  <body>
+
+    <div ng-app="AngularGMExample">
+
+      <h1 id="simple-map">Simple Map</h1>
+      <div class="row example">
+        <div class="span8 app-source" app-source="simple_map.html simple_map.js simple_map.css" module="simple-map"></div>
+        <div class="span4">
+          <span class="pull-right" js-fiddle="simple_map.html simple_map.js simple_map.css" module="simple-map"></span>
+          <div class="tabs-spacer"></div>
+          <div app-run="simple_map.html" module="simple-map" class="well"></div>
+        </div>
+      </div>
+
+      <h1 id="map-with-markers">Map With Markers</h1>
+      <div class="row example">
+        <div class="span8 app-source" app-source="map_with_markers.html map_with_markers.js map_with_markers.css" module="map-with-markers"></div>
+        <div class="span4">
+          <span class="pull-right" js-fiddle="map_with_markers.html map_with_markers.js map_with_markers.css" module="map-with-markers"></span>
+          <div class="tabs-spacer"></div>
+          <div app-run="map_with_markers.html" module="map-with-markers" class="well"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="js/prettify.min.js"></script>
+    <script src="js/homepage.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/angular-gm-example.js"></script>
+    <script src="js/angular-gm-1.0.0.js"></script>
+    {% include simple_map.example %}
+    {% include map_with_markers.example %}
+  </body>
+  
+</html>

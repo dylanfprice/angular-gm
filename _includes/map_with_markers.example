@@ -1,0 +1,108 @@
+{% raw %}
+<style id="map_with_markers.css">
+.map {
+  height: 300px;
+}
+
+/* 
+Fixes Bootstrap issues with Google Maps
+see http://stackoverflow.com/a/9170756 
+*/
+.map img { 
+  max-width: none;
+}
+</style>
+<script id="map_with_markers.js">
+  angular.module('map-with-markers', ['AngularGM'])
+
+  .controller('MapWithMarkersCtrl', function($scope) {
+    $scope.options = {
+      map: {
+        center: new google.maps.LatLng(48, -121),
+        zoom: 6,
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+      },
+      volcanoes: {
+        icon: 'https://maps.gstatic.com/mapfiles/ms2/micons/red-dot.png',
+      },
+      selected: {
+        icon: 'https://maps.gstatic.com/mapfiles/ms2/micons/yellow-dot.png',
+      }
+    };
+    
+    $scope.volcanoes = [
+      {
+        id: 0,
+        name: 'Mount Rainier',
+        img: 'http://www.thetrackerfoundation.org/Images/MountRainier_SM.jpg',
+        elevationMeters: 4392,
+        location: {
+          lat: 46.852947, 
+          lng: -121.760424
+        }
+      },
+      {
+        id: 1,
+        name: 'Mount Baker',
+        img: 'http://www.destination360.com/north-america/us/washington/images/s/washington-mt-baker-ski.jpg',
+        elevationMeters: 3287,
+        location: {
+          lat: 48.776797, 
+          lng: -121.814467
+        }
+      },
+      {
+        id: 2,
+        name: 'Glacier Peak',
+        img: 'http://www.rhinoclimbs.com/Images/Glacier.9.jpg',
+        elevationMeters: 3207,
+        location: {
+          lat: 48.111844, 
+          lng: -121.11412
+        }
+      }
+    ];
+
+    $scope.getVolcanoOpts = function(volcano) {
+     return angular.extend(
+       { title: volcano.name },
+       $scope.options.volcanoes
+      );
+    };
+    
+    $scope.selectVolcano = function(volcano, marker) {
+      $scope.volcano = volcano;
+      if ($scope.prev) {
+        $scope.prev.setOptions($scope.options.volcanoes);
+      }
+      $scope.prev = marker;
+      marker.setOptions($scope.options.selected);
+    };
+  });
+</script>
+<script type="text/ng-template" id="map_with_markers.html">
+  <div ng-controller="MapWithMarkersCtrl">
+    <div>
+      <gm-map gm-map-id="'mapWithMarkers'" gm-center="center" 
+              gm-zoom="zoom" gm-map-options="options.map" class="map">
+
+        <gm-markers gm-objects="volcanoes"
+                    gm-id="object.id"
+                    gm-position="{lat: object.location.lat, lng: object.location.lng}"
+                    gm-marker-options="getVolcanoOpts(object)"
+                    gm-on-click="selectVolcano(object, marker)">
+        </gm-markers>
+
+      </gm-map>
+    </div>
+    <div>
+      <h5 class="muted" ng-show="!volcano">Select a marker!</h5>
+      <div ng-show="volcano">
+        <h5>{{ volcano.name }}, {{ volcano.elevationMeters }}m</h5>
+        <img class="volcano img-rounded" ng-src="{{ volcano.img }}"></img>
+      </div>
+    </div>
+  </div>
+</script>
+{% endraw %}
+
