@@ -125,114 +125,38 @@
 
   angular.module('AngularGM').
 
-  directive('gmPolylines', ['$parse', '$compile', '$timeout', '$log', 'angulargmUtils',
-    function ($parse, $compile, $timeout, $log, angulargmUtils) {
+  directive('gmPolylines', ['$parse', '$compile', '$timeout', '$log', 'angulargmUtils', 'angulargmShape',
+    function ($parse, $compile, $timeout, $log, angulargmUtils, angulargmShape) {
     /** aliases */
-    var latLngEqual = angulargmUtils.latLngEqual;
     var objToLatLng = angulargmUtils.objToLatLng;
-    var getEventHandlers = angulargmUtils.getEventHandlers;
 
     function link(scope, element, attrs, controller) {
-      // check attrs
-      if (!('gmObjects' in attrs)) {
-        throw 'gmObjects attribute required';
-      } else if (!('gmId' in attrs)) {
-        throw 'gmId attribute required';
-      } else if (!('gmPath' in attrs)) {
+      if (!('gmPath' in attrs)) {
         throw 'gmPath attribute required';
       }
 
+      var polylineOptions = function(object) {
+        var lineLatLngs = scope.gmPath({object: object});
+        var path = [];
 
-      // fn for updating polylines from objects
-      var updatePolylines = function(scope, objects) {
-
-        var handlers = getEventHandlers(attrs); // map events -> handlers
-        var objectCache = {};
-
-        angular.forEach(objects, function(object) {
-          var path = scope.gmPath({object: object});
-          var id = scope.gmId({object: object});
-          var lineLatLngs = [];
-
-          angular.forEach(path, function(latlng) {
-            var position = objToLatLng(latlng);
-            if (null === position) {
-                $log.warn('Unable to generate lat/lng from ', latlng);
-                return;
-            }
-
-            lineLatLngs.push(position);
-          });
-
-          var polylineOptions = scope.gmPolylineOptions({object: object});
-          objectCache[id] = object;
-
-          if (!controller.hasElement('polyline', scope.$id, id)) {
-            var options = {};
-            angular.extend(options, polylineOptions, {path: lineLatLngs});
-
-            controller.addElement('polyline', scope.$id, id, options);
-            var polyline = controller.getElement('polyline', scope.$id, id);
-
-            angular.forEach(handlers, function(handler, event) {
-              controller.addListener(polyline, event, function() {
-                $timeout(function() {
-                  handler(scope.$parent.$parent, {
-                    object: object,
-                    polyline: polyline
-                  });
-                });
-              });
-            });
+        angular.forEach(lineLatLngs, function(latlng) {
+          var position = objToLatLng(latlng);
+          if (position == null) {
+              $log.warn('Unable to generate lat/lng from ', latlng);
+              return;
           }
+          path.push(position);
         });
 
-        // remove 'orphaned' polylines
-        controller.forEachElementInScope('polyline', scope.$id, function(polyline, id) {
-          if (!(id in objectCache)) {
-            controller.removeElement('polyline', scope.$id, id);
-          }
-        });
+        var polylineOptions = scope.gmPolylineOptions({object: object});
+        var options = {};
+        angular.extend(options, polylineOptions, {path: path});
+        return options;
+      };
 
-        scope.$emit('gmPolylinesUpdated', attrs.gmObjects);
-      }; // end updatePolylines()
-      
-      // watch gmEvents
-      scope.$watch('gmEvents()', function(newValue, oldValue) {
-        if (newValue != null && newValue !== oldValue) {
-          angular.forEach(newValue, function(eventObj) {
-            var event = eventObj.event;
-            var ids = eventObj.ids;
-            angular.forEach(ids, function(id) {
-              var polyline = controller.getElement('polyline', scope.$id, id);
-              if (polyline != null) {
-                $timeout(angular.bind(this, controller.trigger, polyline, event));
-              }
-            });
-          });
-        }
-      });
-
-      scope.$watch('gmObjects().length', function(newValue, oldValue) {
-        if (newValue != null && newValue !== oldValue) {
-            updatePolylines(scope, scope.gmObjects());
-        }
-      });
-
-      scope.$watch('gmObjects()', function(newValue, oldValue) {
-        if (undefined !== newValue && newValue !== oldValue) {
-            updatePolylines(scope, scope.gmObjects());
-        }
-      });
-
-      scope.$on('gmPolylinesRedraw', function(event, objectsName) {
-        if (undefined === objectsName || objectsName === attrs.gmObjects) {
-          updatePolylines(scope);
-          updatePolylines(scope, scope.gmObjects());
-        }
-      });
-
-      $timeout(angular.bind(null, updatePolylines, scope, scope.gmObjects()));
+      angulargmShape.createShapeDirective(
+        'polyline', scope, attrs, controller, polylineOptions
+      );
     }
 
     return {
