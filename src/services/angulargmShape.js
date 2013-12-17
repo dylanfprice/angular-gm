@@ -56,7 +56,7 @@
           controller.updateElement(type, scope.$id, id, options);
         } else {
           controller.addElement(type, scope.$id, id, options);
-          var element = controller.getElement(type, scope.$id, id);
+          element = controller.getElement(type, scope.$id, id);
 
           // set up element event handlers
           angular.forEach(handlers, function(handler, event) {
