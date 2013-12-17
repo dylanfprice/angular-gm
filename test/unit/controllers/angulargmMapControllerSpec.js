@@ -264,6 +264,24 @@ describe('angulargmMapController', function() {
 
     });
 
+    describe('updateElement', function() {
+
+      it('updates marker on the map', function() {
+        mapCtrl.addElement('marker', scope, id, markerOptions);
+        var newPosition = new google.maps.LatLng(position.lat() + 1, position.lng() + 1);
+        var updated = mapCtrl.updateElement('marker', scope, id, {position: newPosition});
+        var marker = mapCtrl.getElement('marker', scope, id);
+        expect(updated).toBeTruthy();
+        expect(marker.getPosition()).toEqual(newPosition);
+      });
+
+      it('does not update marker not on the map', function() {
+        var updated = mapCtrl.updateElement('marker', scope, id, {position: position});  
+        expect(updated).toBeFalsy();
+      });
+    });
+
+
     describe('removeElement', function() {
 
       beforeEach(function() {

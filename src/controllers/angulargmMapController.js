@@ -277,6 +277,7 @@
         assertDefined(type, 'type');
         assertDefined(scopeId, 'scopeId');
         assertDefined(id, 'id');
+        assertDefined(elementOptions, 'elementOptions');
 
         if (this.hasElement(type, scopeId, id)) {
           return false;
@@ -296,6 +297,29 @@
         element.setMap(this._map);
 
         return true;
+    };
+
+    /**
+     * Updates an element on the map with new options.
+     * @return {boolean} true if an element was updated, false if there was no
+     *   element with the given id to update
+     * @throw if any arguments are null/undefined or elementOptions does not
+     *   have all the required options (i.e. position)
+     */
+
+    this.updateElement = function(type, scopeId, id, elementOptions) {
+      assertDefined(type, 'type');
+      assertDefined(scopeId, 'scopeId');
+      assertDefined(id, 'id');
+      assertDefined(elementOptions, 'elementOptions');
+
+      var element = this.getElement(type, scopeId, id);
+      if (element) {
+        element.setOptions(elementOptions);
+        return true;
+      } else {
+        return false;
+      }
     };
 
     this.hasElement = function(type, scopeId, id) {
