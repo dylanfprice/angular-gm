@@ -1,6 +1,6 @@
 /**
  * AngularGM - Google Maps Directives for AngularJS
- * @version v1.0.0 - 2013-12-13
+ * @version v1.0.0 - 2013-12-17
  * @link http://dylanfprice.github.com/angular-gm
  * @author Dylan Price <the.dylan.price@gmail.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -407,14 +407,16 @@
  * To use, you specify an array of custom objects and tell the directive how to
  * extract an id and position from them. A marker will be created for each of
  * your objects. If you assign a new array to your scope variable or change the
- * array's length, the markers will also update.
+ * array's length (i.e. add or remove an object), the markers will also update.
+ * The one case where `gmMarkers` can not automatically detect changes to your
+ * objects is when you mutate objects in the array. To inform the directive of
+ * such changes, see the `gmMarkersUpdate` event below.
  *
  * Only the `gm-objects`, `gm-id` and `gm-position` attributes are required.
  *
  * @param {expression} gm-objects an array of objects in the current scope.
  * These can be any objects you wish to attach to markers, the only requirement
  * is that they have a uniform method of accessing an id and a position.
- *
  *
  * @param {expression} gm-id an angular expression that given an object from
  * `gm-objects`, evaluates to a unique identifier for that object. Your object
@@ -486,16 +488,38 @@
 
 /**
  * @ngdoc event
+ * @name angulargm.directive:gmMarkers#gmMarkersUpdate
+ * @eventOf angulargm.directive:gmMarkers
+ * @eventType listen on current gmMarkers scope
+ *
+ * @description Manually tell the `gmMarkers` directive to update the markers.
+ * This is useful to tell the directive when an object from `gm-objects` is
+ * mutated--`gmMarkers` can not pick up on such changes automatically.
+ *
+ * @param {string} objects Not required. The name of the scope variable which
+ * holds the objects to update markers for, i.e. what you set `gm-objects` to.
+ * It is useful because there may be multiple instances of the `gmMarkers`
+ * directive. If not specified, all instances of `gmMarkers` which are child
+ * scopes will update their markers.
+ *
+ * @example
+ * ```js
+ * $scope.$broadcast('gmMarkersUpdate', 'myObjects');
+ * ```
+ */
+ 
+/**
+ * @ngdoc event
  * @name angulargm.directive:gmMarkers#gmMarkersRedraw
  * @eventOf angulargm.directive:gmMarkers
  * @eventType listen on current gmMarkers scope
  *
- * @description Force the gmMarkers directive to clear and redraw all markers.
+ * @description Force the `gmMarkers` directive to clear and redraw all markers.
  *
  * @param {string} objects Not required. The name of the scope variable which
  * holds the objects to redraw markers for, i.e. what you set `gm-objects` to.
  * It is useful because there may be multiple instances of the `gmMarkers`
- * directive. If not specified, all instances of gmMarkers which are child
+ * directive. If not specified, all instances of `gmMarkers` which are child
  * scopes will redraw their markers.
  *
  * @example
@@ -513,7 +537,7 @@
  * @description Emitted when markers are updated.
  *
  * @param {string} objects the name of the scope variable which holds the
- * objects the gmMarkers directive was constructed with. This is what
+ * objects the `gmMarkers` directive was constructed with. This is what
  * `gm-objects` was set to.
  *
  * @example
@@ -589,14 +613,16 @@
  * To use, you specify an array of custom objects and tell the directive how to
  * extract location data from them. A polyline will be created for each of your
  * objects. If you assign a new array to your scope variable or change the
- * array's length, the polylines will also update.
+ * array's length, the polylines will also update.  The one case where
+ * `gmPolylines` can not automatically detect changes to your objects is when
+ * you mutate objects in the array. To inform the directive of such changes,
+ * see the `gmPolylinesUpdate` event below.
  *
  * Only the `gm-objects`, `gm-id` and `gm-path` attributes are required.
  *
  * @param {expression} gm-objects an array of objects in the current scope.
  * These can be any objects you wish to attach to polylines, the only requirement
  * is that they have a uniform method of accessing an id and a path.
- *
  *
  * @param {expression} gm-path an angular expression that given an object
  * from `gm-objects`, evaluates to an array of objects with lat and lng
@@ -658,6 +684,28 @@
  * 'position_changed', write it as 'gm-on-position-changed'.
  */
 
+/**
+ * @ngdoc event
+ * @name angulargm.directive:gmPolylines#gmPolylinesUpdate
+ * @eventOf angulargm.directive:gmPolylines
+ * @eventType listen on current gmPolylines scope
+ *
+ * @description Manually tell the `gmPolylines` directive to update the polylines.
+ * This is useful to tell the directive when an object from `gm-objects` is
+ * mutated--`gmPolylines` can not pick up on such changes automatically.
+ *
+ * @param {string} objects Not required. The name of the scope variable which
+ * holds the objects to update polylines for, i.e. what you set `gm-objects` to.
+ * It is useful because there may be multiple instances of the `gmPolylines`
+ * directive. If not specified, all instances of `gmPolylines` which are child
+ * scopes will update their polylines.
+ *
+ * @example
+ * ```js
+ * $scope.$broadcast('gmPolylinesUpdate', 'myObjects');
+ * ```
+ */
+ 
 /**
  * @ngdoc event
  * @name angulargm.directive:gmPolylines#gmPolylinesRedraw
@@ -912,16 +960,18 @@
      */
     function _addNewElements(type, scope, controller, handlers, objectCache, optionsFn) {
       angular.forEach(objectCache, function(object, id) {
-        var elementExists = controller.hasElement(type, scope.$id, id);
+        var element = controller.getElement(type, scope.$id, id);
 
-        if (!elementExists) {
-          var options = optionsFn(object);
-          if (options == null) {
-            return;
-          }
+        var options = optionsFn(object);
+        if (options == null) {
+          return;
+        }
 
+        if (element) {
+          controller.updateElement(type, scope.$id, id, options);
+        } else {
           controller.addElement(type, scope.$id, id, options);
-          var element = controller.getElement(type, scope.$id, id);
+          element = controller.getElement(type, scope.$id, id);
 
           // set up element event handlers
           angular.forEach(handlers, function(handler, event) {
@@ -1005,6 +1055,12 @@
       scope.$on(_formatEventName('gmShapesRedraw', type), function(event, objectsName) {
         if (objectsName == null || objectsName === attrs.gmObjects) {
           updateElements(scope);
+          updateElements(scope, scope.gmObjects());
+        }
+      });
+
+      scope.$on(_formatEventName('gmShapesUpdate', type), function(event, objectsName) {
+        if (objectsName == null || objectsName === attrs.gmObjects) {
           updateElements(scope, scope.gmObjects());
         }
       });
@@ -1510,6 +1566,7 @@
         assertDefined(type, 'type');
         assertDefined(scopeId, 'scopeId');
         assertDefined(id, 'id');
+        assertDefined(elementOptions, 'elementOptions');
 
         if (this.hasElement(type, scopeId, id)) {
           return false;
@@ -1529,6 +1586,29 @@
         element.setMap(this._map);
 
         return true;
+    };
+
+    /**
+     * Updates an element on the map with new options.
+     * @return {boolean} true if an element was updated, false if there was no
+     *   element with the given id to update
+     * @throw if any arguments are null/undefined or elementOptions does not
+     *   have all the required options (i.e. position)
+     */
+
+    this.updateElement = function(type, scopeId, id, elementOptions) {
+      assertDefined(type, 'type');
+      assertDefined(scopeId, 'scopeId');
+      assertDefined(id, 'id');
+      assertDefined(elementOptions, 'elementOptions');
+
+      var element = this.getElement(type, scopeId, id);
+      if (element) {
+        element.setOptions(elementOptions);
+        return true;
+      } else {
+        return false;
+      }
     };
 
     this.hasElement = function(type, scopeId, id) {
