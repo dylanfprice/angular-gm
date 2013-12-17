@@ -22,7 +22,7 @@ see http://stackoverflow.com/a/9170756
         zoom: 6,
         mapTypeId: google.maps.MapTypeId.TERRAIN
       },
-      volcanoes: {
+      notselected: {
         icon: 'https://maps.gstatic.com/mapfiles/ms2/micons/red-dot.png',
       },
       selected: {
@@ -66,17 +66,19 @@ see http://stackoverflow.com/a/9170756
     $scope.getVolcanoOpts = function(volcano) {
      return angular.extend(
        { title: volcano.name },
-       $scope.options.volcanoes
+       volcano.selected ? $scope.options.selected :
+          $scope.options.notselected
       );
     };
     
-    $scope.selectVolcano = function(volcano, marker) {
-      $scope.volcano = volcano;
-      if ($scope.prev) {
-        $scope.prev.setOptions($scope.options.volcanoes);
+    $scope.selectVolcano = function(volcano) {
+      if ($scope.volcano) {
+        $scope.volcano.selected = false;
       }
-      $scope.prev = marker;
-      marker.setOptions($scope.options.selected);
+      $scope.volcano = volcano;
+      $scope.volcano.selected = true;
+
+      $scope.$broadcast('gmMarkersUpdate', 'volcanoes');
     };
   });
 </script>
