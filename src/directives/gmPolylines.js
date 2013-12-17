@@ -9,14 +9,16 @@
  * To use, you specify an array of custom objects and tell the directive how to
  * extract location data from them. A polyline will be created for each of your
  * objects. If you assign a new array to your scope variable or change the
- * array's length, the polylines will also update.
+ * array's length, the polylines will also update.  The one case where
+ * `gmPolylines` can not automatically detect changes to your objects is when
+ * you mutate objects in the array. To inform the directive of such changes,
+ * see the `gmPolylinesUpdate` event below.
  *
  * Only the `gm-objects`, `gm-id` and `gm-path` attributes are required.
  *
  * @param {expression} gm-objects an array of objects in the current scope.
  * These can be any objects you wish to attach to polylines, the only requirement
  * is that they have a uniform method of accessing an id and a path.
- *
  *
  * @param {expression} gm-path an angular expression that given an object
  * from `gm-objects`, evaluates to an array of objects with lat and lng
@@ -78,6 +80,28 @@
  * 'position_changed', write it as 'gm-on-position-changed'.
  */
 
+/**
+ * @ngdoc event
+ * @name angulargm.directive:gmPolylines#gmPolylinesUpdate
+ * @eventOf angulargm.directive:gmPolylines
+ * @eventType listen on current gmPolylines scope
+ *
+ * @description Manually tell the `gmPolylines` directive to update the polylines.
+ * This is useful to tell the directive when an object from `gm-objects` is
+ * mutated--`gmPolylines` can not pick up on such changes automatically.
+ *
+ * @param {string} objects Not required. The name of the scope variable which
+ * holds the objects to update polylines for, i.e. what you set `gm-objects` to.
+ * It is useful because there may be multiple instances of the `gmPolylines`
+ * directive. If not specified, all instances of `gmPolylines` which are child
+ * scopes will update their polylines.
+ *
+ * @example
+ * ```js
+ * $scope.$broadcast('gmPolylinesUpdate', 'myObjects');
+ * ```
+ */
+ 
 /**
  * @ngdoc event
  * @name angulargm.directive:gmPolylines#gmPolylinesRedraw

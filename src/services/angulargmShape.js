@@ -45,14 +45,16 @@
      */
     function _addNewElements(type, scope, controller, handlers, objectCache, optionsFn) {
       angular.forEach(objectCache, function(object, id) {
-        var elementExists = controller.hasElement(type, scope.$id, id);
+        var element = controller.getElement(type, scope.$id, id);
 
-        if (!elementExists) {
-          var options = optionsFn(object);
-          if (options == null) {
-            return;
-          }
+        var options = optionsFn(object);
+        if (options == null) {
+          return;
+        }
 
+        if (element) {
+          controller.updateElement(type, scope.$id, id, options);
+        } else {
           controller.addElement(type, scope.$id, id, options);
           var element = controller.getElement(type, scope.$id, id);
 
@@ -138,6 +140,12 @@
       scope.$on(_formatEventName('gmShapesRedraw', type), function(event, objectsName) {
         if (objectsName == null || objectsName === attrs.gmObjects) {
           updateElements(scope);
+          updateElements(scope, scope.gmObjects());
+        }
+      });
+
+      scope.$on(_formatEventName('gmShapesUpdate', type), function(event, objectsName) {
+        if (objectsName == null || objectsName === attrs.gmObjects) {
           updateElements(scope, scope.gmObjects());
         }
       });
