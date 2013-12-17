@@ -11,6 +11,11 @@ see http://stackoverflow.com/a/9170756
 .map img { 
   max-width: none;
 }
+
+img.volcano {
+  height: 200px;
+  width: 250px;
+}
 </style>
 <script id="map_with_markers.js">
   angular.module('map-with-markers', ['AngularGM'])
