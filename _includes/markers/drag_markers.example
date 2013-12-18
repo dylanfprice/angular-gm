@@ -1,0 +1,82 @@
+{% raw %}
+<style id="drag_markers.css">
+.map {
+  height: 300px;
+}
+
+/* 
+Fixes Bootstrap issues with Google Maps
+see http://stackoverflow.com/a/9170756 
+*/
+.map img { 
+  max-width: none;
+}
+</style>
+<script id="drag_markers.js">
+  angular.module('drag-markers', ['AngularGM']).
+
+  controller('DragMarkerCtrl', function($scope) {
+    
+    $scope.houses = [
+      {
+        id: 0,
+        name: 'House A',
+        lat: 46,
+        lng: -122
+      }, 
+      {
+        id: 1,
+        name: 'House B',
+        lat: 48,
+        lng: -120
+      }
+    ];
+    
+    $scope.options = {
+      map: {
+        center: new google.maps.LatLng(46, -122),
+        zoom: 3,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      },
+      marker: function(house) {
+        return {
+          clickable: false,
+          draggable: true,
+          title: house.name
+        }
+      }
+    };
+    
+    $scope.setHouseLocation = function(house, marker) {
+      var position = marker.getPosition();
+      house.lat = position.lat();
+      house.lng = position.lng();
+    };
+
+  });
+</script>
+<script type="text/ng-template" id="drag_markers.html">
+  <div ng-controller="DragMarkerCtrl">
+    <div>
+      <gm-map gm-map-id="'dragMarkerMap'" gm-center="center" gm-zoom="zoom" gm-map-options="options.map" class="map">
+        <gm-markers gm-objects="houses"
+                    gm-id="object.id"
+                    gm-position="{lat: object.lat, lng: object.lng}"
+                    gm-marker-options="options.marker(object)"
+                    gm-on-dragend="setHouseLocation(object, marker)"></gm-markers>
+      </gm-map>
+    </div>
+    <div>
+      <p>
+        Drag the markers to set the location.
+      </p>
+      <p>
+        <label ng-repeat="house in houses">
+          {{house.name}} location: {{house.lat | number:2}}, {{house.lng | number:2}} 
+        </label>
+      </p>
+    </div>
+  </div>
+</script>
+{% endraw %}
+
