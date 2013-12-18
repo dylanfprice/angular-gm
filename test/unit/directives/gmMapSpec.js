@@ -236,4 +236,29 @@ describe('gmMap', function() {
     expect(mapCtrl.mapTrigger).not.toHaveBeenCalled();
   });
 
+  it('fires idle event when map loaded', inject(function($compile, $timeout) {
+    // this test is slow because we have to wait for google maps to load--eckh
+    var called = false;
+    
+    runs(function() {
+      elm = angular.element('<gm-map gm-map-id="mapId" gm-center="pCenter" gm-zoom="pZoom" gm-bounds="pBounds"></gm-map>');
+      var newScope = scope.$new();
+      newScope.mapId = scope.mapId + 'diff';
+      newScope.$on('gmMapIdle', function(event, mapId) {
+        if (mapId === newScope.mapId) {
+          called = true;
+        }
+      });
+      $compile(elm)(newScope);
+    });
+
+    waitsFor(function() {
+      return called;
+    }, 'Should fire idle event', 750);
+
+    runs(function() {
+      expect(called).toBeTruthy();
+    });
+  }));
+
 });

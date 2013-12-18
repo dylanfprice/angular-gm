@@ -63,10 +63,34 @@
  * @name angulargm.directive:gmMap#gmMapResize
  * @eventOf angulargm.directive:gmMap
  * @eventType listen on current gmMap scope
+ *
+ * @description Alias for google.maps.event.trigger(map, 'resize')
+ *
  * @param {string} mapId Required. The id of your map.
  * @example
  * ```js
  * $scope.$broadcast('gmMapResize', 'myMapId')
+ * ```
+ */
+
+/**
+ * @ngdoc event
+ * @name angulargm.directive:gmMap#gmMapIdle
+ * @eventOf angulargm.directive:gmMap
+ * @eventType emit on current gmMap scope
+ * 
+ * @description Emitted when the map is finished loading (when the map fires
+ * the 'idle' event).
+ *
+ * @param {string} mapId the id of the map which finished loading.
+ *
+ * @example
+ * ```js
+ * $scope.$on('gmMapIdle', function(event, mapId) {
+ *     if (mapId === 'myMapId') {
+ *       ...
+ *     }
+ * });
  * ```
  */
 
@@ -219,6 +243,9 @@
         }
       });
 
+      controller.addMapListenerOnce('idle', function() {
+        scope.$emit('gmMapIdle', scope.gmMapId());
+      });
       controller.mapTrigger('resize');
     }
 
