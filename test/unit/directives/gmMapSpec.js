@@ -205,11 +205,6 @@ describe('gmMap', function() {
     expect(mapCtrl.mapTypeId).not.toEqual(null);
   });
 
-  it('listens for map resize event', function() {
-    scope.$broadcast('gmMapResize', scope.mapId);
-    expect(mapCtrl.mapTrigger).toHaveBeenCalledWith('resize');
-  });
-
   it('sets up event handlers of on-* attributes on the map', function() {
     expect(mapCtrl._listeners.click).toBeDefined();
     expect(mapCtrl._listeners.center_changed).toBeDefined();
@@ -230,7 +225,12 @@ describe('gmMap', function() {
     expect(scope.center_changedCallback).toHaveBeenCalledWith(map);
 
   }));
-  
+
+  it('listens for map resize event', function() {
+    scope.$broadcast('gmMapResize', scope.mapId);
+    expect(mapCtrl.mapTrigger).toHaveBeenCalledWith('resize');
+  });
+ 
   it('ignores map resize for different map', function() {
     scope.$broadcast('gmMapResize', scope.mapId + 'diff');
     expect(mapCtrl.mapTrigger).not.toHaveBeenCalled();
