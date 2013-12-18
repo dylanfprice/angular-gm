@@ -83,6 +83,7 @@ see http://stackoverflow.com/a/9170756
       </gm-markers>
 
     </gm-map>
+    Click a marker or click a button below to learn more about the volcano.
     <div ng-repeat="volcano in volcanoes">
       <button class="btn" ng-click="triggerOpenInfoWindow(volcano)">
         More about {{volcano.name}}

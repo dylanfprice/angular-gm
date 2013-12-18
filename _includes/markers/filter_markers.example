@@ -79,11 +79,15 @@ see http://stackoverflow.com/a/9170756
 <script type="text/ng-template" id="filter_markers.html">
   <div ng-controller="FilterMarkersCtrl">
     <div>     
-      <gm-map gm-map-id="'filterMarkersMap'" gm-center="center" gm-zoom="zoom" gm-map-options="options.map" class="map">
+      <gm-map gm-map-id="'filterMarkersMap'" gm-center="center" gm-zoom="zoom" 
+              gm-map-options="options.map" class="map">
+
         <gm-markers gm-objects="people"
                     gm-id="object.id"
                     gm-position="{lat: object.location.lat, lng: object.location.lng}"
-                    gm-marker-options="getMarkerOptions(object)"></gm-markers>
+                    gm-marker-options="getMarkerOptions(object)">
+        </gm-markers>
+
       </gm-map>
     </div>
     <div>
@@ -91,7 +95,7 @@ see http://stackoverflow.com/a/9170756
         Name:<input ng-model="filters.name" ng-change="filterPeople()">
       </label>
       <input type="checkbox" ng-model="filters.male"   ng-change="filterPeople()">
-      Male 
+      Male <br>
       <input type="checkbox" ng-model="filters.female" ng-change="filterPeople()">
       Female
       <div class="well person-list">
