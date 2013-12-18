@@ -6,7 +6,6 @@ describe('angulargmMapController', function() {
     module('AngularGM');
   });
 
-
   beforeEach(inject(function($rootScope, $controller, angulargmContainer) {
     // set up scope
     scope = $rootScope.$new();

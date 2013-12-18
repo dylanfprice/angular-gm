@@ -31,7 +31,6 @@ describe('angulargmUtils', function() {
         new google.maps.LatLng(neLat, neLng));
   }
 
-
   describe('latLngEqual', function() {
 
     it('returns true if args are equal', function() {

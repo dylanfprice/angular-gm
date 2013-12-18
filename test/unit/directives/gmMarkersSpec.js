@@ -54,7 +54,6 @@ describe('gmMarkers', function() {
     $timeout.flush();
   }));
 
-
   it('requires the gmObjects attribute', inject(function($compile) {
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
       '<gm-markers ' +
