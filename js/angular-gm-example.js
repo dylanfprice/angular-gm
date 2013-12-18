@@ -1,6 +1,6 @@
 angular.module('AngularGMExample', ['components', 'homepage'])
 
-.config(['$routeProvider', function($routeProvider) {
+.config(function($routeProvider) {
   $routeProvider.
     when('/map/', {
       templateUrl: 'partials/map.html',
@@ -18,9 +18,13 @@ angular.module('AngularGMExample', ['components', 'homepage'])
       templateUrl: 'partials/polylines.html',
       active: 'polylines',
     });
-}]).
+})
 
-config(['$locationProvider', function($locationProvider) {
+.config(function($locationProvider) {
   $locationProvider.html5Mode(false);
-}]);
+})
+
+.controller('BodyCtrl', function($scope, $route) {
+  $scope.$route = $route;
+});
 
