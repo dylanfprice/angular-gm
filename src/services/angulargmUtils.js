@@ -145,18 +145,14 @@
       return handlers;
     }
 
-    function createHash(object, precision) {
-      var hash = '';
- 
-      if ((object instanceof google.maps.LatLng)) {
-        return object.toUrlValue(precision);
-      } else {
-        angular.forEach(object, function(child) {
-          hash += createHash(child, precision);
-        });
+    function assertDefined(value, name) {
+      if (value === undefined || value === null) {
+        if (name) {
+          throw name + ' was: ' + value;
+        } else {
+          throw 'value was: ' + value;
+        }
       }
- 
-      return hash;
     }
 
     return {
@@ -166,7 +162,7 @@
       objToLatLng: objToLatLng,
       hasNaN: hasNaN,
       getEventHandlers: getEventHandlers,
-      createHash: createHash
+      assertDefined: assertDefined
     };
   }]);
 })();

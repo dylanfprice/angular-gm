@@ -5,8 +5,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-docular');
+  grunt.loadNpmTasks('grunt-ngdocs');
+  grunt.loadNpmTasks('grunt-contrib-connect');
 
   // Project configuration.
   grunt.initConfig({
@@ -20,6 +23,7 @@ module.exports = function(grunt) {
       ' * @license MIT License, http://www.opensource.org/licenses/MIT\n' +
       ' */\n'
     },
+    clean: ["dist"],
     dirs: {
       src: 'src/**/*.js',
       dest: 'dist'
@@ -30,7 +34,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['src/module.js', 'src/directives/*.js', 'src/services/*.js', 'src/controllers/*.js'],
-        dest: '<%= dirs.dest %>/<%= pkg.name %>-<%= pkg.version %>.js'
+        dest: '<%= dirs.dest %>/<%= pkg.name %>.js'
       }
     },
     uglify: {
@@ -39,7 +43,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['<%= concat.dist.dest %>'],
-        dest: '<%= dirs.dest %>/<%= pkg.name %>-<%= pkg.version %>.min.js'
+        dest: '<%= dirs.dest %>/<%= pkg.name %>.min.js'
       }
     },
     jshint: {
@@ -79,31 +83,32 @@ module.exports = function(grunt) {
         browsers: ['PhantomJS']
       }
     },
-    docular : {
-      docular_webapp_target : "dist/doc/",
-      groups: [
-        {
-          groupTitle: 'AngularGM Docs',
-          groupId: 'angulargm-<%= pkg.version %>',
-          groupIcon: 'icon-map-marker',
-          sections: [
-            {
-              id: "api",
-              title: "AngularGM API",
-              scripts: [
-                "src/",
-              ]
-            }
-          ]
-        }
-      ],
-      showDocularDocs: false,
-      showAngularDocs: false
+    copy: {
+      examples: {
+        expand: true,
+        src: 'examples/**',
+        dest: 'dist/'
+      }
+    },
+    ngdocs: {
+      options: {
+        dest: 'dist/docs/',
+        title: 'AngularGM Documentation',
+        html5Mode: false,
+        navTemplate: 'examples/docs-nav.html'
+      },
+      all: ['src/**/*.js']
+    },
+    connect: {
+      options: {
+        keepalive: true
+      },
+      server: {}
     }
   });
 
   grunt.registerTask('default', ['build']);
 
-  grunt.registerTask('build', ['jshint', 'karma:unit', 'concat', 'uglify', 'docular']);
+  grunt.registerTask('build', ['clean', 'jshint', 'karma:unit', 'concat', 'uglify', 'copy:examples', 'ngdocs']);
 
 };

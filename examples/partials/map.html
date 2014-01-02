@@ -1,0 +1,66 @@
+<h1 id="simple-map">Simple Map</h1>
+<div class="row example">
+  <div class="span8 app-source" app-source="simple_map.html simple_map.js simple_map.css" module="simple-map"></div>
+  <div class="span4">
+    <span class="pull-right" js-fiddle="simple_map.html simple_map.js simple_map.css" module="simple-map"></span>
+    <div class="tabs-spacer"></div>
+    <div app-run="simple_map.html" module="simple-map" class="well"></div>
+  </div>
+</div>
+
+<style id="simple_map.css">
+.map {
+  height: 300px;
+}
+
+/* 
+Fixes Bootstrap issues with Google Maps
+see http://stackoverflow.com/a/9170756 
+*/
+.map img { 
+  max-width: none;
+}
+
+input {
+  max-width: 4em;
+}
+</style>
+<script id="simple_map.js">
+  angular.module('simple-map', ['AngularGM'])
+
+  .controller('SimpleMapCtrl', function($scope) {
+    $scope.$watch('center', function(center) {
+     if (center) {
+       $scope.centerLat = center.lat();
+       $scope.centerLng = center.lng();
+     }
+    });
+    
+    $scope.updateCenter = function(lat, lng) {
+      $scope.center = new google.maps.LatLng(lat, lng);
+    };
+  });
+</script>
+<script type="text/ng-template" id="simple_map.html">
+  <div ng-controller="SimpleMapCtrl">
+    <div>
+      <gm-map gm-map-id="'simpleMap'" gm-center="center" gm-zoom="zoom" class="map">
+      </gm-map>
+    </div>
+    <div>
+        <label>
+          Center:
+          <input type="number" ng-model="centerLat" 
+                 ng-change="updateCenter(centerLat, centerLng)"></input>, 
+          <input type="number" ng-model="centerLng" 
+                 ng-change="updateCenter(centerLat, centerLng)"></input>
+        </label>
+        <label>
+          Zoom: <input type="number" ng-model="zoom"></input>
+        </label>
+    </div>
+  </div>
+</script>
+
+
+

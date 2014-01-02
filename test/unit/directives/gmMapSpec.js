@@ -8,7 +8,6 @@ describe('gmMap', function() {
     module('AngularGM');
   });
 
-
   beforeEach(inject(function($rootScope, $compile, angulargmContainer, angulargmUtils, $timeout) {
     // compile angulargm directive
     elm = angular.element(
@@ -76,7 +75,6 @@ describe('gmMap', function() {
     $timeout.flush()
   }));
 
-
   function testRequiredAttribute($rootScope, $compile, angulargmContainer, elm) {
     scope = $rootScope.$new();
     scope.mapId = 'test2';
@@ -85,31 +83,26 @@ describe('gmMap', function() {
     angulargmContainer.removeMap('test2');
   }
 
-
   it('requires the mapId attribute', inject(function($rootScope, $compile) {
     elm = angular.element('<gm-map gm-center="pCenter" gm-zoom="pZoom" gm-bounds="pBounds"></gm-map>');
     scope = scope.$new();
     expect(angular.bind(this, $compile(elm), scope)).toThrow();
   }));
 
-
   it('requires the center attribute', inject(function($rootScope, $compile, angulargmContainer) {
     elm = angular.element('<gm-map gm-map-id="mapId" gm-zoom="pZoom" gm-bounds="pBounds"></gm-map>');
     testRequiredAttribute($rootScope, $compile, angulargmContainer, elm);
   }));
-
 
   it('requires the zoom attribute', inject(function($rootScope, $compile, angulargmContainer) {
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="pCenter" gm-bounds="pBounds"></gm-map>');
     testRequiredAttribute($rootScope, $compile, angulargmContainer, elm);
   }));
 
-
   it('requires the bounds attribute', inject(function($rootScope, $compile, angulargmContainer) {
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="pCenter" gm-zoom="pZoom"></gm-map>');
     testRequiredAttribute($rootScope, $compile, angulargmContainer, elm);
   }));
-
 
   it('updates scope on map initialization', inject(function($timeout) {
     google.maps.event.trigger(map, 'bounds_changed');
@@ -121,7 +114,6 @@ describe('gmMap', function() {
     expect(scope.pBounds).toEqual(initBounds);
     expect(scope.pMapTypeId).toEqual(initMapTypeId);
   }));
-
 
   it('ignores initial scope values', inject(function($timeout) {
     scope.pCenter = { lat: 8, lng: 9 };
@@ -141,7 +133,6 @@ describe('gmMap', function() {
     expect(scope.pMapTypeId).not.toEqual(initMapTypeId);
   }));
 
-
   // center and bounds changed, but zoom is same
   function testMapMovedEvent($timeout, event) {
     var center = new google.maps.LatLng(8, 9);
@@ -160,16 +151,13 @@ describe('gmMap', function() {
     expect(scope.pBounds).toEqual(bounds);
   }
 
-
   it('updates scope on map drag', inject(function($timeout) {
     testMapMovedEvent($timeout, 'drag');
   }));
 
-
   it('updates scope on map center_changed', inject(function($timeout) {
     testMapMovedEvent($timeout, 'center_changed');
   }));
-
 
   it('updates scope on map zoom_changed', inject(function($timeout) {
     mapCtrl.zoom = initZoom + 2;
@@ -181,14 +169,12 @@ describe('gmMap', function() {
     expect(scope.pZoom).toEqual(zoom);
   }));
 
-
   it('updates map on scope center changed', function() {
     var center = new google.maps.LatLng(8, 9);
     scope.pCenter = center;
     scope.$digest();
     expect(mapCtrl.center).toEqual(center);
   });
-
   
   it('updates map on scope zoom changed', function() {
     scope.pZoom = initZoom + 2;
@@ -196,7 +182,6 @@ describe('gmMap', function() {
     expect(mapCtrl.zoom).toEqual(initZoom + 2);
   });
 
-  
   it('updates map on scope bounds changed', function() {
     var bounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(8, 9),
@@ -208,7 +193,6 @@ describe('gmMap', function() {
     expect(mapCtrl.bounds).toEqual(bounds);
   });
 
-
   it('does not update map when scope properties set to null', function() {
     scope.pCenter = null;
     scope.pZoom = null;
@@ -219,18 +203,6 @@ describe('gmMap', function() {
     expect(mapCtrl.zoom).not.toEqual(null);
     expect(mapCtrl.bounds).not.toEqual(null);
     expect(mapCtrl.mapTypeId).not.toEqual(null);
-  });
-
-
-  it('listens for map resize event', function() {
-    scope.$broadcast('gmMapResize', scope.mapId);
-    expect(mapCtrl.mapTrigger).toHaveBeenCalledWith('resize');
-  });
-
-  
-  it('ignores map resize for different map', function() {
-    scope.$broadcast('gmMapResize', scope.mapId + 'diff');
-    expect(mapCtrl.mapTrigger).not.toHaveBeenCalled();
   });
 
   it('sets up event handlers of on-* attributes on the map', function() {
@@ -252,6 +224,41 @@ describe('gmMap', function() {
     $timeout.flush();
     expect(scope.center_changedCallback).toHaveBeenCalledWith(map);
 
+  }));
+
+  it('listens for map resize event', function() {
+    scope.$broadcast('gmMapResize', scope.mapId);
+    expect(mapCtrl.mapTrigger).toHaveBeenCalledWith('resize');
+  });
+ 
+  it('ignores map resize for different map', function() {
+    scope.$broadcast('gmMapResize', scope.mapId + 'diff');
+    expect(mapCtrl.mapTrigger).not.toHaveBeenCalled();
+  });
+
+  it('fires idle event when map loaded', inject(function($compile, $timeout) {
+    // this test is slow because we have to wait for google maps to load--eckh
+    var called = false;
+    
+    runs(function() {
+      elm = angular.element('<gm-map gm-map-id="mapId" gm-center="pCenter" gm-zoom="pZoom" gm-bounds="pBounds"></gm-map>');
+      var newScope = scope.$new();
+      newScope.mapId = scope.mapId + 'diff';
+      newScope.$on('gmMapIdle', function(event, mapId) {
+        if (mapId === newScope.mapId) {
+          called = true;
+        }
+      });
+      $compile(elm)(newScope);
+    });
+
+    waitsFor(function() {
+      return called;
+    }, 'Should fire idle event', 750);
+
+    runs(function() {
+      expect(called).toBeTruthy();
+    });
   }));
 
 });

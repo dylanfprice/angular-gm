@@ -63,10 +63,34 @@
  * @name angulargm.directive:gmMap#gmMapResize
  * @eventOf angulargm.directive:gmMap
  * @eventType listen on current gmMap scope
+ *
+ * @description Alias for google.maps.event.trigger(map, 'resize')
+ *
  * @param {string} mapId Required. The id of your map.
  * @example
  * ```js
  * $scope.$broadcast('gmMapResize', 'myMapId')
+ * ```
+ */
+
+/**
+ * @ngdoc event
+ * @name angulargm.directive:gmMap#gmMapIdle
+ * @eventOf angulargm.directive:gmMap
+ * @eventType emit on current gmMap scope
+ * 
+ * @description Emitted when the map is finished loading (when the map fires
+ * the 'idle' event).
+ *
+ * @param {string} mapId the id of the map which finished loading.
+ *
+ * @example
+ * ```js
+ * $scope.$on('gmMapIdle', function(event, mapId) {
+ *     if (mapId === 'myMapId') {
+ *       ...
+ *     }
+ * });
  * ```
  */
 
@@ -77,9 +101,10 @@
 
   directive('gmMap', ['$timeout', 'angulargmUtils', function ($timeout, angulargmUtils) {
   
-    /** link function **/
+    /** aliases **/
     var getEventHandlers = angulargmUtils.getEventHandlers;
 
+    /** link function **/
     function link(scope, element, attrs, controller) {
       // initialize scope
       if (!angular.isDefined(scope.gmCenter)) {
@@ -117,8 +142,6 @@
         hasMapTypeId = true;
       }
 
-      var handlers = getEventHandlers(attrs); // map events -> handlers
-
       var updateScope = function() {
         $timeout(function () {
           if (hasCenter || hasZoom || hasBounds || hasMapTypeId) {
@@ -154,6 +177,7 @@
 
       // Add user supplied callbacks
       var map = controller.getMap(attrs.gmMapId);
+      var handlers = getEventHandlers(attrs); // map events -> handlers
       angular.forEach(handlers, function(handler, event) {
         controller.addMapListener(event, function(ev) {
           // pass the map in
@@ -219,6 +243,9 @@
         }
       });
 
+      controller.addMapListenerOnce('idle', function() {
+        scope.$emit('gmMapIdle', scope.gmMapId());
+      });
       controller.mapTrigger('resize');
     }
 

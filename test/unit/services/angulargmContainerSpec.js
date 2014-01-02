@@ -1,13 +1,13 @@
 describe('angulargmContainer', function() {
   var cntr;
-
+  var mapSpy
   beforeEach(function() {
     module('AngularGM');
   });
 
   beforeEach(inject(function(angulargmContainer) {
     cntr = angulargmContainer;
-    spyOn(google.maps, 'Map').andCallFake(function() {
+    mapSpy = spyOn(google.maps, 'Map').andCallFake(function() {
     });
   }));
 
@@ -73,3 +73,4 @@ describe('angulargmContainer', function() {
 
   });
 });
+
