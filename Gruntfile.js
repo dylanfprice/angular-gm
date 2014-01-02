@@ -6,7 +6,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-docular');
+  grunt.loadNpmTasks('grunt-ngdocs');
+  grunt.loadNpmTasks('grunt-contrib-connect');
 
   // Project configuration.
   grunt.initConfig({
@@ -79,31 +80,25 @@ module.exports = function(grunt) {
         browsers: ['PhantomJS']
       }
     },
-    docular : {
-      docular_webapp_target : "dist/doc/",
-      groups: [
-        {
-          groupTitle: 'AngularGM Docs',
-          groupId: 'angulargm-<%= pkg.version %>',
-          groupIcon: 'icon-map-marker',
-          sections: [
-            {
-              id: "api",
-              title: "AngularGM API",
-              scripts: [
-                "src/",
-              ]
-            }
-          ]
-        }
-      ],
-      showDocularDocs: false,
-      showAngularDocs: false
+    ngdocs: {
+      options: {
+        dest: 'dist/docs/',
+        title: 'AngularGM Documentation',
+        html5Mode: false,
+        navTemplate: 'examples/docs-nav.html'
+      },
+      all: ['src/**/*.js']
+    },
+    connect: {
+      options: {
+        keepalive: true
+      },
+      server: {}
     }
   });
 
   grunt.registerTask('default', ['build']);
 
-  grunt.registerTask('build', ['jshint', 'karma:unit', 'concat', 'uglify', 'docular']);
+  grunt.registerTask('build', ['jshint', 'karma:unit', 'concat', 'uglify', 'ngdocs']);
 
 };
