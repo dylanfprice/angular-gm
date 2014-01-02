@@ -1,5 +1,1 @@
 *.swp
-src/
-dist/
-node_modules/
-test/
