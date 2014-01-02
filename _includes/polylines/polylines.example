@@ -31,7 +31,7 @@ see http://stackoverflow.com/a/9170756
         mapTypeId: google.maps.MapTypeId.TERRAIN
       },
       line: {
-        editable: true
+        strokeWeight: 5
       }
     };
 
@@ -48,17 +48,6 @@ see http://stackoverflow.com/a/9170756
       $scope.$broadcast('gmPolylinesUpdate', 'lines');
     };
 
-    $scope.updateLine = function(line, polyline) {
-      var path = polyline.getPath();
-      line.path = [];
-      path.forEach(function(latLng) {
-        line.path.push({
-          lat: latLng.lat(),
-          lng: latLng.lng()
-        });
-      });
-    };
-
     $scope.setLines();
   });
 </script>
@@ -70,8 +59,7 @@ see http://stackoverflow.com/a/9170756
       <gm-polylines gm-objects="lines"
                     gm-id="object.id"
                     gm-path="object.path"
-                    gm-polyline-options="options.line"
-                    gm-on-vertex="updateLine(object, polyline)">
+                    gm-polyline-options="options.line">
       </gm-polylines>
 
     </gm-map>
