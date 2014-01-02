@@ -34,7 +34,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['src/module.js', 'src/directives/*.js', 'src/services/*.js', 'src/controllers/*.js'],
-        dest: '<%= dirs.dest %>/<%= pkg.name %>-<%= pkg.version %>.js'
+        dest: '<%= dirs.dest %>/<%= pkg.name %>.js'
       }
     },
     uglify: {
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['<%= concat.dist.dest %>'],
-        dest: '<%= dirs.dest %>/<%= pkg.name %>-<%= pkg.version %>.min.js'
+        dest: '<%= dirs.dest %>/<%= pkg.name %>.min.js'
       }
     },
     jshint: {
