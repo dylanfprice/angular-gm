@@ -1,0 +1,160 @@
+<h1><code ng:non-bindable="">gmPolylines</code>
+<span class="hint">(directive in module <code ng:non-bindable="">angulargm</code>
+)</span>
+</h1>
+<div><h2 id="Description">Description</h2>
+<div class="description"><p>A directive for adding polylines to a <code>gmMap</code>. You may have multiple per <code>gmMap</code>.</p>
+
+<p>To use, you specify an array of custom objects and tell the directive how to
+extract location data from them. A polyline will be created for each of your
+objects. If you assign a new array to your scope variable or change the
+array's length, the polylines will also update.  The one case where
+<code>gmPolylines</code> can not automatically detect changes to your objects is when
+you mutate objects in the array. To inform the directive of such changes,
+see the <code>gmPolylinesUpdate</code> event below.</p>
+
+<p>Only the <code>gm-objects</code>, <code>gm-id</code> and <code>gm-path</code> attributes are required.</p></div>
+<h2 id="Usage">Usage</h2>
+<div class="usage">as attribute<pre class="prettyprint linenums">&lt;ANY gm-polylines
+     gm-objects="{expression}"
+     gm-path="{expression}"
+     gm-polyline-options="{expression}"
+     gm-events="{expression}"
+     gm-on-*event*="{expression}"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+as class<pre class="prettyprint linenums">&lt;ANY class="gm-polylines gm-objects: {expression}; gm-path: {expression}; gm-polyline-options: {expression}; gm-events: {expression}; gm-on-*event*: {expression};"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+<h3 id="Parameters">Parameters</h3>
+<ul class="parameters"><li><code ng:non-bindable="">gm-objects – {expression} – </code>
+<p>an array of objects in the current scope.
+These can be any objects you wish to attach to polylines, the only requirement
+is that they have a uniform method of accessing an id and a path.</p></li>
+<li><code ng:non-bindable="">gm-path – {expression} – </code>
+<p>an angular expression that given an object
+from <code>gm-objects</code>, evaluates to an array of objects with lat and lng
+properties. Your object can be accessed through the variable <code>object</code>.  For
+example, if your controller has</p>
+
+<pre><code class="js">...
+$scope.myObjects = [
+  { id: 0, path: [ { lat: 5, lng: 5}, {lat: 4, lng: 4} ]},
+  { id: 1, path: [ { lat: 6, lng: 6}, {lat: 7, lng: 7} ]}
+]
+...
+</code></pre>
+
+<p>then in the <code>gm-polylines</code> directive you would put</p>
+
+<pre><code class="js">...
+gm-objects="myObjects"
+gm-get-path="object.path"
+...
+</code></pre></li>
+<li><code ng:non-bindable="">gm-polyline-options – {expression} – </code>
+<p>an angular expression that given
+an object from <code>gm-objects</code>, evaluates to a
+<a href="https://developers.google.com/maps/documentation/javascript/reference#PolylineOptions">google.maps.PolylineOptions</a>
+object.  Your object can be accessed through the variable <code>object</code>. If
+unspecified, google maps api defaults will be used.</p></li>
+<li><code ng:non-bindable="">gm-events – {expression} – </code>
+<p>a variable in the current scope that is used to
+simulate events on polylines. Setting this variable to an object of the form </p>
+
+<pre><code class="js">    [
+      {
+        event: 'click',
+        ids: [id1, ...]
+      },
+      ...
+    ]
+</code></pre>
+
+<p>will generate the named events on the polylines with the given ids, if a
+polyline with each id exists. Note: when setting the <code>gm-events</code> variable, you
+must set it to a new object for the changes to be detected.  Code like</p>
+
+<pre><code class="js">myEvents[0]["ids"] = [0]
+</code></pre>
+
+<p>
+will not work.</p></li>
+<li><code ng:non-bindable="">gm-on-*event* – {expression} – </code>
+<p>an angular expression which evaluates to
+an event handler. This handler will be attached to each polyline's *event*
+event.  The variables 'object' and 'polyline' evaluate to your object and the
+<a href="https://developers.google.com/maps/documentation/javascript/reference#Polyline">google.maps.Polyline</a>,
+respectively. For example: </p>
+
+<pre><code class="html">gm-on-click="myClickFn(object, polyline)"
+</code></pre>
+
+<p>will call your <code>myClickFn</code> whenever a polyline is clicked.  You may have
+multiple <code>gm-on-*event*</code> handlers, but only one for each type of event.
+For events that have an underscore in their name, such as
+'position_changed', write it as 'gm-on-position-changed'.</p></li>
+</ul>
+</div>
+<div class="member event"><h2 id="Events">Events</h2>
+<ul class="events"><li><h3 id="gmPolylinesRedraw">gmPolylinesRedraw</h3>
+<div class="gmpolylinesredraw"><p>Force the gmPolylines directive to clear and redraw all polylines.</p><div class="inline"><h4 id="Listen.on.">Listen on:</h4>
+<div class="listen-on-">current gmPolylines scope</div>
+</div>
+<h4 id="Parameters">Parameters</h4>
+<ul class="parameters"><li><code ng:non-bindable="">objects – {string} – </code>
+<p>Not required. The name of the scope variable which
+holds the objects to redraw polylines for, i.e. what you set <code>gm-objects</code> to.
+It is useful because there may be multiple instances of the <code>gmPolylines</code>
+directive. If not specified, all instances of gmPolylines which are child
+scopes will redraw their polylines.</p></li>
+</ul>
+<h4 id="Example">Example</h4>
+<div class="example"><pre><code class="js">$scope.$broadcast('gmPolylinesRedraw', 'myObjects');
+</code></pre></div>
+</div>
+</li>
+<li><h3 id="gmPolylinesUpdate">gmPolylinesUpdate</h3>
+<div class="gmpolylinesupdate"><p>Manually tell the <code>gmPolylines</code> directive to update the polylines.
+This is useful to tell the directive when an object from <code>gm-objects</code> is
+mutated--<code>gmPolylines</code> can not pick up on such changes automatically.</p><div class="inline"><h4 id="Listen.on.">Listen on:</h4>
+<div class="listen-on-">current gmPolylines scope</div>
+</div>
+<h4 id="Parameters">Parameters</h4>
+<ul class="parameters"><li><code ng:non-bindable="">objects – {string} – </code>
+<p>Not required. The name of the scope variable which
+holds the objects to update polylines for, i.e. what you set <code>gm-objects</code> to.
+It is useful because there may be multiple instances of the <code>gmPolylines</code>
+directive. If not specified, all instances of <code>gmPolylines</code> which are child
+scopes will update their polylines.</p></li>
+</ul>
+<h4 id="Example">Example</h4>
+<div class="example"><pre><code class="js">$scope.$broadcast('gmPolylinesUpdate', 'myObjects');
+</code></pre></div>
+</div>
+</li>
+<li><h3 id="gmPolylinesUpdated">gmPolylinesUpdated</h3>
+<div class="gmpolylinesupdated"><p>Emitted when polylines are updated.</p><div class="inline"><h4 id="Type.">Type:</h4>
+<div class="type-">emit</div>
+</div>
+<div class="inline"><h4 id="Target.">Target:</h4>
+<div class="target-">current gmPolylines scope</div>
+</div>
+<h4 id="Parameters">Parameters</h4>
+<ul class="parameters"><li><code ng:non-bindable="">objects – {string} – </code>
+<p>the name of the scope variable which holds the
+objects the gmPolylines directive was constructed with. This is what
+<code>gm-objects</code> was set to.</p></li>
+</ul>
+<h4 id="Example">Example</h4>
+<div class="example"><pre><code class="js">$scope.$on('gmPolylinesUpdated', function(event, objects) {
+    if (objects === 'myObjects') {
+      ...
+    }
+});
+</code></pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>

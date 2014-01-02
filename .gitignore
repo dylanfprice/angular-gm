@@ -1,3 +1,6 @@
-_site/
-Gemfile.lock
 *.swp
+src/
+dist/
+node_modules/
+test/
+examples/

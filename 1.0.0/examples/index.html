@@ -1,6 +1,3 @@
----
----
-
 <!DOCTYPE html>
 <html ng-app="AngularGMExample">
 
@@ -14,23 +11,30 @@
   
   <body ng-controller="BodyCtrl">
 
-    <div class="navbar">
+    <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
-        <a class="brand" href="#">AngularGM Examples</a>
-        <ul class="nav">
-          <li ng-class="{active: $route.current.active == 'map'}">
-            <a href="#!/map/">Map</a>
-          </li>
-          <li ng-class="{active: $route.current.active == 'infowindows'}">
-            <a href="#!/infowindows/">InfoWindows</a>
-          </li>
-          <li ng-class="{active: $route.current.active == 'markers'}">
-            <a href="#!/markers/">Markers</a>
-          </li>
-          <li ng-class="{active: $route.current.active == 'polylines'}">
-            <a href="#!/polylines/">Polylines</a>
-          </li>
-        </ul>
+        <div class="container">
+          <a class="brand" href="#">AngularGM Examples</a>
+          <ul class="nav">
+            <li ng-class="{active: $route.current.active == 'map'}">
+              <a href="#!/map/">Map</a>
+            </li>
+            <li ng-class="{active: $route.current.active == 'infowindows'}">
+              <a href="#!/infowindows/">InfoWindows</a>
+            </li>
+            <li ng-class="{active: $route.current.active == 'markers'}">
+              <a href="#!/markers/">Markers</a>
+            </li>
+            <li ng-class="{active: $route.current.active == 'polylines'}">
+              <a href="#!/polylines/">Polylines</a>
+            </li>
+          </ul>
+          <ul class="nav pull-right">
+            <li>
+              <a href="/docs"><strong>Go to API Documentation</strong></a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
