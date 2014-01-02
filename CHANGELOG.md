@@ -1,6 +1,6 @@
 Note these are not comprehensive commit lists but represent what I consider to be the
 most significant changes. You can always see a full changelog with `git log
-v0.2.0..v0.1.1`.
+1.0.0..0.3.1`.
 
 ### 1.0.0
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/a4b3ec74ca01cd718f152f9adee6e5dedc0c5045) &bull; Added markersById functionality, allows angular-gm to store markers by a user provided id instead of the markers latlng position 
