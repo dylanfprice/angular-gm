@@ -15,5 +15,5 @@ The major change in 1.0.0 is the introduction of the `gm-id` property for `gm-ma
 
 Since I was making a breaking api change anyway, I decided to roll in renaming of some attributes whose names had been bothering me for a while.
 
-There are even more changes that made it in to the release. The `gmMapIdle` event and the `gmMarkersUpdate`/`gmPolylinesUpdate` events, to name a few. See the [changelog](CHANGELOG.md] for a full list.
+There are even more changes that made it in to the release. The `gmMapIdle` event and the `gmMarkersUpdate`/`gmPolylinesUpdate` events, to name a few. See the [changelog](CHANGELOG.md) for a full list.
 
