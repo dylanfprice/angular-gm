@@ -1,11 +1,11 @@
 ### Migrating to 1.0.0
 #### What to do
-*`gm-markers`*
+**`gm-markers`**
 - rename all `gm-get-lat-lng` attributes to `gm-position`
 - rename all `gm-get-marker-options` to `gm-marker-options`
 - add the `gm-id` attribute (see how to use it in the [docs](http://dylanfprice.github.io/angular-gm/1.0.0/docs/#/api/angulargm.directive:gmMarkers)
 
-*`gm-polylines`*
+**`gm-polylines`**
 - rename all `gm-get-path` attributes to `gm-path`
 - rename all `gm-get-polyline-options` to `gm-polyline-options`
 - add the `gm-id` attribute (see how to use it in the [docs](http://dylanfprice.github.io/angular-gm/1.0.0/docs/#/api/angulargm.directive:gmPolylines)
