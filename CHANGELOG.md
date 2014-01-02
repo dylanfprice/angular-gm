@@ -1,4 +1,4 @@
-Note these are not comprehensive commit lists but represent what I consider the
+Note these are not comprehensive commit lists but represent what I consider to be the
 most significant changes. You can always see a full changelog with `git log
 v0.2.0..v0.1.1`.
 
