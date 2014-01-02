@@ -69,7 +69,8 @@ You can also view the latest documentation on your local machine.
 ```bash
 $ grunt && grunt connect
 ```
-then go to http://localhost:8000/dist/docs/
+
+then go to [http://localhost:8000/dist/docs/](http://localhost:8000/dist/docs/)
 
 
 Pull Requests welcome!
