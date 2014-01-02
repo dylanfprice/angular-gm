@@ -5,6 +5,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-ngdocs');
   grunt.loadNpmTasks('grunt-contrib-connect');
@@ -80,6 +81,13 @@ module.exports = function(grunt) {
         browsers: ['PhantomJS']
       }
     },
+    copy: {
+      examples: {
+        expand: true,
+        src: 'examples/**',
+        dest: 'dist/'
+      }
+    },
     ngdocs: {
       options: {
         dest: 'dist/docs/',
@@ -99,6 +107,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['build']);
 
-  grunt.registerTask('build', ['jshint', 'karma:unit', 'concat', 'uglify', 'ngdocs']);
+  grunt.registerTask('build', ['jshint', 'karma:unit', 'concat', 'uglify', 'copy:examples', 'ngdocs']);
 
 };
