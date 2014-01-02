@@ -4,7 +4,7 @@ AngularGM is a set of directives for embedding Google Maps in your application u
 
 [![Build Status](https://travis-ci.org/dylanfprice/angular-gm.png)](https://travis-ci.org/dylanfprice/angular-gm)
 
-AngularGM 1.0.0 is here! This release includes some breaking API changes so make sure to read about it in the [migration guide](MIGRATING.md)
+AngularGM 1.0.0 is here! This release includes some breaking API changes so make sure to read about it in the [migration guide](MIGRATING.md).
 
 
 ## Features
