@@ -87,7 +87,7 @@ angular.module('homepage', [])
       angular: '<script src="https://ajax.googleapis.com/ajax/libs/angularjs/' + angular.version.full + '/angular.min.js"></script>\n',
       resource: '<script src="https://ajax.googleapis.com/ajax/libs/angularjs/' + angular.version.full + '/angular-resource.min.js"></script>\n',
       // TODO: change to http link
-      angulargm: '<script src="http://dylanfprice.github.io/angular-gm/js/angular-gm-1.0.0.js"></script>\n',
+      angulargm: '<script src="http://dylanfprice.github.io/angular-gm/1.0.0/angular-gm.js"></script>\n',
       firebase: '<script src="https://cdn.firebase.com/v0/firebase.js"></script>\n    <script src="http://firebase.github.io/angularFire/angularFire.js"></script>\n',
     };
   })
