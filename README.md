@@ -67,9 +67,10 @@ $ grunt build
 
 You can also view the latest documentation on your local machine.
 ```bash
-$ grunt connect
-# now go to http://localhost:8000/dist/docs/
+$ grunt && grunt connect
 ```
+then go to http://localhost:8000/dist/docs/
+
 
 Pull Requests welcome!
 
