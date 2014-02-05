@@ -181,6 +181,11 @@
           });
         });
       });
+      
+      var streetView = this._map.getStreetView();
+      if (streetView && streetView.getVisible()) {
+        streetView.setVisible(false);
+      }
     };
 
 
