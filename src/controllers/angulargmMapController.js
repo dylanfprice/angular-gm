@@ -206,8 +206,13 @@
      * @param {Function} a handler for the event
      */
     this.addMapListenerOnce = function(event, handler) {
-      google.maps.event.addListenerOnce(this._map,
-          event, handler);
+      var listener = google.maps.event.addListenerOnce(this._map, event, handler);
+
+      if (this._listeners[event] === undefined) {
+        this._listeners[event] = [];
+      }
+
+      this._listeners[event].push(listener);
     };
 
 
