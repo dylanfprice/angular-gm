@@ -128,6 +128,20 @@ describe('angulargmMapController', function() {
 
     expect(callCount).toEqual(1);
   });
+  
+  it('clears listeners when the map is "destroyed"', function() {
+    mapCtrl.addMapListener('center_changed', function() {});
+    expect(mapCtrl._listeners.center_changed).toBeDefined();
+    scope.$destroy();
+    expect(mapCtrl._listeners.center_changed).not.toBeDefined();
+  });
+  
+  it('clears one time listeners when the map is "destroyed"', function() {
+    mapCtrl.addMapListenerOnce('center_changed', function() {});
+    expect(mapCtrl._listeners.center_changed).toBeDefined();
+    scope.$destroy();
+    expect(mapCtrl._listeners.center_changed).not.toBeDefined();
+  });
 
   it('keeps map listeners in a hash', function() {
     var listeners = mapCtrl._listeners;
