@@ -26,7 +26,7 @@
 
   angular.module('AngularGM').
 
-  factory('angulargmContainer', ['$q', '$timeout', function($q, $timeout) {
+  factory('angulargmContainer', ['$q', function($q) {
     var maps = {};
     var defers = {};
 
