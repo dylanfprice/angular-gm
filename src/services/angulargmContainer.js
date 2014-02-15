@@ -26,7 +26,7 @@
 
   angular.module('AngularGM').
 
-  factory('angulargmContainer', ['$q', function($q) {
+  factory('angulargmContainer', ['$q', '$timeout', function($q, $timeout) {
     var maps = {};
     var defers = {};
 
@@ -68,7 +68,11 @@
      */
     function getMapPromise(mapId) {
       var defer = defers[mapId] || $q.defer();  
+      var map = getMap(mapId);
       defers[mapId] = defer;
+      if (map !== undefined) {
+        defer.resolve(map);
+      }
       return defer.promise;
     }
 
