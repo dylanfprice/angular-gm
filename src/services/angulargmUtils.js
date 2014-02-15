@@ -13,7 +13,7 @@
   factory('angulargmUtils', ['$parse', function($parse) {
 
     /**
-     * Check if two floating point numbers are equal. 
+     * Check if two floating point numbers are equal.
      *
      * @param {number} f1 first number
      * @param {number} f2 second number
@@ -34,9 +34,9 @@
      * or not google.maps.LatLng objects returns false.
      */
     function latLngEqual(l1, l2) {
-      if (!(l1 instanceof google.maps.LatLng && 
+      if (!(l1 instanceof google.maps.LatLng &&
             l2 instanceof google.maps.LatLng)) {
-        return false; 
+        return false;
       }
       return floatEqual(l1.lat(), l2.lat()) && floatEqual(l1.lng(), l2.lng());
     }
@@ -74,7 +74,7 @@
      * @throw if latLng not instanceof google.maps.LatLng
      */
     function latLngToObj(latLng) {
-      if (!(latLng instanceof google.maps.LatLng)) 
+      if (!(latLng instanceof google.maps.LatLng))
         throw 'latLng not a google.maps.LatLng';
 
       return {
@@ -88,7 +88,7 @@
      * @name #objToLatLng
      * @methodOf angulargm.service:angulargmUtils
      *
-     * @param {Object} obj of the form { lat: 40, lng: -120 } 
+     * @param {Object} obj of the form { lat: 40, lng: -120 }
      * @return {google.maps.LatLng} returns null if problems with obj (null,
      * NaN, etc.)
      */
@@ -101,7 +101,7 @@
         if (ok) {
           return new google.maps.LatLng(lat, lng);
         }
-      }  
+      }
       return null;
     }
 

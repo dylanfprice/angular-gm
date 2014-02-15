@@ -80,10 +80,10 @@ describe('angulargmMapController', function() {
     map.setZoom(gmMapOptions.zoom + 2);
     map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
     expect(mapCtrl.center).toEqual(newCenter); // sanity check--we actually changed something
-   
+
     // destroy scope
     scope.$destroy();
-    
+
     // re-instantiate controller
     mapCtrl = $controller('angulargmMapController', {$scope: scope2, $element: elm});
 
@@ -98,7 +98,7 @@ describe('angulargmMapController', function() {
     scope.$destroy();
     numMarkers = 0;
     mapCtrl.forEachElement('marker', function(marker) {
-      numMarkers++;  
+      numMarkers++;
     });
     expect(numMarkers).toEqual(0);
   });
@@ -128,14 +128,14 @@ describe('angulargmMapController', function() {
 
     expect(callCount).toEqual(1);
   });
-  
+
   it('clears listeners when the map is "destroyed"', function() {
     mapCtrl.addMapListener('center_changed', function() {});
     expect(mapCtrl._listeners.center_changed).toBeDefined();
     scope.$destroy();
     expect(mapCtrl._listeners.center_changed).not.toBeDefined();
   });
-  
+
   it('clears one time listeners when the map is "destroyed"', function() {
     mapCtrl.addMapListenerOnce('center_changed', function() {});
     expect(mapCtrl._listeners.center_changed).toBeDefined();
@@ -289,7 +289,7 @@ describe('angulargmMapController', function() {
       });
 
       it('does not update marker not on the map', function() {
-        var updated = mapCtrl.updateElement('marker', scope, id, {position: position});  
+        var updated = mapCtrl.updateElement('marker', scope, id, {position: position});
         expect(updated).toBeFalsy();
       });
     });

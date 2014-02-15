@@ -181,7 +181,7 @@
           });
         });
       });
-      
+
       var streetView = this._map.getStreetView();
       if (streetView && streetView.getVisible()) {
         streetView.setVisible(false);
@@ -279,7 +279,7 @@
     /**
      * Adds a new element to the map.
      * @return {boolean} true if an element was added, false if there was already
-     *   an element with the given id     
+     *   an element with the given id
      * @throw if any arguments are null/undefined or elementOptions does not
      *   have all the required options (i.e. position)
      */

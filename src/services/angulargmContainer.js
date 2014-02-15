@@ -39,7 +39,7 @@
      */
     function addMap(mapId, map) {
       if (!(map instanceof google.maps.Map)) {
-        throw 'map not a google.maps.Map: ' + map; 
+        throw 'map not a google.maps.Map: ' + map;
       } else if (mapId in maps) {
         throw 'already contain map with id ' + mapId;
       }
@@ -67,7 +67,7 @@
      *   when the map is added
      */
     function getMapPromise(mapId) {
-      var defer = defers[mapId] || $q.defer();  
+      var defer = defers[mapId] || $q.defer();
       var map = getMap(mapId);
       defers[mapId] = defer;
       if (map !== undefined) {

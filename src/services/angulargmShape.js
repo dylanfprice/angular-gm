@@ -10,8 +10,8 @@
 
   angular.module('AngularGM').
 
-  factory('angulargmShape', 
-    ['$timeout', 'angulargmUtils', 
+  factory('angulargmShape',
+    ['$timeout', 'angulargmUtils',
     function($timeout, angulargmUtils) {
 
     /**
@@ -80,7 +80,7 @@
      */
     function _removeOrphanedElements(type, scope, controller, objectCache) {
       var orphaned = [];
-      
+
       controller.forEachElementInScope(type, scope.$id, function(element, id) {
         if (!(id in objectCache)) {
           orphaned.push(id);
@@ -107,7 +107,7 @@
      * - listening for events
      */
     function _attachEventListeners(type, scope, attrs, controller, updateElements) {
- 
+
       // watch objects
       scope.$watch('gmObjects().length', function(newValue, oldValue) {
         if (newValue != null && newValue !== oldValue) {
@@ -152,7 +152,7 @@
     }
 
     /**
-     * Takes care of setting up the directive for the given type of shape. 
+     * Takes care of setting up the directive for the given type of shape.
      * Assumes the following directive scope:
      *   scope: {
      *     gmId: '&',

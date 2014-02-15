@@ -1,5 +1,5 @@
 describe('gmMap', function() {
-  var elm, scope, mapCtrl; 
+  var elm, scope, mapCtrl;
   var listeners, listenersOnce;
   var initCenter, initZoom, initBounds;
   var map;
@@ -41,7 +41,7 @@ describe('gmMap', function() {
       new google.maps.LatLng(6, 7)
     );
     initMapTypeId = google.maps.MapTypeId.TERRAIN;
-    
+
     // get MapController
     mapCtrl = elm.controller('gmMap');
 
@@ -108,7 +108,7 @@ describe('gmMap', function() {
     google.maps.event.trigger(map, 'bounds_changed');
 
     $timeout.flush();
-    
+
     expect(scope.pCenter).toEqual(initCenter);
     expect(scope.pZoom).toEqual(initZoom);
     expect(scope.pBounds).toEqual(initBounds);
@@ -175,7 +175,7 @@ describe('gmMap', function() {
     scope.$digest();
     expect(mapCtrl.center).toEqual(center);
   });
-  
+
   it('updates map on scope zoom changed', function() {
     scope.pZoom = initZoom + 2;
     scope.$digest();
@@ -230,7 +230,7 @@ describe('gmMap', function() {
     scope.$broadcast('gmMapResize', scope.mapId);
     expect(mapCtrl.mapTrigger).toHaveBeenCalledWith('resize');
   });
- 
+
   it('ignores map resize for different map', function() {
     scope.$broadcast('gmMapResize', scope.mapId + 'diff');
     expect(mapCtrl.mapTrigger).not.toHaveBeenCalled();
@@ -239,7 +239,7 @@ describe('gmMap', function() {
   it('fires idle event when map loaded', inject(function($compile, $timeout) {
     // this test is slow because we have to wait for google maps to load--eckh
     var called = false;
-    
+
     runs(function() {
       elm = angular.element('<gm-map gm-map-id="mapId" gm-center="pCenter" gm-zoom="pZoom" gm-bounds="pBounds"></gm-map>');
       var newScope = scope.$new();

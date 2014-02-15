@@ -28,7 +28,7 @@ describe('gmInfoWindow', function () {
     scope.iwopts = options || {};
     var elm = angular.element('<div>' +
                                 '<div gm-info-window="infoWindow" ' +
-                                '     gm-info-window-options="iwopts" ' + 
+                                '     gm-info-window-options="iwopts" ' +
                                 '     gm-on-closeclick="closed = true" ' +
                                 '</div>' +
                               '</div>');
