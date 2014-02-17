@@ -3,10 +3,10 @@
  * @name angulargm
  *
  * @description
- * Module for embedding Google Maps into AngularJS applications. 
+ * Module for embedding Google Maps into AngularJS applications.
  *
  * # Example Plunkers ([fullscreen](http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL))
- *  
+ *
  * <iframe style="width: 100%; height: 400px" src="http://embed.plnkr.co/PYDYjVuRHaJpdntoJtqL" frameborder="0" allowfullscreen="allowfullscreen">
  * </iframe>
  *

@@ -34,25 +34,25 @@ describe('angulargmUtils', function() {
   describe('latLngEqual', function() {
 
     it('returns true if args are equal', function() {
-      var eq = latLngEqual(new google.maps.LatLng(1, 2), 
+      var eq = latLngEqual(new google.maps.LatLng(1, 2),
         new google.maps.LatLng(1, 2));
       expect(eq).toBeTruthy();
     });
 
     it('returns false if args are not equal', function() {
-      var eq = latLngEqual(new google.maps.LatLng(1, 2), 
+      var eq = latLngEqual(new google.maps.LatLng(1, 2),
         new google.maps.LatLng(3, 4));
       expect(eq).toBeFalsy();
     });
 
     it('returns false if arg is null', function() {
-      var eq = latLngEqual(new google.maps.LatLng(1, 2), 
+      var eq = latLngEqual(new google.maps.LatLng(1, 2),
         null);
       expect(eq).toBeFalsy();
     });
 
     it('returns false if arg contains NaN', function() {
-      var eq = latLngEqual(new google.maps.LatLng(1, NaN), 
+      var eq = latLngEqual(new google.maps.LatLng(1, NaN),
         new google.maps.LatLng(1, NaN));
       expect(eq).toBeFalsy();
     });

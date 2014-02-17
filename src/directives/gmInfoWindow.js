@@ -2,9 +2,9 @@
  * @ngdoc directive
  * @name angulargm.directive:gmInfoWindow
  * @element ANY
- * 
+ *
  * @description
- * A directive for creating a google.maps.InfoWindow.  
+ * A directive for creating a google.maps.InfoWindow.
  *
  * @param {expression} gm-info-window scope variable to store the
  * [google.maps.InfoWindow](https://developers.google.com/maps/documentation/javascript/reference#InfoWindow)
@@ -20,7 +20,7 @@
  * event.  The variable `infoWindow` evaluates to the InfoWindow.  For example:
  * ```html
  * gm-on-closeclick="myCloseclickFn(infoWindow)"
- * ``` 
+ * ```
  * will call your myCloseclickFn whenever the InfoWindow is clicked closed. You
  * may have multiple `gm-on-*event*` handlers, but only one for each type of
  * event.
@@ -34,10 +34,10 @@
    * Much of this code is taken from the Angular UI team, see:
    * https://github.com/angular-ui/ui-map/blob/master/ui-map.js
    */
-  directive('gmInfoWindow', 
-    ['$parse', '$compile', '$timeout', 'angulargmUtils', 
+  directive('gmInfoWindow',
+    ['$parse', '$compile', '$timeout', 'angulargmUtils',
     function ($parse, $compile, $timeout, angulargmUtils) {
-   
+
     /** aliases */
     var getEventHandlers = angulargmUtils.getEventHandlers;
 

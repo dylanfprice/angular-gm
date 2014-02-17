@@ -32,7 +32,7 @@
  * ```js
  * ...
  * $scope.myObjects = [
- *   { id: 0, location: { lat: 5, lng: 5} }, 
+ *   { id: 0, location: { lat: 5, lng: 5} },
  *   { id: 1, location: { lat: 6, lng: 6} }
  * ]
  * ...
@@ -55,7 +55,7 @@
  *
  *
  * @param {expression} gm-events a variable in the current scope that is used to
- * simulate events on markers. Setting this variable to an object of the form 
+ * simulate events on markers. Setting this variable to an object of the form
  * ```js
  *     [
  *       {
@@ -70,15 +70,15 @@
  * must set it to a new object for the changes to be detected.  Code like
  * ```js
  * myEvents[0]["ids"] = [0]
- * ``` 
+ * ```
  * will not work.
- *                      
+ *
  *
  * @param {expression} gm-on-*event* an angular expression which evaluates to
  * an event handler. This handler will be attached to each marker's \*event\*
  * event.  The variables 'object' and 'marker' evaluate to your object and the
  * [google.maps.Marker](https://developers.google.com/maps/documentation/javascript/reference#Marker),
- * respectively. For example: 
+ * respectively. For example:
  * ```html
  * gm-on-click="myClickFn(object, marker)"
  * ```
@@ -109,7 +109,7 @@
  * $scope.$broadcast('gmMarkersUpdate', 'myObjects');
  * ```
  */
- 
+
 /**
  * @ngdoc event
  * @name angulargm.directive:gmMarkers#gmMarkersRedraw
@@ -129,13 +129,13 @@
  * $scope.$broadcast('gmMarkersRedraw', 'myObjects');
  * ```
  */
- 
+
 /**
  * @ngdoc event
  * @name angulargm.directive:gmMarkers#gmMarkersUpdated
  * @eventOf angulargm.directive:gmMarkers
  * @eventType emit on current gmMarkers scope
- * 
+ *
  * @description Emitted when markers are updated.
  *
  * @param {string} objects the name of the scope variable which holds the
@@ -157,7 +157,7 @@
 
   angular.module('AngularGM').
 
-  directive('gmMarkers', 
+  directive('gmMarkers',
     ['$log', '$parse', '$timeout', 'angulargmUtils', 'angulargmShape',
     function($log, $parse, $timeout, angulargmUtils, angulargmShape) {
 

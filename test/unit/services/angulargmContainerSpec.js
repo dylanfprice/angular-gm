@@ -71,6 +71,18 @@ describe('angulargmContainer', function() {
       expect(resolvedMap).toBe(expectedMap);
     }));
 
+    it('resolves the promised map when it is already added', inject(function($rootScope) {
+      var promise, resolvedMap;
+      var expectedMap = new google.maps.Map();
+
+      cntr.addMap('test', expectedMap);
+      promise = cntr.getMapPromise('test');
+      promise.then(function(map) { resolvedMap = map; });
+
+      $rootScope.$apply();
+      expect(resolvedMap).toBe(expectedMap);
+    }));
+
   });
 });
 

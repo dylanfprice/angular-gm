@@ -47,7 +47,7 @@
  * unspecified, google maps api defaults will be used.
  *
  * @param {expression} gm-events a variable in the current scope that is used to
- * simulate events on polylines. Setting this variable to an object of the form 
+ * simulate events on polylines. Setting this variable to an object of the form
  * ```js
  *     [
  *       {
@@ -62,15 +62,15 @@
  * must set it to a new object for the changes to be detected.  Code like
  * ```js
  * myEvents[0]["ids"] = [0]
- * ``` 
+ * ```
  * will not work.
- *                      
+ *
  *
  * @param {expression} gm-on-*event* an angular expression which evaluates to
  * an event handler. This handler will be attached to each polyline's \*event\*
  * event.  The variables 'object' and 'polyline' evaluate to your object and the
  * [google.maps.Polyline](https://developers.google.com/maps/documentation/javascript/reference#Polyline),
- * respectively. For example: 
+ * respectively. For example:
  * ```html
  * gm-on-click="myClickFn(object, polyline)"
  * ```
@@ -101,7 +101,7 @@
  * $scope.$broadcast('gmPolylinesUpdate', 'myObjects');
  * ```
  */
- 
+
 /**
  * @ngdoc event
  * @name angulargm.directive:gmPolylines#gmPolylinesRedraw
