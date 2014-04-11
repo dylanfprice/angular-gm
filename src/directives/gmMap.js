@@ -255,7 +255,7 @@
       priority: 100,
       template: '<div>' +
                   '<div id="" style="width:100%;height:100%;"></div>' +
-                  '<div ng-transclude></div>' +
+                  '<div></div>' +
                 '</div>',
       transclude: true,
       replace: true,
