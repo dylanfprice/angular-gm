@@ -94,6 +94,16 @@ describe('angulargmMapController', function() {
 
 
   it('removes map elements on scope destroy', function() {
+    markerOptions = {
+      position: new google.maps.LatLng(1, 2)
+    };
+
+    mapCtrl.addElement('marker', scope, 1, markerOptions);
+    numMarkers = 0;
+    mapCtrl.forEachElement('marker', function(marker) {
+      numMarkers++;
+    });
+    expect(numMarkers).toEqual(1);
     var mapId = scope.gmMapId();
     scope.$destroy();
     numMarkers = 0;
@@ -101,6 +111,18 @@ describe('angulargmMapController', function() {
       numMarkers++;
     });
     expect(numMarkers).toEqual(0);
+  });
+
+  it('removes custom controls on scope destroy', function(){
+    var elm = angular.element('<div></div>');
+    var ctrl = elm[0];
+    mapCtrl.addControl(ctrl, 'TOP_RIGHT');
+    var position = google.maps.ControlPosition.TOP_RIGHT;
+    expect(mapCtrl._controlPositions).toEqual([position]);
+    expect(mapCtrl._map.controls[position].length).toEqual(1);
+    scope.$destroy();
+    expect(mapCtrl._map.controls[position].length).toEqual(0);
+    expect(mapCtrl._controlPositions).toEqual([]);
   });
 
 

@@ -40,6 +40,7 @@
       this._map = this._createMap(mapId, mapDiv, config, angulargmContainer, $scope);
       this._elements = {};
       this._listeners = {};
+      this._controlPositions = [];
 
       // 'public' properties
       this.dragging = false;
@@ -182,6 +183,12 @@
       if (streetView && streetView.getVisible()) {
         streetView.setVisible(false);
       }
+
+      //clear added custom controls
+      angular.forEach(this._controlPositions, function(position){
+        self._map.controls[position].clear();
+      });
+      this._controlPositions = [];
     };
 
 
@@ -309,6 +316,19 @@
         element.setMap(this._map);
 
         return true;
+    };
+
+    /**
+     * Adds a control to the map.
+     */
+    this.addControl = function(ctrl, position){
+      assertDefined(ctrl, 'ctrl');
+      assertDefined(position, 'position');
+      var mapPosition = google.maps.ControlPosition[position];
+      if(this._controlPositions.indexOf(mapPosition) === -1){
+        this._controlPositions.push(mapPosition);
+      }
+      this._map.controls[mapPosition].push(ctrl);
     };
 
     /**
