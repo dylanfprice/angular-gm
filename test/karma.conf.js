@@ -4,7 +4,6 @@ module.exports = function(config) {
 
         files: [
           'https://maps.googleapis.com/maps/api/js?sensor=false',
-          'http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js',
           'test/lib/angular/angular.js',
           'test/lib/angular/angular-mocks.js',
           'src/module.js',

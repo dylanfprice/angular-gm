@@ -29,7 +29,6 @@ AngularGM 1.0.0 is here! This release includes some breaking API changes so make
 Include the required libraries 
 ```html
 <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 <script src="//dylanfprice.github.io/angular-gm/1.0.0/angular-gm.min.js"></script>
 ```

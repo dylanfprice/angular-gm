@@ -83,7 +83,6 @@ angular.module('homepage', [])
 
     return {
       googlemaps: '<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>\n',
-      jquery: '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>\n',
       angular: '<script src="https://ajax.googleapis.com/ajax/libs/angularjs/' + angular.version.full + '/angular.min.js"></script>\n',
       resource: '<script src="https://ajax.googleapis.com/ajax/libs/angularjs/' + angular.version.full + '/angular-resource.min.js"></script>\n',
       // TODO: change to http link
@@ -154,7 +153,6 @@ angular.module('homepage', [])
                 /*
                 '  <head>\n' +
                 '    ' + script.googlemaps +
-                '    ' + script.jquery.replace('></', '>\n    </') +
                 '    ' + script.angular.replace('></', '>\n    </') +
                 '    ' + script.angulargm.replace('></', '>\n    </') +
                (attrs.resource ? ('    ' + script.resource.replace('></', '>\n    </')) : '') +
@@ -289,7 +287,6 @@ angular.module('homepage', [])
             hiddenField('css', '</style> <!-- Ugly Hack due to jsFiddle issue: http://goo.gl/BUfGZ --> \n' +
                stylesheet +
                script.googlemaps +
-               script.jquery +
                script.angular +
                script.angulargm +
                (attr.resource ? script.resource : '') +
