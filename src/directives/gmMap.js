@@ -167,7 +167,7 @@
         });
       };
 
-      var updateScope = debounce(_updateScope, 100, true);
+      var updateScope = debounce(_updateScope, 100);
 
       // Add event listeners to the map
       controller.addMapListener('drag', updateScope);
