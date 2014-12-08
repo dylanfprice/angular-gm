@@ -99,7 +99,8 @@
 
   angular.module('AngularGM').
 
-  directive('gmMap', ['$timeout', 'angulargmUtils', function ($timeout, angulargmUtils) {
+
+  directive('gmMap', ['$timeout', 'angulargmUtils', 'debounce', function ($timeout, angulargmUtils, debounce) {
 
     /** aliases **/
     var getEventHandlers = angulargmUtils.getEventHandlers;
@@ -142,7 +143,7 @@
         hasMapTypeId = true;
       }
 
-      var updateScope = function() {
+      var _updateScope = function() {
         $timeout(function () {
           if (hasCenter || hasZoom || hasBounds || hasMapTypeId) {
             scope.$apply(function (s) {
@@ -166,6 +167,7 @@
         });
       };
 
+      var updateScope = debounce(_updateScope, 100, true);
 
       // Add event listeners to the map
       controller.addMapListener('drag', updateScope);
