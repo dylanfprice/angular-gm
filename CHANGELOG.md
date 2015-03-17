@@ -2,6 +2,15 @@ Note these are not comprehensive commit lists but represent what I consider to b
 most significant changes. You can always see a full changelog with `git log
 1.0.0..0.3.1`.
 
+### 1.0.1
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/24e8ca2e9fd8eb9fda6ffee589b3e2f25a9affa1) &bull; Fix #45 - update addMapListenerOnce to fix memory leak 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/d214bd66203f3d658b0f746f7ddf3f399a0ea730) &bull; Remove jquery as a dependency 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/e7244d11ae54aa0709ea1bb14e3722caba58c735) &bull; Remove support for node 0.8 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/6a50a1981067aef028439c4171e4848783490f62) &bull; Don't  infowindow, instead hide it in the dom. Fixes #27 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/05cb5ff9f6ae18b15283f2d2a31d005f891c6e43) &bull; Be smarter with google maps events--don't listen to drag in map controller and debounce in gmMap 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/6d1c8ea8b2086022bdaf32135a6125c8579847f9) &bull; Don't immediately execute debounced updateScope. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/9345e2a76541ad1b861e0c157e4865c914065637) &bull; Fix #75 scope hierarchy changed in newer versions of angularjs
+
 ### 1.0.0
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/a4b3ec74ca01cd718f152f9adee6e5dedc0c5045) &bull; Added markersById functionality, allows angular-gm to store markers by a user provided id instead of the markers latlng position 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/7a0db15159f397c469644a7c0243b3c38c4170dd) &bull; Moved use strict declarations inside functions 

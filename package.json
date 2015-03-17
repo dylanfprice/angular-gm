@@ -1,7 +1,7 @@
 {
   "name": "angular-gm",
   "description": "AngularGM - Google Maps Directives for AngularJS",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "http://dylanfprice.github.com/angular-gm",
   "author": "Dylan Price <the.dylan.price@gmail.com>",
   "repository": {
