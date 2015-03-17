@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="AngularGMExample">
+
+  <head lang="en">
+    <meta charset="utf-8">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="css/prettify.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    <title>AngularGM Examples</title>
+  </head>
+  
+  <body ng-controller="BodyCtrl">
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#">AngularGM Examples</a>
+          <ul class="nav">
+            <li ng-class="{active: $route.current.active == 'map'}">
+              <a href="#!/map/">Map</a>
+            </li>
+            <li ng-class="{active: $route.current.active == 'infowindows'}">
+              <a href="#!/infowindows/">InfoWindows</a>
+            </li>
+            <li ng-class="{active: $route.current.active == 'markers'}">
+              <a href="#!/markers/">Markers</a>
+            </li>
+            <li ng-class="{active: $route.current.active == 'polylines'}">
+              <a href="#!/polylines/">Polylines</a>
+            </li>
+          </ul>
+          <ul class="nav pull-right">
+            <li>
+              <a href="../docs"><strong>Go to API Documentation</strong></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div ng-view></div>
+
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+    <script src="js/prettify.min.js"></script>
+    <script src="js/homepage.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/angular-gm-example.js"></script>
+    <script src="../angular-gm.js"></script>
+  </body>
+  
+</html>

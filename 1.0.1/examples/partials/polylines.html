@@ -1,0 +1,90 @@
+<h1 id="polylines">Polylines</h1>
+<div class="row example">
+  <div class="span8 app-source" app-source="polylines.html polylines.js polylines.css" module="polylines"></div>
+  <div class="span4">
+    <span class="pull-right" js-fiddle="polylines.html polylines.js polylines.css" module="polylines"></span>
+    <div class="tabs-spacer"></div>
+    <div app-run="polylines.html" module="polylines" class="well"></div>
+  </div>
+</div>
+
+<style id="polylines.css">
+.map {
+  height: 300px;
+}
+
+/* 
+Fixes Bootstrap issues with Google Maps
+see http://stackoverflow.com/a/9170756 
+*/
+.map img { 
+  max-width: none;
+}
+
+.inline {
+  display: inline;
+}
+
+.small-input {
+  max-width: 2em;
+}
+</style>
+<script id="polylines.js">
+  angular.module('polylines', ['AngularGM'])
+
+  .controller('PolylinesCtrl', function($scope) {
+    $scope.options = {
+      map: {
+        center: new google.maps.LatLng(0, 0),
+        zoom: 6,
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+      },
+      line: {
+        strokeWeight: 5
+      }
+    };
+
+    $scope.setLines = function() {
+      $scope.lines = [
+        { id: 0, path: [ { lat: -3, lng: -3}, {lat: 3, lng: 3} ]},
+        { id: 1, path: [ { lat: -3, lng: 3}, {lat: 3, lng: -3} ]},
+        { id: 2, path: [ { lat: 0, lng: -3}, {lat: 0, lng: 3} ]},
+        { id: 3, path: [ { lat: -3, lng: 0}, {lat: 3, lng: 0} ]},
+      ];
+    };
+
+    $scope.onEdit = function() {
+      $scope.$broadcast('gmPolylinesUpdate', 'lines');
+    };
+
+    $scope.setLines();
+  });
+</script>
+<script type="text/ng-template" id="polylines.html">
+  <div ng-controller="PolylinesCtrl">
+    <gm-map gm-map-id="'polylines'" gm-center="center" 
+            gm-zoom="zoom" gm-map-options="options.map" class="map">
+
+      <gm-polylines gm-objects="lines"
+                    gm-id="object.id"
+                    gm-path="object.path"
+                    gm-polyline-options="options.line">
+      </gm-polylines>
+
+    </gm-map>
+    <div ng-repeat="line in lines">
+      Edit line {{line.id}}:
+      <div class="inline" ng-repeat="latLng in line.path">
+        <input class="small-input inline" ng-model="latLng.lat" ng-change="onEdit()">,
+        <input class="small-input inline" ng-model="latLng.lng" ng-change="onEdit()">
+        <span ng-show="!$last">to</span>
+      </div>
+    </div>
+    <br>
+    <button ng-click="setLines()">Revert changes</button>
+  </div>
+</script>
+
+
+
+
