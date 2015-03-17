@@ -64,10 +64,14 @@
               $timeout(function() {
                 var context = {object: object};
                 context[type] = element;
-                     // scope is this directive's isolate scope
-                     // scope.$parent is the scope of ng-transclude
-                     // scope.$parent.$parent is the one we want
-                handler(scope.$parent.$parent, context);
+                if ((angular.version.major <= 1) && (angular.version.minor <= 2)) {
+                  // scope is this directive's isolate scope
+                  // scope.$parent is the scope of ng-transclude
+                  // scope.$parent.$parent is the one we want
+                  handler(scope.$parent.$parent, context);
+                } else {
+                  handler(scope.$parent.$parent.$parent , context);
+                }    
               });
             });
           });
