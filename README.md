@@ -43,7 +43,7 @@ Make a map
 <gm-map gm-map-id="'myMap'" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-type-id="mapTypeId" style="width:500px;height:500px;"></gm-map>
 ```
 
-There is also now the option to install through **Bower**: `bower install AngularGM`
+There is also the option to install through **Bower**: `bower install AngularGM`
 
 
 ## Development
