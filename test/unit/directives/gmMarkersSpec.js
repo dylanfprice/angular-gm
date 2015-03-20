@@ -48,7 +48,7 @@ describe('gmMarkers', function() {
     spyOn(mapCtrl, 'trigger').andCallThrough();
     spyOn(mapCtrl, 'addListener').andCallThrough();
 
-    markersScopeId = elm.find('gm-markers').scope().$id;
+    markersScopeId = elm.find('gm-markers').isolateScope().$id;
 
     scope.$digest();
     $timeout.flush();
