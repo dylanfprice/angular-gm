@@ -29,7 +29,7 @@ Latest version: 1.0.1
 Include the required libraries 
 ```html
 <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js"></script>
 <script src="//dylanfprice.github.io/angular-gm/1.0.1/angular-gm.min.js"></script>
 ```
 
