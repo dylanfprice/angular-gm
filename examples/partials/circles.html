@@ -1,0 +1,119 @@
+﻿<h1 id="circles">Circles</h1>
+<div class="row example">
+    <div class="span8 app-source" app-source="circles.html circles.js circles.css" module="circles"></div>
+    <div class="span4">
+        <span class="pull-right" js-fiddle="circles.html circles.js circles.css" module="circles"></span>
+        <div class="tabs-spacer"></div>
+        <div app-run="circles.html" module="circles" class="well"></div>
+    </div>
+</div>
+<style id="circles.css">
+    .map {
+        height: 300px;
+    }
+
+        /*
+    Fixes Bootstrap issues with Google Maps
+    see http://stackoverflow.com/a/9170756
+    */
+
+    .map img {
+        max-width: none;
+    }
+</style>
+
+<script id="circles.js">
+    angular.module('circles', ['AngularGM'])
+
+    .controller('CirclesCtrl', function ($scope) {
+        $scope.options = {
+            map: {
+                center: new google.maps.LatLng(39.0791685, -105.4775487),
+                zoom: 6,
+                mapTypeId: google.maps.MapTypeId.TERRAIN
+            },
+        };
+        $scope.places = [
+          {
+              id: 0,
+              name: 'Denver Union Station',
+              location: {
+                  lat: 39.752959,
+                  lng: -104.999929
+              },
+              options:{
+                  strokeColor: '#FF0000',
+                  strokeOpacity: .8,
+                  strokeWeight: 2,
+                  fillColor: '#FF0000',
+                  fillOpacity: .35,
+                  radius: 48280.3 // 30 mile radius in meters   
+              }
+          },
+          {
+              id: 1,
+              name: 'Aspen',
+              location: {
+                  lat: 39.1984815,
+                  lng: -106.8367246
+              },
+              options:{
+                strokeColor: '#FF0000',
+                strokeOpacity: .8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: .35,
+                radius: 40233.6 // 25 mile radius in meters   
+            }
+          },
+          {
+              id: 2,
+              name: 'Breckenridge Ski Resort',
+              location: {
+                  lat: 39.480506,
+                  lng: -106.06688
+              },
+              options: {
+                  strokeColor: '#FF0000',
+                  strokeOpacity: .8,
+                  strokeWeight: 2,
+                  fillColor: '#FF0000',
+                  fillOpacity: .35,
+                  radius: 32186.9 // 20 mile radius in meters   
+              }
+          }
+        ];
+        $scope.triggerOpenInfoWindow = function (places) {
+            $scope.markerEvents = [
+              {
+                  event: 'openinfowindow',
+                  ids: [places.id]
+              },
+            ];
+        }
+    });
+</script>
+<script type="text/ng-template" id="circles.html">
+    <div ng-controller="CirclesCtrl">
+        <div gm-info-window="infoWindow">
+            <h4>{{selectedPlace.name}}</h4>
+        </div>
+        <gm-map gm-map-id="'circles'" gm-center="center" gm-zoom="zoom"
+                gm-map-options="options.map" class="map">
+            <gm-circles gm-objects="places"
+                        gm-id="object.id"
+                        gm-circle-center="{lat: object.location.lat, lng: object.location.lng}"
+                        gm-circle-options="object.options">
+            </gm-circles>
+            <gm-markers gm-objects="places"
+                        gm-id="object.id"
+                        gm-position="{lat: object.location.lat, lng: object.location.lng}"
+                        gm-marker-options="{ title: object.name, clickable: true }"
+                        gm-events="markerEvents"
+                        gm-on-openinfowindow="selectedPlace = object; 
+                            infoWindow.open(marker.getMap(), marker);"
+                        gm-on-click="triggerOpenInfoWindow(object)">
+            </gm-markers>
+        </gm-map>
+    </div>
+</script>
