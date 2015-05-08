@@ -18,6 +18,10 @@ angular.module('AngularGMExample', ['components', 'homepage'])
       templateUrl: 'partials/polylines.html',
       active: 'polylines',
     }).
+    when('/circles/', {
+        templateUrl: 'partials/circles.html',
+        active: 'circles',
+    }).
     otherwise({
       redirectTo: '/map/'
     });

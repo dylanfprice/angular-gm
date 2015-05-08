@@ -260,7 +260,13 @@
                 throw 'polylineOptions did not contain a path';
             }
             return new angulargmDefaults.polylineConstructor(opts);
-        } else {
+        } else if (type === 'circle') {
+            if (!(opts.center instanceof google.maps.LatLng)) {
+                throw 'circleOptions did not contain a marker position';
+            }
+            return new angulargmDefaults.circleConstructor(opts);
+        }
+        else {
           throw 'unrecognized type ' + type;
         }
     };
