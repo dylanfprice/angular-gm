@@ -1,4 +1,4 @@
-angular.module('AngularGMExample', ['components', 'homepage'])
+angular.module('AngularGMExample', ['ngRoute', 'components', 'homepage'])
 
 .config(function($routeProvider) {
   $routeProvider.
