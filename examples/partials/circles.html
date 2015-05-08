@@ -32,7 +32,15 @@
                 zoom: 6,
                 mapTypeId: google.maps.MapTypeId.TERRAIN
             },
+            circle: {
+                strokeColor: '#FF0000',
+                strokeOpacity: .8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: .35,
+            }
         };
+
         $scope.places = [
           {
               id: 0,
@@ -41,14 +49,7 @@
                   lat: 39.752959,
                   lng: -104.999929
               },
-              options:{
-                  strokeColor: '#FF0000',
-                  strokeOpacity: .8,
-                  strokeWeight: 2,
-                  fillColor: '#FF0000',
-                  fillOpacity: .35,
-                  radius: 48280.3 // 30 mile radius in meters   
-              }
+              radius: 48280
           },
           {
               id: 1,
@@ -57,14 +58,7 @@
                   lat: 39.1984815,
                   lng: -106.8367246
               },
-              options:{
-                strokeColor: '#FF0000',
-                strokeOpacity: .8,
-                strokeWeight: 2,
-                fillColor: '#FF0000',
-                fillOpacity: .35,
-                radius: 40233.6 // 25 mile radius in meters   
-            }
+              radius: 40233
           },
           {
               id: 2,
@@ -73,24 +67,20 @@
                   lat: 39.480506,
                   lng: -106.06688
               },
-              options: {
-                  strokeColor: '#FF0000',
-                  strokeOpacity: .8,
-                  strokeWeight: 2,
-                  fillColor: '#FF0000',
-                  fillOpacity: .35,
-                  radius: 32186.9 // 20 mile radius in meters   
-              }
+              radius: 32187
           }
         ];
-        $scope.triggerOpenInfoWindow = function (places) {
-            $scope.markerEvents = [
-              {
-                  event: 'openinfowindow',
-                  ids: [places.id]
-              },
-            ];
-        }
+
+        $scope.getPlaceOpts = function(place) {
+            return angular.extend(
+                $scope.options.circle,
+                {radius: place.radius}
+            );
+        };
+
+        $scope.placeEdit = function(place) {
+            $scope.$broadcast('gmCirclesUpdate', 'places');
+        };
     });
 </script>
 <script type="text/ng-template" id="circles.html">
@@ -103,17 +93,11 @@
             <gm-circles gm-objects="places"
                         gm-id="object.id"
                         gm-circle-center="{lat: object.location.lat, lng: object.location.lng}"
-                        gm-circle-options="object.options">
+                        gm-circle-options="getPlaceOpts(object)">
             </gm-circles>
-            <gm-markers gm-objects="places"
-                        gm-id="object.id"
-                        gm-position="{lat: object.location.lat, lng: object.location.lng}"
-                        gm-marker-options="{ title: object.name, clickable: true }"
-                        gm-events="markerEvents"
-                        gm-on-openinfowindow="selectedPlace = object; 
-                            infoWindow.open(marker.getMap(), marker);"
-                        gm-on-click="triggerOpenInfoWindow(object)">
-            </gm-markers>
         </gm-map>
+        <div ng-repeat="place in places">
+            Edit radius of place {{place.name}}: <input type="number" class="small-input" ng-model="place.radius" ng-change="placeEdit(place)">
+        </div>
     </div>
 </script>
