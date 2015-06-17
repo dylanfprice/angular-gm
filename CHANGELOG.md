@@ -2,6 +2,10 @@ Note these are not comprehensive commit lists but represent what I consider to b
 most significant changes. You can always see a full changelog with `git log
 1.0.0..0.3.1`.
 
+### 1.0.2
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/3e03341ffa4470010f37d52376f46f233f04ce17) &bull; Upgrade to angular 1.2.27 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/bc28243d854d766b3ad27785772c93065133471c) &bull; Added the configuration to add circles to the map. 
+
 ### 1.0.1
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/24e8ca2e9fd8eb9fda6ffee589b3e2f25a9affa1) &bull; Fix #45 - update addMapListenerOnce to fix memory leak 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/d214bd66203f3d658b0f746f7ddf3f399a0ea730) &bull; Remove jquery as a dependency 
@@ -58,4 +62,3 @@ most significant changes. You can always see a full changelog with `git log
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/4736ba9abd741f17333d60285f047bb380a2cc75) &bull; Make gmMarkersRedraw event more flexible. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/bf97b1c4f99d2f7f88998e1bb6d0c512e687775b) &bull; Fixes #3. Reuse google map instances. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/03ab919f6e00ef9b5eb033202b7f2183ce944b79) &bull; Update to angular 1.0.7. 
-

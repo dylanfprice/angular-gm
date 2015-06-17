@@ -4,7 +4,7 @@ AngularGM is a set of directives for embedding Google Maps in your application u
 
 [![Build Status](https://travis-ci.org/dylanfprice/angular-gm.png)](https://travis-ci.org/dylanfprice/angular-gm)
 
-Latest version: 1.0.1
+Latest version: 1.0.2
 
 
 ## Features
@@ -20,8 +20,8 @@ Latest version: 1.0.1
 
 ## Documentation and Examples
 
-+ [Documentation](http://dylanfprice.github.io/angular-gm/1.0.1/docs/)
-+ [Examples](http://dylanfprice.github.io/angular-gm/1.0.1/examples/)
++ [Documentation](http://dylanfprice.github.io/angular-gm/1.0.2/docs/)
++ [Examples](http://dylanfprice.github.io/angular-gm/1.0.2/examples/)
 
 
 ## Quick Start
@@ -30,7 +30,7 @@ Include the required libraries
 ```html
 <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js"></script>
-<script src="//dylanfprice.github.io/angular-gm/1.0.1/angular-gm.min.js"></script>
+<script src="//dylanfprice.github.io/angular-gm/1.0.2/angular-gm.min.js"></script>
 ```
 
 Declare a dependency on the `AngularGM` module
