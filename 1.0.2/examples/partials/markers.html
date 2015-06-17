@@ -1,0 +1,344 @@
+<h1 id="map-with-markers">Map With Markers</h1>
+<div class="row example">
+  <div class="span8 app-source" app-source="map_with_markers.html map_with_markers.js map_with_markers.css" module="map-with-markers"></div>
+  <div class="span4">
+    <span class="pull-right" js-fiddle="map_with_markers.html map_with_markers.js map_with_markers.css" module="map-with-markers"></span>
+    <div class="tabs-spacer"></div>
+    <div app-run="map_with_markers.html" module="map-with-markers" class="well"></div>
+  </div>
+</div>
+
+<style id="map_with_markers.css">
+.map {
+  height: 300px;
+}
+
+/* 
+Fixes Bootstrap issues with Google Maps
+see http://stackoverflow.com/a/9170756 
+*/
+.map img { 
+  max-width: none;
+}
+
+img.volcano {
+  height: 200px;
+  width: 250px;
+}
+</style>
+<script id="map_with_markers.js">
+  angular.module('map-with-markers', ['AngularGM'])
+
+  .controller('MapWithMarkersCtrl', function($scope) {
+    $scope.options = {
+      map: {
+        center: new google.maps.LatLng(48, -121),
+        zoom: 6,
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+      },
+      notselected: {
+        icon: 'https://maps.gstatic.com/mapfiles/ms2/micons/red-dot.png',
+      },
+      selected: {
+        icon: 'https://maps.gstatic.com/mapfiles/ms2/micons/yellow-dot.png',
+      }
+    };
+    
+    $scope.volcanoes = [
+      {
+        id: 0,
+        name: 'Mount Rainier',
+        img: 'http://www.thetrackerfoundation.org/Images/MountRainier_SM.jpg',
+        elevationMeters: 4392,
+        location: {
+          lat: 46.852947, 
+          lng: -121.760424
+        }
+      },
+      {
+        id: 1,
+        name: 'Mount Baker',
+        img: 'http://www.destination360.com/north-america/us/washington/images/s/washington-mt-baker-ski.jpg',
+        elevationMeters: 3287,
+        location: {
+          lat: 48.776797, 
+          lng: -121.814467
+        }
+      },
+      {
+        id: 2,
+        name: 'Glacier Peak',
+        img: 'http://www.rhinoclimbs.com/Images/Glacier.9.jpg',
+        elevationMeters: 3207,
+        location: {
+          lat: 48.111844, 
+          lng: -121.11412
+        }
+      }
+    ];
+
+    $scope.getVolcanoOpts = function(volcano) {
+     return angular.extend(
+       { title: volcano.name },
+       volcano.selected ? $scope.options.selected :
+          $scope.options.notselected
+      );
+    };
+    
+    $scope.selectVolcano = function(volcano) {
+      if ($scope.volcano) {
+        $scope.volcano.selected = false;
+      }
+      $scope.volcano = volcano;
+      $scope.volcano.selected = true;
+
+      $scope.$broadcast('gmMarkersUpdate', 'volcanoes');
+    };
+  });
+</script>
+<script type="text/ng-template" id="map_with_markers.html">
+  <div ng-controller="MapWithMarkersCtrl">
+    <div>
+      <gm-map gm-map-id="'mapWithMarkers'" gm-center="center" 
+              gm-zoom="zoom" gm-map-options="options.map" class="map">
+
+        <gm-markers gm-objects="volcanoes"
+                    gm-id="object.id"
+                    gm-position="{lat: object.location.lat, lng: object.location.lng}"
+                    gm-marker-options="getVolcanoOpts(object)"
+                    gm-on-click="selectVolcano(object, marker)">
+        </gm-markers>
+
+      </gm-map>
+    </div>
+    <div>
+      <h5 class="muted" ng-show="!volcano">Select a marker!</h5>
+      <div ng-show="volcano">
+        <h5>{{ volcano.name }}, {{ volcano.elevationMeters }}m</h5>
+        <img class="volcano img-rounded" ng-src="{{ volcano.img }}"></img>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+
+
+<h1 id="drag-markers">Drag Markers</h1>
+<div class="row example">
+  <div class="span8 app-source" app-source="drag_markers.html drag_markers.js drag_markers.css" module="drag-markers"></div>
+  <div class="span4">
+    <span class="pull-right" js-fiddle="drag_markers.html drag_markers.js drag_markers.css" module="drag-markers"></span>
+    <div class="tabs-spacer"></div>
+    <div app-run="drag_markers.html" module="drag-markers" class="well"></div>
+  </div>
+</div>
+
+<style id="drag_markers.css">
+.map {
+  height: 300px;
+}
+
+/* 
+Fixes Bootstrap issues with Google Maps
+see http://stackoverflow.com/a/9170756 
+*/
+.map img { 
+  max-width: none;
+}
+</style>
+<script id="drag_markers.js">
+  angular.module('drag-markers', ['AngularGM']).
+
+  controller('DragMarkerCtrl', function($scope) {
+    
+    $scope.houses = [
+      {
+        id: 0,
+        name: 'House A',
+        lat: 46,
+        lng: -122
+      }, 
+      {
+        id: 1,
+        name: 'House B',
+        lat: 48,
+        lng: -120
+      }
+    ];
+    
+    $scope.options = {
+      map: {
+        center: new google.maps.LatLng(46, -122),
+        zoom: 3,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      },
+      marker: function(house) {
+        return {
+          clickable: false,
+          draggable: true,
+          title: house.name
+        }
+      }
+    };
+    
+    $scope.setHouseLocation = function(house, marker) {
+      var position = marker.getPosition();
+      house.lat = position.lat();
+      house.lng = position.lng();
+    };
+
+  });
+</script>
+<script type="text/ng-template" id="drag_markers.html">
+  <div ng-controller="DragMarkerCtrl">
+    <div>
+      <gm-map gm-map-id="'dragMarkerMap'" gm-center="center" gm-zoom="zoom" 
+              gm-map-options="options.map" class="map">
+
+        <gm-markers gm-objects="houses"
+                    gm-id="object.id"
+                    gm-position="{lat: object.lat, lng: object.lng}"
+                    gm-marker-options="options.marker(object)"
+                    gm-on-dragend="setHouseLocation(object, marker)">
+        </gm-markers>
+
+      </gm-map>
+    </div>
+    <div>
+      <p>
+        Drag the markers to set the location.
+      </p>
+      <p>
+        <label ng-repeat="house in houses">
+          {{house.name}} location: {{house.lat | number:2}}, {{house.lng | number:2}} 
+        </label>
+      </p>
+    </div>
+  </div>
+</script>
+
+
+
+
+<h1 id="filter-markers">Filter Markers</h1>
+<div class="row example">
+  <div class="span8 app-source" app-source="filter_markers.html filter_markers.js filter_markers.css" module="filter-markers"></div>
+  <div class="span4">
+    <span class="pull-right" js-fiddle="filter_markers.html filter_markers.js filter_markers.css" module="filter-markers"></span>
+    <div class="tabs-spacer"></div>
+    <div app-run="filter_markers.html" module="filter-markers" class="well"></div>
+  </div>
+</div>
+
+<style id="filter_markers.css">
+.map {
+  height: 300px;
+}
+
+/* 
+Fixes Bootstrap issues with Google Maps
+see http://stackoverflow.com/a/9170756 
+*/
+.map img { 
+  max-width: none;
+}
+
+.person-list {
+  overflow-y: scroll;
+  height: 150px;
+}
+</style>
+<script id="filter_markers.js">
+  angular.module('filter-markers', ['AngularGM'])
+
+  .controller('FilterMarkersCtrl', function($scope) {
+    $scope.icons = {
+      gray: 'http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_gray.png',
+      red: 'http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_red.png',
+    }
+    
+    $scope.options = {
+      map: {
+        center: new google.maps.LatLng(0, 0),
+        zoom: 3,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      },
+      highlighted: {
+        icon: $scope.icons.red
+      },
+      unhighlighted: {
+        icon: $scope.icons.gray
+      },
+    };
+
+    $scope.filters = {
+      name: null,
+      male: true,
+      female: true
+    }
+   
+    $scope.getMarkerOptions = function(person) {
+      var opts = {title: person.name};
+      if (person.id in $scope.filteredPeople) {
+        return angular.extend(opts, $scope.options.highlighted);
+      } else {
+        return angular.extend(opts, $scope.options.unhighlighted);
+      }
+    };
+    
+    $scope.filterPeople = function() {
+      $scope.filteredPeople = {};
+      angular.forEach($scope.people, function(person) {
+        var nameMatch = ($scope.filters.name) ? ~person.name.indexOf($scope.filters.name) : true;
+        var isMale = person.gender === 'male';
+        var genderMatch = ($scope.filters.male && isMale) ||
+                          ($scope.filters.female && !isMale);
+        if (nameMatch && genderMatch) {
+          $scope.filteredPeople[person.id] = person;
+        }
+      });
+      $scope.$broadcast('gmMarkersUpdate', 'people');
+    };
+    
+    $scope.$watch('people', function() {
+      $scope.filterPeople();
+    });
+
+    $scope.people = [{"id":1,"name":"Gianna Hodges","gender":"male","location":{"lat":4,"lng":21}},{"id":2,"name":"Isabella Davidson","gender":"female","location":{"lat":21,"lng":-11}},{"id":3,"name":"Aubrey Mercer","gender":"female","location":{"lat":-13,"lng":-22}},{"id":4,"name":"Hailey Milton","gender":"female","location":{"lat":-18,"lng":-17}},{"id":5,"name":"Charlotte Davidson","gender":"female","location":{"lat":18,"lng":7}},{"id":6,"name":"Isabella Higgins","gender":"male","location":{"lat":-15,"lng":-23}},{"id":7,"name":"Riley Brooks","gender":"male","location":{"lat":3,"lng":8}},{"id":8,"name":"Jessica Oldridge","gender":"female","location":{"lat":-25,"lng":-13}},{"id":9,"name":"Gianna Sheldon","gender":"male","location":{"lat":9,"lng":21}},{"id":10,"name":"Zoey Cook","gender":"female","location":{"lat":16,"lng":18}},{"id":11,"name":"Lily Turner","gender":"male","location":{"lat":3,"lng":-7}},{"id":12,"name":"Riley Hardman","gender":"male","location":{"lat":19,"lng":-14}},{"id":13,"name":"Bella Clapton","gender":"female","location":{"lat":1,"lng":-24}},{"id":14,"name":"Trinity Higgins","gender":"male","location":{"lat":2,"lng":-17}},{"id":15,"name":"Sydney Neal","gender":"male","location":{"lat":17,"lng":15}},{"id":16,"name":"Bailey Ford","gender":"female","location":{"lat":9,"lng":-7}},{"id":17,"name":"Hannah Hodges","gender":"male","location":{"lat":-1,"lng":-21}},{"id":18,"name":"Evelyn Sherlock","gender":"female","location":{"lat":-3,"lng":-7}},{"id":19,"name":"Evelyn Nelson","gender":"male","location":{"lat":20,"lng":15}},{"id":20,"name":"Maya Gibbs","gender":"male","location":{"lat":4,"lng":12}},{"id":21,"name":"Sofia Carter","gender":"female","location":{"lat":-13,"lng":-18}},{"id":22,"name":"Victoria Conors","gender":"male","location":{"lat":-13,"lng":15}},{"id":23,"name":"Savannah Galbraith","gender":"female","location":{"lat":15,"lng":-2}},{"id":24,"name":"Eva Brooks","gender":"female","location":{"lat":-6,"lng":-7}},{"id":25,"name":"Caroline White","gender":"female","location":{"lat":-10,"lng":9}},{"id":26,"name":"Audrey WifKinson","gender":"female","location":{"lat":-22,"lng":-2}},{"id":27,"name":"Faith Brown","gender":"male","location":{"lat":10,"lng":-7}},{"id":28,"name":"Serenity Nash","gender":"male","location":{"lat":4,"lng":5}},{"id":29,"name":"Mariah Nathan","gender":"female","location":{"lat":6,"lng":19}},{"id":30,"name":"Makayla White","gender":"female","location":{"lat":0,"lng":20}},{"id":31,"name":"Katherine Thornton","gender":"female","location":{"lat":-9,"lng":14}},{"id":32,"name":"Nevaeh Cramer","gender":"female","location":{"lat":9,"lng":-18}},{"id":33,"name":"Valeria Hoggarth","gender":"male","location":{"lat":20,"lng":17}},{"id":34,"name":"Aaliyah Carrington","gender":"male","location":{"lat":23,"lng":13}},{"id":35,"name":"Aaliyah Gilmore","gender":"female","location":{"lat":-25,"lng":6}},{"id":36,"name":"Faith Wesley","gender":"male","location":{"lat":-1,"lng":-11}},{"id":37,"name":"Emily Bush","gender":"male","location":{"lat":-24,"lng":19}},{"id":38,"name":"Jessica Gardner","gender":"female","location":{"lat":12,"lng":-22}},{"id":39,"name":"Elizabeth Crossman","gender":"female","location":{"lat":-3,"lng":-19}},{"id":40,"name":"Payton Ward","gender":"male","location":{"lat":-22,"lng":-3}},{"id":41,"name":"Jocelyn Freeman","gender":"female","location":{"lat":11,"lng":-15}},{"id":42,"name":"Serenity Hoggarth","gender":"female","location":{"lat":5,"lng":-17}},{"id":43,"name":"Kayla Vaughan","gender":"female","location":{"lat":20,"lng":9}},{"id":44,"name":"Arianna Hancock","gender":"male","location":{"lat":25,"lng":3}},{"id":45,"name":"Katherine Haig","gender":"male","location":{"lat":-2,"lng":-12}},{"id":46,"name":"Zoe Gerald","gender":"male","location":{"lat":-12,"lng":8}},{"id":47,"name":"Sofia Molligan","gender":"male","location":{"lat":16,"lng":7}},{"id":48,"name":"Mia Day","gender":"female","location":{"lat":13,"lng":17}},{"id":49,"name":"Amelia Carey","gender":"female","location":{"lat":10,"lng":-12}},{"id":50,"name":"Kimberly Gerald","gender":"female","location":{"lat":7,"lng":-8}}]
+  });
+</script>
+<script type="text/ng-template" id="filter_markers.html">
+  <div ng-controller="FilterMarkersCtrl">
+    <div>     
+      <gm-map gm-map-id="'filterMarkersMap'" gm-center="center" gm-zoom="zoom" 
+              gm-map-options="options.map" class="map">
+
+        <gm-markers gm-objects="people"
+                    gm-id="object.id"
+                    gm-position="{lat: object.location.lat, lng: object.location.lng}"
+                    gm-marker-options="getMarkerOptions(object)">
+        </gm-markers>
+
+      </gm-map>
+    </div>
+    <div>
+      <label>
+        Name:<input ng-model="filters.name" ng-change="filterPeople()">
+      </label>
+      <input type="checkbox" ng-model="filters.male"   ng-change="filterPeople()">
+      Male <br>
+      <input type="checkbox" ng-model="filters.female" ng-change="filterPeople()">
+      Female
+      <div class="well person-list">
+        <li ng-repeat="(id, person) in filteredPeople">
+          {{person.name}}, {{person.gender}}
+        </li>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+
+

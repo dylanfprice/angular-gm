@@ -1,0 +1,32 @@
+<h1><code ng:non-bindable="">gmInfoWindow</code>
+<div><span class="hint">directive in module <code ng:non-bindable="">angulargm</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="angulargm-directive-page angulargm-directive-gminfowindow-page"><p>A directive for creating a google.maps.InfoWindow.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage">as attribute<pre class="prettyprint linenums">&lt;ANY gm-info-window
+     gm-info-window="{expression}"
+     gm-info-window-options="{expression}"
+     gm-on-*event*="{expression}"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>gm-info-window</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gminfowindow-page"><p>scope variable to store the
+<a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindow">google.maps.InfoWindow</a>
+in. Does not have to already exist.</p>
+</div></td></tr><tr><td>gm-info-window-options</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gminfowindow-page"><p>object in the current scope
+that is a
+<a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindowOptions">google.maps.InfoWindowOptions</a>
+object. If unspecified, google maps api defaults will be used.</p>
+</div></td></tr><tr><td>gm-on-*event*</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gminfowindow-page"><p>an angular expression which evaluates to an
+event handler. This handler will be attached to the InfoWindow&#39;s *event*
+event.  The variable <code>infoWindow</code> evaluates to the InfoWindow.  For example:</p>
+<pre><code class="lang-html">gm-on-closeclick=&quot;myCloseclickFn(infoWindow)&quot;
+</code></pre>
+<p>will call your myCloseclickFn whenever the InfoWindow is clicked closed. You
+may have multiple <code>gm-on-*event*</code> handlers, but only one for each type of
+event.</p>
+</div></td></tr></tbody></table></div>
+</div>

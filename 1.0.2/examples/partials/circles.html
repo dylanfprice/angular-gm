@@ -1,0 +1,103 @@
+﻿<h1 id="circles">Circles</h1>
+<div class="row example">
+    <div class="span8 app-source" app-source="circles.html circles.js circles.css" module="circles"></div>
+    <div class="span4">
+        <span class="pull-right" js-fiddle="circles.html circles.js circles.css" module="circles"></span>
+        <div class="tabs-spacer"></div>
+        <div app-run="circles.html" module="circles" class="well"></div>
+    </div>
+</div>
+<style id="circles.css">
+    .map {
+        height: 300px;
+    }
+
+        /*
+    Fixes Bootstrap issues with Google Maps
+    see http://stackoverflow.com/a/9170756
+    */
+
+    .map img {
+        max-width: none;
+    }
+</style>
+
+<script id="circles.js">
+    angular.module('circles', ['AngularGM'])
+
+    .controller('CirclesCtrl', function ($scope) {
+        $scope.options = {
+            map: {
+                center: new google.maps.LatLng(39.0791685, -105.4775487),
+                zoom: 6,
+                mapTypeId: google.maps.MapTypeId.TERRAIN
+            },
+            circle: {
+                strokeColor: '#FF0000',
+                strokeOpacity: .8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: .35,
+            }
+        };
+
+        $scope.places = [
+          {
+              id: 0,
+              name: 'Denver Union Station',
+              location: {
+                  lat: 39.752959,
+                  lng: -104.999929
+              },
+              radius: 48280
+          },
+          {
+              id: 1,
+              name: 'Aspen',
+              location: {
+                  lat: 39.1984815,
+                  lng: -106.8367246
+              },
+              radius: 40233
+          },
+          {
+              id: 2,
+              name: 'Breckenridge Ski Resort',
+              location: {
+                  lat: 39.480506,
+                  lng: -106.06688
+              },
+              radius: 32187
+          }
+        ];
+
+        $scope.getPlaceOpts = function(place) {
+            return angular.extend(
+                $scope.options.circle,
+                {radius: place.radius}
+            );
+        };
+
+        $scope.placeEdit = function(place) {
+            $scope.$broadcast('gmCirclesUpdate', 'places');
+        };
+    });
+</script>
+<script type="text/ng-template" id="circles.html">
+    <div ng-controller="CirclesCtrl">
+        <div gm-info-window="infoWindow">
+            <h4>{{selectedPlace.name}}</h4>
+        </div>
+        <gm-map gm-map-id="'circles'" gm-center="center" gm-zoom="zoom"
+                gm-map-options="options.map" class="map">
+            <gm-circles gm-objects="places"
+                        gm-id="object.id"
+                        gm-circle-center="{lat: object.location.lat, lng: object.location.lng}"
+                        gm-circle-options="getPlaceOpts(object)">
+            </gm-circles>
+        </gm-map>
+        <div ng-repeat="place in places">
+            Edit radius of place {{place.name}}: <input type="number" class="small-input" ng-model="place.radius" ng-change="placeEdit(place)">
+        </div>
+    </div>
+</script>

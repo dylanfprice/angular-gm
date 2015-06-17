@@ -1,0 +1,22 @@
+<h1><code ng:non-bindable="">angulargmContainer</code>
+<div><span class="hint">service in module <code ng:non-bindable="">angulargm</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="angulargm-service-page angulargm-service-angulargmcontainer-page"><p>A container which maps mapIds to google.maps.Map instances, and additionally
+allows getting a promise of a map for custom configuration of the map.</p>
+<p>If you want a handle to the map, you should use the <code>getMapPromise(mapId)</code>
+method so you can guarantee the map will be initialized. For example,</p>
+<pre><code class="lang-js">angular.module(&#39;myModule&#39;).
+
+run(function(angulargmContainer) {
+  var gmapPromise = angulargmContainer.getMapPromise(&#39;myMapid&#39;);
+
+  gmapPromise.then(function(gmap) {
+    // google map configuration here
+  });
+});
+</code></pre>
+</div></div>
+</div>
