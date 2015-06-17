@@ -5,6 +5,15 @@ NG_DOCS={
   "pages": [
     {
       "section": "api",
+      "id": "angulargm.directive:gmCircles",
+      "shortName": "gmCircles",
+      "type": "directive",
+      "moduleName": "angulargm",
+      "shortDescription": "A directive for adding circles to a gmMap. You may have multiple per gmMap.",
+      "keywords": "$scope accessed accessing adding angular angulargm api array assign attach attached attributes automatically call case center change changes circle circleoptions circles click clicked code controller created current custom defaults detect detected directive evaluate evaluates event events example exists expression extract form generate gm-circle-center gm-circle-options gm-circles gm-events gm-id gm-objects gm-on- gm-on-click gm-on-position-changed gmcircles gmcirclesupdate gmmap google handler handlers html ids inform js lat length lng maps method multiple mutate myclickfn myevents myobjects named note object objects point position_changed properties required requirement scope set setting simulate type underscore uniform unspecified update variable variables work write"
+    },
+    {
+      "section": "api",
       "id": "angulargm.directive:gmInfoWindow",
       "shortName": "gmInfoWindow",
       "type": "directive",
