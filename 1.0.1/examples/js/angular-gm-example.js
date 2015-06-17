@@ -1,4 +1,4 @@
-angular.module('AngularGMExample', ['ngRoute', 'components', 'homepage'])
+angular.module('AngularGMExample', ['components', 'homepage'])
 
 .config(function($routeProvider) {
   $routeProvider.
@@ -17,10 +17,6 @@ angular.module('AngularGMExample', ['ngRoute', 'components', 'homepage'])
     when('/polylines/', {
       templateUrl: 'partials/polylines.html',
       active: 'polylines',
-    }).
-    when('/circles/', {
-        templateUrl: 'partials/circles.html',
-        active: 'circles',
     }).
     otherwise({
       redirectTo: '/map/'
