@@ -29,6 +29,12 @@ code.nocode {
   border: 1px solid #e1e1e8;
 }
 
+.examples-container {
+    margin-left: auto; 
+    margin-right: auto; 
+    width: 1175px;
+}
+
 .example {
   margin-top: 1em;
 }
