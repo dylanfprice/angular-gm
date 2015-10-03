@@ -26,11 +26,16 @@ Latest version: 1.0.2
 
 ## Quick Start
 
+Install angular-gm
+
+- Bower: `bower install AngularGM`
+- npm: `npm install angular-gm`
+
 Include the required libraries 
 ```html
 <script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js"></script>
-<script src="//dylanfprice.github.io/angular-gm/1.0.2/angular-gm.min.js"></script>
+<script src="//path/to/angular-gm.js"></script>
 ```
 
 Declare a dependency on the `AngularGM` module
@@ -42,8 +47,6 @@ Make a map
 ```html
 <gm-map gm-map-id="'myMap'" gm-center="center" gm-zoom="zoom" gm-bounds="bounds" gm-map-type-id="mapTypeId" style="width:500px;height:500px;"></gm-map>
 ```
-
-There is also the option to install through **Bower**: `bower install AngularGM`
 
 
 ## Development
