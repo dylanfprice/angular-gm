@@ -4,6 +4,7 @@
   "version": "1.0.2",
   "homepage": "http://dylanfprice.github.com/angular-gm",
   "author": "Dylan Price <the.dylan.price@gmail.com>",
+  "main": "dist/angular-gm.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/dylanfprice/angular-gm.git"
