@@ -1,4 +1,5 @@
 test/coverage/
 node_modules/
-dist/
+dist/docs/
+dist/examples/
 *.swp
