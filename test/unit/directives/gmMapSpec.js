@@ -21,7 +21,7 @@ describe('gmMap', function() {
 
     scope = $rootScope.$new();
     scope.mapOptions = {
-      center: new google.maps.LatLng(1, 2),
+      center: {lat: 1, lng: 2},
       zoom: 3,
       mapTypeId: google.maps.MapTypeId.TERRAIN
     }
@@ -34,11 +34,11 @@ describe('gmMap', function() {
 
     map = angulargmContainer.getMap('test');
 
-    initCenter = new google.maps.LatLng(1, 2);
+    initCenter = {lat: 1, lng: 2};
     initZoom = 3;
     initBounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(4, 5),
-      new google.maps.LatLng(6, 7)
+      {lat: 4, lng: 5},
+      {lat: 6, lng: 7}
     );
     initMapTypeId = google.maps.MapTypeId.TERRAIN;
 
@@ -135,10 +135,11 @@ describe('gmMap', function() {
 
   // center and bounds changed, but zoom is same
   function testMapMovedEvent($timeout, event) {
-    var center = new google.maps.LatLng(8, 9);
+    var center = {lat: 8, lng: 9};
     var bounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(10, 11),
-      new google.maps.LatLng(12, 13));
+      {lat: 10, lng: 11},
+      {lat: 12, lng: 13}
+    )
 
     mapCtrl.center = center;
     mapCtrl.bounds = bounds;
@@ -170,7 +171,7 @@ describe('gmMap', function() {
   }));
 
   it('updates map on scope center changed', function() {
-    var center = new google.maps.LatLng(8, 9);
+    var center = {lat: 8, lng: 9};
     scope.pCenter = center;
     scope.$digest();
     expect(mapCtrl.center.toString()).toEqual(center.toString());
@@ -184,8 +185,9 @@ describe('gmMap', function() {
 
   it('updates map on scope bounds changed', function() {
     var bounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(8, 9),
-      new google.maps.LatLng(10, 11));
+      {lat: 8, lng: 9},
+      {lat: 10, lng: 11}
+    );
 
     scope.pBounds = bounds;
     scope.$digest();
@@ -213,7 +215,7 @@ describe('gmMap', function() {
   it('calls the user specified handlers with a map and MouseEvent if applicable', inject(function($timeout) {
     var mouseEvent = {
       stop: null,
-      latLng: new google.maps.LatLng(1, 1)
+      latLng: {lat: 1, lng: 1}
     };
 
     google.maps.event.trigger(map, 'click', mouseEvent);

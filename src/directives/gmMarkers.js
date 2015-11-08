@@ -25,10 +25,10 @@
  * can be accessed through the variable `object`. See `gm-position` below for
  * an example.
  *
- * @param {expression} gm-position an angular expression that given an object from
- * `gm-objects`, evaluates to an object with lat and lng properties. Your
- * object can be accessed through the variable `object`.  For example, if
- * your controller has
+ * @param {expression} gm-position an angular expression that given an object
+ * from `gm-objects`, evaluates to google.maps.LatLngLiteral object. Your
+ * object can be accessed through the variable `object`.  For example, if your
+ * controller has
  * ```js
  * ...
  * $scope.myObjects = [
@@ -42,7 +42,7 @@
  * ...
  * gm-objects="myObjects"
  * gm-id="object.id"
- * gm-position="{ lat: object.location.lat, lng: object.location.lng }"
+ * gm-position="object.location"
  * ...
  * ```
  *

@@ -23,7 +23,7 @@
  *
  *
  * @param {expression} gm-center center variable in the current scope.  The
- * value will be a google.maps.LatLng object.
+ * value will be a google.maps.LatLngLiteral object.
  *
  *
  * @param {expression} gm-zoom zoom variable in the current scope.  Value will
@@ -104,6 +104,8 @@
 
     /** aliases **/
     var getEventHandlers = angulargmUtils.getEventHandlers;
+    var validateLatLng = angulargmUtils.validateLatLng;
+    var latLngLiteralEqual = angulargmUtils.latLngLiteralEqual;
 
     /** link function **/
     function link(scope, element, attrs, controller) {
@@ -201,11 +203,12 @@
 
       if (hasCenter) {
         scope.$watch('gmCenter', function (newValue, oldValue) {
-          var changed = (newValue !== oldValue);
+          var changed = (
+              validateLatLng(newValue) != null &&
+              !latLngLiteralEqual(newValue, oldValue)
+          );
           if (changed && !controller.dragging) {
-            var latLng = newValue;
-            if (latLng)
-              controller.center = latLng;
+              controller.center = newValue;
           }
         }, true);
       }

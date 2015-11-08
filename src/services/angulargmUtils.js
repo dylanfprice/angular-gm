@@ -43,6 +43,26 @@
 
     /**
      * @ngdoc function
+     * @name #latLngLiteralEqual
+     * @methodOf angulargm.service:angulargmUtils
+     *
+     * @param {google.maps.LatLngLiteral} l1 first
+     * @param {google.maps.LatLngLiteral} l2 second
+     * @return {boolean} true if l1 and l2 are 'very close'. If either are null
+     * or not google.maps.LatLngLiteral objects returns false.
+     */
+    function latLngLiteralEqual(l1, l2) {
+      if (
+        !(l1 != null && l1.hasOwnProperty('lat') && l1.hasOwnProperty('lng')) ||
+        !(l2 != null && l2.hasOwnProperty('lat') && l2.hasOwnProperty('lng'))
+      ) {
+        return false;
+      }
+      return floatEqual(l1.lat, l2.lat) && floatEqual(l1.lng, l2.lng);
+    }
+
+    /**
+     * @ngdoc function
      * @name #boundsEqual
      * @methodOf angulargm.service:angulargmUtils
      *
@@ -118,8 +138,10 @@
       if (obj != null) {
         var lat = obj.lat;
         var lng = obj.lng;
-        var ok = !(lat == null || lng == null) && !(isNaN(lat) ||
-            isNaN(lng));
+        var ok = (
+          !(lat == null || lng == null) && 
+          !(isNaN(lat) || isNaN(lng))
+        );
         if (ok) {
           return obj;
         }
@@ -179,6 +201,7 @@
 
     return {
       latLngEqual: latLngEqual,
+      latLngLiteralEqual: latLngLiteralEqual,
       boundsEqual: boundsEqual,
       latLngToObj: latLngToObj,
       objToLatLng: objToLatLng,

@@ -20,10 +20,10 @@
  * These can be any objects you wish to attach to polylines, the only requirement
  * is that they have a uniform method of accessing an id and a path.
  *
- * @param {expression} gm-path an angular expression that given an object
- * from `gm-objects`, evaluates to an array of objects with lat and lng
- * properties. Your object can be accessed through the variable `object`.  For
- * example, if your controller has
+ * @param {expression} gm-path an angular expression that given an object from
+ * `gm-objects`, evaluates to an array of google.maps.LatLngLiteral objects.
+ * Your object can be accessed through the variable `object`.  For example, if
+ * your controller has
  * ```js
  * ...
  * $scope.myObjects = [

@@ -97,7 +97,7 @@
             </gm-circles>
         </gm-map>
         <div ng-repeat="place in places">
-            Edit radius of place {{place.name}}: <input type="number" class="small-input" ng-model="place.radius" ng-change="placeEdit(place)">
+            Edit radius of place {{place.name}}: <input type="number" step="any" class="small-input" ng-model="place.radius" ng-change="placeEdit(place)">
         </div>
     </div>
 </script>

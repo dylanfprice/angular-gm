@@ -33,7 +33,7 @@
    *       'markerConstructor': myCustomMarkerConstructor,
    *       'polylineConstructor': myCustomPolylineConstructor,
    *       'mapOptions': {
-   *         center: new google.maps.LatLng(55, 111),
+   *         center: {lat: 55, lng: 111},
    *         mapTypeId: google.maps.MapTypeId.SATELLITE,
    *         ...
    *       }
@@ -50,7 +50,7 @@
       'circleConstructor': google.maps.Circle,
       'mapOptions': {
         zoom : 8,
-        center : new google.maps.LatLng(46, -120),
+        center : {lat: 46, lng: -120},
         mapTypeId : google.maps.MapTypeId.ROADMAP
       }
     };

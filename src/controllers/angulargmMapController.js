@@ -15,7 +15,8 @@
       angulargmContainer) {
 
     /** aliases */
-    var latLngEqual = angulargmUtils.latLngEqual;
+    var latLngToObj = angulargmUtils.latLngToObj;
+    var validateLatLng = angulargmUtils.validateLatLng;
     var boundsEqual = angulargmUtils.boundsEqual;
     var hasNaN = angulargmUtils.hasNaN;
     var assertDefined = angulargmUtils.assertDefined;
@@ -53,12 +54,12 @@
         'center': {
           configurable: true, // for testing so we can mock
           get: function() {
-             return this._map.getCenter();
+             return latLngToObj(this._map.getCenter());
            },
           set: function(center) {
-            if (hasNaN(center))
+            if (validateLatLng(center) === null)
               throw 'center contains null or NaN';
-            var changed = !latLngEqual(this.center, center);
+            var changed = this.center !== center;
             if (changed) {
               this._map.panTo(center);
             }

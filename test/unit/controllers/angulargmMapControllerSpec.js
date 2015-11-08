@@ -1,17 +1,18 @@
 describe('angulargmMapController', function() {
   var scope, elm;
   var mapCtrl, mapCntr;
+  var latLngToObj;
 
   beforeEach(function() {
     module('AngularGM');
   });
 
-  beforeEach(inject(function($rootScope, $controller, angulargmContainer) {
+  beforeEach(inject(function($rootScope, $controller, angulargmContainer, angulargmUtils) {
     // set up scope
     scope = $rootScope.$new();
     scope.gmMapOptions = function() {
       return {
-        center: new google.maps.LatLng(2, 3),
+        center: {lat: 2, lng: 3},
         zoom: 1,
         mapTypeId: google.maps.MapTypeId.TERRAIN
       };
@@ -27,6 +28,9 @@ describe('angulargmMapController', function() {
 
     mapCtrl = $controller('angulargmMapController', {$scope: scope, $element: elm});
     mapCntr = angulargmContainer;
+
+    /* aliases */
+    latLngToObj = angulargmUtils.latLngToObj;
   }));
 
 
@@ -40,7 +44,7 @@ describe('angulargmMapController', function() {
 
   it('constructs the map using the provided map options', function() {
     expect(mapCtrl.dragging).toBeFalsy();
-    expect(mapCtrl.center.toString()).toEqual(new google.maps.LatLng(2, 3).toString());
+    expect(mapCtrl.center).toEqual({lat: 2, lng: 3});
     expect(mapCtrl.zoom).toEqual(1);
     var map = mapCntr.getMap(scope.gmMapId());
     expect(mapCtrl.bounds).toEqual(map.getBounds());
@@ -74,8 +78,10 @@ describe('angulargmMapController', function() {
     scope2.gmMapId = function() { return gmMapId };
 
     // move map
-    var newCenter = new google.maps.LatLng(gmMapOptions.center.lat() + 5,
-      gmMapOptions.center.lng() + 5);
+    var newCenter = {
+      lat: gmMapOptions.center.lat + 5,
+      lng: gmMapOptions.center.lng + 5
+    };
     map.setCenter(newCenter);
     map.setZoom(gmMapOptions.zoom + 2);
     map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
@@ -226,7 +232,7 @@ describe('angulargmMapController', function() {
 
 
     beforeEach(function() {
-      position = new google.maps.LatLng(1, 2);
+      position = {lat: 1, lng: 2};
       id = 1;
       id2 = 2;
       scope = 'scope';
@@ -267,7 +273,7 @@ describe('angulargmMapController', function() {
       it('retrieves markers that are on the map', function() {
         mapCtrl.addElement('marker', scope, id, markerOptions);
         var marker = mapCtrl.getElement('marker', scope, id);
-        expect(marker.getPosition()).toEqual(markerOptions.position);
+        expect(latLngToObj(marker.getPosition())).toEqual(markerOptions.position);
       });
 
       it('returns null for marker not on the map', function() {
@@ -281,11 +287,11 @@ describe('angulargmMapController', function() {
 
       it('updates marker on the map', function() {
         mapCtrl.addElement('marker', scope, id, markerOptions);
-        var newPosition = new google.maps.LatLng(position.lat() + 1, position.lng() + 1);
+        var newPosition = {lat: position.lat + 1, lng: position.lng + 1};
         var updated = mapCtrl.updateElement('marker', scope, id, {position: newPosition});
         var marker = mapCtrl.getElement('marker', scope, id);
         expect(updated).toBeTruthy();
-        expect(marker.getPosition()).toEqual(newPosition);
+        expect(latLngToObj(marker.getPosition())).toEqual(newPosition);
       });
 
       it('does not update marker not on the map', function() {
@@ -325,8 +331,8 @@ describe('angulargmMapController', function() {
         markers.push(marker);
       });
       expect(markers.length).toEqual(2);
-      expect(markers[0].getPosition()).toEqual(markerOptions.position);
-      expect(markers[1].getPosition()).toEqual(markerOptions.position);
+      expect(latLngToObj(markers[0].getPosition())).toEqual(markerOptions.position);
+      expect(latLngToObj(markers[1].getPosition())).toEqual(markerOptions.position);
     });
 
 
