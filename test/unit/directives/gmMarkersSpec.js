@@ -1,6 +1,6 @@
 describe('gmMarkers', function() {
   var elm, scope, markersScopeId, mapCtrl;
-  var objToLatLng;
+  var latLngToObj;
   var $timeout;
 
   beforeEach(function() {
@@ -11,8 +11,8 @@ describe('gmMarkers', function() {
     // set up scopes
     scope = $rootScope.$new();
     scope.people = [
-      {name: '0', lat: 1, lng: 2, id: 0},
-      {name: '3', lat: 4, lng: 5, id: 3}
+      {name: '0', id: 0, location: {lat: 1, lng: 2}},
+      {name: '3', id: 3, location: {lat: 4, lng: 5}}
     ];
     scope.getOpts = function(person) {
       return {
@@ -23,14 +23,14 @@ describe('gmMarkers', function() {
     scope.mapId = 'test';
 
     $timeout = _$timeout_;
-    objToLatLng = angulargmUtils.objToLatLng;
+    latLngToObj = angulargmUtils.latLngToObj
 
     // compile angulargmMarkers directive
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
       '<gm-markers ' +
       'gm-objects="people"' +
       'gm-id="object.id"' +
-      'gm-position="{lat:object.lat,lng:object.lng}"' +
+      'gm-position="object.location"' +
       'gm-marker-options="getOpts(object)"' +
       'gm-events="markerEvents"' +
       'gm-on-click="selected = {person: object, marker: marker}"' +
@@ -58,7 +58,7 @@ describe('gmMarkers', function() {
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
       '<gm-markers ' +
       'gm-id="{id:object.id}"' +
-      'gm-position="{lat:object.lat,lng:object.lng}"' +
+      'gm-position="object.location"' +
       'gm-marker-options="getOpts(object)"' +
       'gm-on-click="selected = {person: object, marker: marker}"' +
       'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' +
@@ -75,7 +75,7 @@ describe('gmMarkers', function() {
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
       '<gm-markers ' +
       'gm-objects="people"' +
-      'gm-position="{lat:object.lat,lng:object.lng}"' +
+      'gm-position="object.location"' +
       'gm-marker-options="getOpts(object)"' +
       'gm-on-click="selected = {person: object, marker: marker}"' +
       'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' +
@@ -108,8 +108,8 @@ describe('gmMarkers', function() {
   describe('objects', function() {
 
     it('initializes markers with objects', function() {
-      var position1 = objToLatLng(scope.people[0]);
-      var position2 = objToLatLng(scope.people[1]);
+      var position1 = scope.people[0].location;
+      var position2 = scope.people[1].location;
       expect(mapCtrl.addElement).toHaveBeenCalledWith('marker', markersScopeId,
         jasmine.any(String), {key: 'value', title: jasmine.any(String), position: position1});
       expect(mapCtrl.addElement).toHaveBeenCalledWith('marker', markersScopeId,
@@ -118,8 +118,8 @@ describe('gmMarkers', function() {
 
 
     it('updates markers with new objects', function() {
-      scope.people.push({name: '6', lat: 7, lng: 8, id: 6});
-      var position = objToLatLng(scope.people[2]);
+      scope.people.push({name: '6', id: 6, location: {lat: 7, lng: 8}});
+      var position = scope.people[2].location;
       scope.$digest();
       expect(mapCtrl.addElement).toHaveBeenCalledWith('marker', markersScopeId,
         jasmine.any(String), {key: 'value', title: jasmine.any(String), position: position});
@@ -131,7 +131,7 @@ describe('gmMarkers', function() {
       var length = scope.people.length;
       scope.people = [];
       for (var i = 0; i < length; i++) {
-        scope.people.push({name: 'new' + i, lat: i, lng: i, id: (i+10)});
+        scope.people.push({name: 'new' + i, id: (i+10), location: {lat: i, lng: i}});
       }
       scope.$digest();
       expect(mapCtrl.removeElement.calls.length).toEqual(length);
@@ -142,14 +142,14 @@ describe('gmMarkers', function() {
     it('updates markers with removed objects', function() {
       var person = scope.people.pop();
       scope.$digest();
-      var position = objToLatLng(person);
+      var position = person.location;
       expect(mapCtrl.removeElement).toHaveBeenCalledWith('marker', markersScopeId, '3');
     });
 
 
     it('does not add markers with duplicate ids', function() {
       var origLength = scope.people.length;
-      scope.people.push({name: '0', lat: 2, lng: 3, id: 0});
+      scope.people.push({name: '0', id: 0, location: {lat: 2, lng: 3}});
       scope.$digest();
       expect(mapCtrl.addElement.callCount).toEqual(origLength);
     });
@@ -157,9 +157,9 @@ describe('gmMarkers', function() {
 
     it('updates markers with changed objects when update triggered', function() {
       var person = scope.people[0]
-      person.lat = person.lat + 5;
-      person.lng = person.lng + 5;
-      var newPosition = objToLatLng(person);
+      person.location.lat = person.location.lat + 5;
+      person.location.lng = person.location.lng + 5;
+      var newPosition = person.location;
       scope.$broadcast('gmMarkersUpdate', 'people');
       expect(mapCtrl.updateElement).toHaveBeenCalledWith('marker', markersScopeId,
         jasmine.any(String), {key: 'value', title: jasmine.any(String), position: newPosition});
@@ -186,7 +186,7 @@ describe('gmMarkers', function() {
 
   it('triggers events', function() {
     var person = scope.people[0];
-    var position = objToLatLng(person);
+    var position = person.location;
     var id = person.name
     scope.markerEvents = [{
       event: 'click',
@@ -197,15 +197,15 @@ describe('gmMarkers', function() {
     $timeout.flush();
     var marker = mapCtrl.trigger.mostRecentCall.args[0];
     var event = mapCtrl.trigger.mostRecentCall.args[1];
-    expect(marker.getPosition()).toEqual(position);
+    expect(latLngToObj(marker.getPosition())).toEqual(position);
     expect(event).toEqual('click');
   });
 
 
   it('triggers events on multiple markers', function() {
 
-    var position0 = objToLatLng(scope.people[0]);
-    var position1 = objToLatLng(scope.people[1]);
+    var position0 = scope.people[0].location;
+    var position1 = scope.people[1].location;
     var id0 = scope.people[0].name
     var id1 = scope.people[1].name
     scope.markerEvents = [{
@@ -216,13 +216,13 @@ describe('gmMarkers', function() {
     $timeout.flush();
     var marker0 = mapCtrl.trigger.calls[0].args[0];
     var marker1 = mapCtrl.trigger.calls[1].args[0];
-    expect(marker0.getPosition()).toEqual(position0);
-    expect(marker1.getPosition()).toEqual(position1);
+    expect(latLngToObj(marker0.getPosition())).toEqual(position0);
+    expect(latLngToObj(marker1.getPosition())).toEqual(position1);
   });
 
 
   it('triggers multiple events on markers', function() {
-    var position = objToLatLng(scope.people[0]);
+    var position = scope.people[0].location;
     var id = scope.people[0].name
     scope.markerEvents = [
       {
@@ -270,8 +270,8 @@ describe('gmMarkers', function() {
 
 
   it('listens for marker redraw event', function() {
-    var position1 = objToLatLng(scope.people[0]);
-    var position2 = objToLatLng(scope.people[1]);
+    var position1 = scope.people[0].location;
+    var position2 = scope.people[1].location;
     scope.getOpts = function(person) {
       return {
         key: 'differentValue',
@@ -288,8 +288,8 @@ describe('gmMarkers', function() {
 
 
   it('listens to marker redraw event when no objects specified', function() {
-    var position1 = objToLatLng(scope.people[0]);
-    var position2 = objToLatLng(scope.people[1]);
+    var position1 = scope.people[0].location;
+    var position2 = scope.people[1].location;
     scope.getOpts = function(person) {
       return {
         key: 'differentValue',
@@ -322,8 +322,8 @@ describe('gmMarkers', function() {
 
 
   it('listens for marker update event', function() {
-    var position1 = objToLatLng(scope.people[0]);
-    var position2 = objToLatLng(scope.people[1]);
+    var position1 = scope.people[0].location;
+    var position2 = scope.people[1].location;
     scope.getOpts = function(person) {
       return {
         key: 'differentValue',

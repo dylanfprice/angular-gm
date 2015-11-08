@@ -40,7 +40,7 @@ describe('angulargmMapController', function() {
 
   it('constructs the map using the provided map options', function() {
     expect(mapCtrl.dragging).toBeFalsy();
-    expect(mapCtrl.center).toEqual(new google.maps.LatLng(2, 3));
+    expect(mapCtrl.center.toString()).toEqual(new google.maps.LatLng(2, 3).toString());
     expect(mapCtrl.zoom).toEqual(1);
     var map = mapCntr.getMap(scope.gmMapId());
     expect(mapCtrl.bounds).toEqual(map.getBounds());

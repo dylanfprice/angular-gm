@@ -107,6 +107,28 @@
 
     /**
      * @ngdoc function
+     * @name #validateLatLng
+     * @methodOf angulargm.service:angulargmUtils
+     *
+     * @param {Object} obj of the form { lat: 40, lng: -120 }
+     * @return {Object} obj or returns null if problems with obj (null,
+     * NaN, etc.)
+     */
+    function validateLatLng(obj) {
+      if (obj != null) {
+        var lat = obj.lat;
+        var lng = obj.lng;
+        var ok = !(lat == null || lng == null) && !(isNaN(lat) ||
+            isNaN(lng));
+        if (ok) {
+          return obj;
+        }
+      }
+      return null;
+    }
+
+    /**
+     * @ngdoc function
      * @name #hasNaN
      * @methodOf angulargm.service:angulargmUtils
      *
@@ -160,6 +182,7 @@
       boundsEqual: boundsEqual,
       latLngToObj: latLngToObj,
       objToLatLng: objToLatLng,
+      validateLatLng: validateLatLng,
       hasNaN: hasNaN,
       getEventHandlers: getEventHandlers,
       assertDefined: assertDefined

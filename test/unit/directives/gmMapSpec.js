@@ -173,7 +173,7 @@ describe('gmMap', function() {
     var center = new google.maps.LatLng(8, 9);
     scope.pCenter = center;
     scope.$digest();
-    expect(mapCtrl.center).toEqual(center);
+    expect(mapCtrl.center.toString()).toEqual(center.toString());
   });
 
   it('updates map on scope zoom changed', function() {

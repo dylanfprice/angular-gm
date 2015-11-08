@@ -162,7 +162,7 @@
     function($log, $parse, $timeout, angulargmUtils, angulargmShape) {
 
     /** aliases */
-    var objToLatLng = angulargmUtils.objToLatLng;
+    var validateLatLng = angulargmUtils.validateLatLng;
 
     function link(scope, element, attrs, controller) {
       // check marker attrs
@@ -172,7 +172,7 @@
 
       var markerOptions = function(object) {
         var latLngObj = scope.gmPosition({object: object});
-        var position = objToLatLng(latLngObj);
+        var position = validateLatLng(latLngObj);
         if (position == null) {
           return null;
         }

@@ -152,7 +152,7 @@
   directive('gmPolylines', ['$parse', '$compile', '$timeout', '$log', 'angulargmUtils', 'angulargmShape',
     function ($parse, $compile, $timeout, $log, angulargmUtils, angulargmShape) {
     /** aliases */
-    var objToLatLng = angulargmUtils.objToLatLng;
+    var validateLatLng = angulargmUtils.validateLatLng;
 
     function link(scope, element, attrs, controller) {
       if (!('gmPath' in attrs)) {
@@ -164,7 +164,7 @@
         var path = [];
 
         angular.forEach(lineLatLngs, function(latlng) {
-          var position = objToLatLng(latlng);
+          var position = validateLatLng(latlng);
           if (position == null) {
               $log.warn('Unable to generate lat/lng from ', latlng);
               return;

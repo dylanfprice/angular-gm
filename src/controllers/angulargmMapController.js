@@ -251,9 +251,6 @@
 
     this._newElement = function(type, opts) {
         if (type === 'marker') {
-            if (!(opts.position instanceof google.maps.LatLng)) {
-              throw 'markerOptions did not contain a position';
-            }
             return new angulargmDefaults.markerConstructor(opts);
         } else if (type === 'polyline') {
             if (!(opts.path instanceof Array)) {
@@ -261,9 +258,6 @@
             }
             return new angulargmDefaults.polylineConstructor(opts);
         } else if (type === 'circle') {
-            if (!(opts.center instanceof google.maps.LatLng)) {
-                throw 'circleOptions did not contain a marker position';
-            }
             return new angulargmDefaults.circleConstructor(opts);
         }
         else {

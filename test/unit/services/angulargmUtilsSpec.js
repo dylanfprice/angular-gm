@@ -100,8 +100,8 @@ describe('angulargmUtils', function() {
   describe('objToLatLng', function() {
 
     it('converts an object to a latLng', function() {
-      var latLng = objToLatLng(latLngObj);
-      expect(latLng).toEqual(latLngG);
+      var latLng = latLngToObj(objToLatLng(latLngObj));
+      expect(latLng).toEqual(latLngObj);
     });
 
     it('returns null on NaN', function() {

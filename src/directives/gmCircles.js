@@ -152,7 +152,7 @@
   directive('gmCircles', ['$parse', '$compile', '$timeout', '$log', 'angulargmUtils', 'angulargmShape',
     function ($parse, $compile, $timeout, $log, angulargmUtils, angulargmShape) {
      
-        var objToLatLng = angulargmUtils.objToLatLng;
+        var validateLatLng = angulargmUtils.validateLatLng;
 
         function link(scope, element, attrs, controller) {
             if (!('gmCircleCenter' in attrs)) {
@@ -161,7 +161,7 @@
 
             var circleOptions = function (object) {
                 var latLngObj = scope.gmCircleCenter({ object: object });    
-                var center = objToLatLng(latLngObj);
+                var center = validateLatLng(latLngObj);
                 if (center == null) {
                     return null;
                 }
