@@ -15,7 +15,7 @@ Latest version: 2.0.0
 + Bind custom objects to markers
 + Listen for and generate events on markers/objects
 + Create InfoWindows which compile Angular expressions (credit goes to [ui-map](https://github.com/angular-ui/ui-map) for this feature)
-+ Create polylines
++ Create polylines and circles
 
 
 ## Documentation and Examples
