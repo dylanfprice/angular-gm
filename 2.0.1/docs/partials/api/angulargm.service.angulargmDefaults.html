@@ -1,0 +1,25 @@
+<h1><code ng:non-bindable="">angulargmDefaults</code>
+<div><span class="hint">service in module <code ng:non-bindable="">angulargm</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="angulargm-service-page angulargm-service-angulargmdefaults-page"><p>Default configuration.</p>
+<p>To provide your own default config, use the following</p>
+<pre><code class="lang-js">angular.module(&#39;myModule&#39;).config(function($provide) {
+  $provide.decorator(&#39;angulargmDefaults&#39;, function($delegate) {
+    return angular.extend($delegate, {
+      &#39;precision&#39;: 3,
+      &#39;markerConstructor&#39;: myCustomMarkerConstructor,
+      &#39;polylineConstructor&#39;: myCustomPolylineConstructor,
+      &#39;mapOptions&#39;: {
+        center: {lat: 55, lng: 111},
+        mapTypeId: google.maps.MapTypeId.SATELLITE,
+        ...
+      }
+    });
+  });
+});
+</code></pre>
+</div></div>
+</div>

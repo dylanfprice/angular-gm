@@ -1,0 +1,90 @@
+<h1><code ng:non-bindable="">gmMap</code>
+<div><span class="hint">directive in module <code ng:non-bindable="">angulargm</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="angulargm-directive-page angulargm-directive-gmmap-page"><p>A directive for embedding google maps into your app.</p>
+<p><code>gm-map-id</code> is required. The <code>gm-center</code>, <code>gm-zoom</code>, <code>gm-bounds</code>, and
+<code>gm-map-type-id</code> variables do not have to exist in the current scope--they
+will be created if necessary. All three have bi-directional association,
+i.e.  drag or zoom the map and they will update, update them and the map
+will change.  However, any initial state of these three variables will be
+ignored.</p>
+<p>If you need to get a handle on the google.maps.Map object, see
+<a href="#/api/angulargm.service:angulargmContainer">angulargmContainer</a></p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage">as attribute<pre class="prettyprint linenums">&lt;ANY gm-map
+     gm-map-id="{expression}"
+     gm-center="{expression}"
+     gm-zoom="{expression}"
+     gm-bounds="{expression}"
+     gm-map-type-id="{expression}"
+     gm-map-options="{expression}"
+     gm-on-*event*="{expression}"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>gm-map-id</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gmmap-page"><p>angular expression that evaluates to a unique
+string id for the map, e.g. <code>&#39;map_canvas&#39;</code> or <code>myMapId</code> where myMapId is a
+variable in the current scope. This allows you to have multiple
+maps/instances of the directive.</p>
+</div></td></tr><tr><td>gm-center</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gmmap-page"><p>center variable in the current scope.  The
+value will be a google.maps.LatLngLiteral object.</p>
+</div></td></tr><tr><td>gm-zoom</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gmmap-page"><p>zoom variable in the current scope.  Value will
+be an integer.</p>
+</div></td></tr><tr><td>gm-bounds</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gmmap-page"><p>bounds variable in the current scope.  Value
+will be a google.maps.LatLngBounds object.</p>
+</div></td></tr><tr><td>gm-map-type-id</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gmmap-page"><p>mapTypeId variable in the current scope.
+Value will be a string.</p>
+</div></td></tr><tr><td>gm-map-options</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gmmap-page"><p>object in the current scope that is a
+google.maps.MapOptions object. If unspecified, will use the values in
+angulargmDefaults.mapOptions. <a href="#/api/angulargm.service:angulargmDefaults">angulargmDefaults</a> is a service, so it is
+both injectable and overrideable (using $provide.decorator).</p>
+</div></td></tr><tr><td>gm-on-*event*</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gmmap-page"><p>an angular expression which evaluates to
+an event handler. This handler will be attached to each marker&#39;s *event*
+event.  The variables &#39;map&#39; and &#39;event&#39; evaluate to the map and the
+<a href="https://developers.google.com/maps/documentation/javascript/reference#MouseEvent">google.maps.MouseEvent</a>,
+respectively. The map is always passed in, but the MouseEvent is only passed in if the event emits it.  For example:</p>
+<pre><code class="lang-html">gm-on-click=&quot;myClickFn(map, event)&quot;
+</code></pre>
+<p>will call your <code>myClickFn</code> whenever the map is clicked.  You may have
+multiple <code>gm-on-*event*</code> handlers, but only one for each type of event.  For events that have an underscore in their
+name, such as &#39;center_changed&#39;, write it as &#39;gm-on-center-changed&#39;.</p>
+</div></td></tr></tbody></table></div>
+<div class="member event"><h2 id="events">Events</h2>
+<ul class="events"><li><h3 id="events_gmmapidle">gmMapIdle</h3>
+<div class="gmmapidle"><div class="angulargm-directive-page angulargm-directive-gmmap-gmmapidle-page"><p>Emitted when the map is finished loading (when the map fires
+the &#39;idle&#39; event).</p>
+</div><div class="inline"><h4 id="events_gmmapidle_type">Type:</h4>
+<div class="type">emit</div>
+</div>
+<div class="inline"><h4 id="events_gmmapidle_target">Target:</h4>
+<div class="target">current gmMap scope</div>
+</div>
+<h5 id="events_gmmapidle_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>mapId</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="angulargm-directive-page angulargm-directive-gmmap-gmmapidle-page"><p>the id of the map which finished loading.</p>
+</div></td></tr></tbody></table><h4 id="events_gmmapidle_example">Example</h4>
+<div class="example"><div class="angulargm-directive-page angulargm-directive-gmmap-gmmapidle-page"><pre><code class="lang-js">$scope.$on(&#39;gmMapIdle&#39;, function(event, mapId) {
+    if (mapId === &#39;myMapId&#39;) {
+      ...
+    }
+});
+</code></pre>
+</div></div>
+</div>
+</li>
+<li><h3 id="events_gmmapresize">gmMapResize</h3>
+<div class="gmmapresize"><div class="angulargm-directive-page angulargm-directive-gmmap-gmmapresize-page"><p>Alias for google.maps.event.trigger(map, &#39;resize&#39;)</p>
+</div><div class="inline"><h4 id="events_gmmapresize_listen-on">Listen on:</h4>
+<div class="listen-on">current gmMap scope</div>
+</div>
+<h5 id="events_gmmapresize_listen-on_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>mapId</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="angulargm-directive-page angulargm-directive-gmmap-gmmapresize-page"><p>Required. The id of your map.</p>
+</div></td></tr></tbody></table><h4 id="events_gmmapresize_example">Example</h4>
+<div class="example"><div class="angulargm-directive-page angulargm-directive-gmmap-gmmapresize-page"><pre><code class="lang-js">$scope.$broadcast(&#39;gmMapResize&#39;, &#39;myMapId&#39;)
+</code></pre>
+</div></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
