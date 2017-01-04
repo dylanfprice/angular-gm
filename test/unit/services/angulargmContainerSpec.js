@@ -7,7 +7,7 @@ describe('angulargmContainer', function() {
 
   beforeEach(inject(function(angulargmContainer) {
     cntr = angulargmContainer;
-    mapSpy = spyOn(google.maps, 'Map').andCallFake(function() {
+    mapSpy = spyOn(google.maps, 'Map').and.callFake(function() {
     });
   }));
 

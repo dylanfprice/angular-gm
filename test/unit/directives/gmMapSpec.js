@@ -45,7 +45,7 @@ describe('gmMap', function() {
     // get MapController
     mapCtrl = elm.controller('gmMap');
 
-    spyOn(mapCtrl, 'mapTrigger').andCallThrough();
+    spyOn(mapCtrl, 'mapTrigger').and.callThrough();
 
     var center, zoom, bounds;
     Object.defineProperties(mapCtrl, {
@@ -238,29 +238,18 @@ describe('gmMap', function() {
     expect(mapCtrl.mapTrigger).not.toHaveBeenCalled();
   });
 
-  it('fires idle event when map loaded', inject(function($compile, $timeout) {
+  it('fires idle event when map loaded', function(done) {
     // this test is slow because we have to wait for google maps to load--eckh
-    var called = false;
-
-    runs(function() {
+    var t = inject(function($compile) {
       elm = angular.element('<gm-map gm-map-id="mapId" gm-center="pCenter" gm-zoom="pZoom" gm-bounds="pBounds"></gm-map>');
       var newScope = scope.$new();
       newScope.mapId = scope.mapId + 'diff';
       newScope.$on('gmMapIdle', function(event, mapId) {
         if (mapId === newScope.mapId) {
-          called = true;
+          done();
         }
       });
       $compile(elm)(newScope);
     });
-
-    waitsFor(function() {
-      return called;
-    }, 'Should fire idle event', 750);
-
-    runs(function() {
-      expect(called).toBeTruthy();
-    });
-  }));
-
+  });
 });

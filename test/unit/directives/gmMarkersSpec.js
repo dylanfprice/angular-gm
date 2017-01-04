@@ -42,11 +42,11 @@ describe('gmMarkers', function() {
     $compile(elm)(scope);
 
     mapCtrl = elm.controller('gmMap');
-    spyOn(mapCtrl, 'addElement').andCallThrough();
-    spyOn(mapCtrl, 'updateElement').andCallThrough();
-    spyOn(mapCtrl, 'removeElement').andCallThrough();
-    spyOn(mapCtrl, 'trigger').andCallThrough();
-    spyOn(mapCtrl, 'addListener').andCallThrough();
+    spyOn(mapCtrl, 'addElement').and.callThrough();
+    spyOn(mapCtrl, 'updateElement').and.callThrough();
+    spyOn(mapCtrl, 'removeElement').and.callThrough();
+    spyOn(mapCtrl, 'trigger').and.callThrough();
+    spyOn(mapCtrl, 'addListener').and.callThrough();
 
     markersScopeId = elm.find('gm-markers').isolateScope().$id;
 
@@ -134,8 +134,8 @@ describe('gmMarkers', function() {
         scope.people.push({name: 'new' + i, id: (i+10), location: {lat: i, lng: i}});
       }
       scope.$digest();
-      expect(mapCtrl.removeElement.calls.length).toEqual(length);
-      expect(mapCtrl.addElement.calls.length).toEqual(length * 2);
+      expect(mapCtrl.removeElement.calls.count()).toEqual(length);
+      expect(mapCtrl.addElement.calls.count()).toEqual(length * 2);
     });
 
 
@@ -151,7 +151,7 @@ describe('gmMarkers', function() {
       var origLength = scope.people.length;
       scope.people.push({name: '0', id: 0, location: {lat: 2, lng: 3}});
       scope.$digest();
-      expect(mapCtrl.addElement.callCount).toEqual(origLength);
+      expect(mapCtrl.addElement.calls.count()).toEqual(origLength);
     });
 
 
@@ -170,7 +170,7 @@ describe('gmMarkers', function() {
       var origLength = scope.people.length;
       scope.people.push(null);
       scope.$digest();
-      expect(mapCtrl.addElement.callCount).toEqual(origLength);
+      expect(mapCtrl.addElement.calls.count()).toEqual(origLength);
     });
 
   });
@@ -195,8 +195,8 @@ describe('gmMarkers', function() {
 
     scope.$digest();
     $timeout.flush();
-    var marker = mapCtrl.trigger.mostRecentCall.args[0];
-    var event = mapCtrl.trigger.mostRecentCall.args[1];
+    var marker = mapCtrl.trigger.calls.mostRecent()['args'][0];
+    var event = mapCtrl.trigger.calls.mostRecent()['args'][1];
     expect(latLngToObj(marker.getPosition())).toEqual(position);
     expect(event).toEqual('click');
   });
@@ -214,8 +214,8 @@ describe('gmMarkers', function() {
     }]
     scope.$digest();
     $timeout.flush();
-    var marker0 = mapCtrl.trigger.calls[0].args[0];
-    var marker1 = mapCtrl.trigger.calls[1].args[0];
+    var marker0 = mapCtrl.trigger.calls.argsFor(0)[0];
+    var marker1 = mapCtrl.trigger.calls.argsFor(1)[0];
     expect(latLngToObj(marker0.getPosition())).toEqual(position0);
     expect(latLngToObj(marker1.getPosition())).toEqual(position1);
   });
@@ -236,8 +236,8 @@ describe('gmMarkers', function() {
     ]
     scope.$digest();
     $timeout.flush();
-    var event0 = mapCtrl.trigger.calls[0].args[1];
-    var event1 = mapCtrl.trigger.calls[1].args[1];
+    var event0 = mapCtrl.trigger.calls.argsFor(0)[1];
+    var event1 = mapCtrl.trigger.calls.argsFor(1)[1];
     expect(event0).toEqual('event0');
     expect(event1).toEqual('event1');
   });
@@ -250,20 +250,19 @@ describe('gmMarkers', function() {
   });
 
 
-  it('calls event handlers when event fired', function() {
-    var person = scope.people[0];
-    var marker = mapCtrl.getElement('marker', markersScopeId, person.name);
-    var handled = false;
-    runs(function() {
-      google.maps.event.addListener(marker, 'mouseover', function() {handled = true;});
+  describe('calls event handlers when event fired', function() {
+    beforeEach(function(done) {
+      var person = scope.people[0];
+      var marker = mapCtrl.getElement('marker', markersScopeId, person.name);
+      google.maps.event.addListener(marker, 'mouseover', done);
       google.maps.event.trigger(marker, 'mouseover');
     });
-    waitsFor(function() {
-      return handled;
-    }, 'no mouseover', 500);
-    runs(function() {
+
+    it('', function() {
       scope.$digest();
       $timeout.flush();
+
+      var person = scope.people[0];
       expect(scope.mouseovered.person).toEqual(person);
     });
   });
