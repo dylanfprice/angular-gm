@@ -82,7 +82,7 @@ angular.module('homepage', [])
   .factory('script', function() {
 
     return {
-      googlemaps: '<script src="https://maps.googleapis.com/maps/api/js"></script>\n',
+      googlemaps: '<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcP7K4Ul9dlaI63GMg2kmy1XOth7FKXKw"></script>\n',
       angular: '<script src="https://ajax.googleapis.com/ajax/libs/angularjs/' + angular.version.full + '/angular.min.js"></script>\n',
       resource: '<script src="https://ajax.googleapis.com/ajax/libs/angularjs/' + angular.version.full + '/angular-resource.min.js"></script>\n',
       angulargm: '<script src="https://dylanfprice.github.io/angular-gm/1.0.2/angular-gm.js"></script>\n',
