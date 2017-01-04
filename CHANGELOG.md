@@ -2,6 +2,9 @@ Note these are not comprehensive commit lists but represent what I consider to b
 most significant changes. You can always see a full changelog with `git log
 1.0.0..0.3.1`.
 
+### 2.0.1
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/758f00103c3280e5c4a8fddf0dc0313b71aa802d) &bull; Update to angular 1.6.1 
+
 ### 2.0.0
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/229874008bbad39fdcf4069c82df3cd2e5d74a7f) &bull; Use lat lng literals instead of converting to google.maps.LatLng. 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/391ff100178c57264adb1c8c87bf7f1a2ec25b16) &bull; Convert gmMap and gmMarkers to use google.maps.LatLngLiteral objects instead of google.maps.LatLng objects. 
