@@ -9,4 +9,4 @@ cp -r dist/* $VERSION/
 git add $VERSION/
 git commit -m"Updating gh-pages to latest build."
 git checkout master
-
+git push origin gh-pages:gh-pages
