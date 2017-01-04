@@ -34,7 +34,7 @@ Install angular-gm
 Include the required libraries 
 ```html
 <script src="//maps.googleapis.com/maps/api/js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.27/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
 <script src="//path/to/angular-gm.js"></script>
 ```
 

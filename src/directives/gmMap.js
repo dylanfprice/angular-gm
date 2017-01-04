@@ -265,10 +265,10 @@
       transclude: true,
       replace: true,
       scope: {
-        gmCenter: '=',
-        gmZoom: '=',
-        gmBounds: '=',
-        gmMapTypeId: '=',
+        gmCenter: '=?',
+        gmZoom: '=?',
+        gmBounds: '=?',
+        gmMapTypeId: '=?',
         gmMapOptions: '&',
         gmMapId: '&'
       },
