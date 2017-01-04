@@ -3,7 +3,7 @@ module.exports = function(config) {
         basePath: '../',
 
         files: [
-          'https://maps.googleapis.com/maps/api/js?sensor=false',
+          'https://maps.googleapis.com/maps/api/js?key=AIzaSyBcP7K4Ul9dlaI63GMg2kmy1XOth7FKXKw',
           'test/lib/angular/angular.js',
           'test/lib/angular/angular-mocks.js',
           'src/module.js',
