@@ -2,6 +2,12 @@ Note these are not comprehensive commit lists but represent what I consider to b
 most significant changes. You can always see a full changelog with `git log
 1.0.0..0.3.1`.
 
+### 2.0.0
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/229874008bbad39fdcf4069c82df3cd2e5d74a7f) &bull; Use lat lng literals instead of converting to google.maps.LatLng. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/391ff100178c57264adb1c8c87bf7f1a2ec25b16) &bull; Convert gmMap and gmMarkers to use google.maps.LatLngLiteral objects instead of google.maps.LatLng objects. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/1d55ea6e275d7e5837aecdef7137da758eb27d3f) &bull; Update dependencies and fix tests for new version of jasmine. 
++ [view commit](http://github.com/dylanfprice/angular-gm/commit/58fd4866b136b41bcbb1e13c1d365c22e30c3bfe) &bull; Add API key to google maps. 
+
 ### 1.0.2
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/3e03341ffa4470010f37d52376f46f233f04ce17) &bull; Upgrade to angular 1.2.27 
 + [view commit](http://github.com/dylanfprice/angular-gm/commit/bc28243d854d766b3ad27785772c93065133471c) &bull; Added the configuration to add circles to the map. 

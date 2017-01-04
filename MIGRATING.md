@@ -1,3 +1,10 @@
+### Migrating to 2.0.0
+#### What to do
+Across the board the directives now use google.maps.LatLngLiteral objects to represent latitude/longitude points. Many directives were implicitly already using this format, e.g. `gm-position` on `gm-markers`, so in those cases only the wording in the documentation has changed. The only true breaking change is with `gm-map`:
+
+**`gm-map`**
+- `gm-center` now evaluates to a google.maps.LatLngLiteral instead of a google.maps.LatLng
+
 ### Migrating to 1.0.0
 #### What to do
 **`gm-markers`**
