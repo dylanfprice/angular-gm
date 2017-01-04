@@ -1,0 +1,114 @@
+<h1 id="infowindows">InfoWindows</h1>
+<div class="row example">
+  <div class="span8 app-source" app-source="infowindows.html infowindows.js infowindows.css" module="infowindows"></div>
+  <div class="span4">
+    <span class="pull-right" js-fiddle="infowindows.html infowindows.js infowindows.css" module="infowindows"></span>
+    <div class="tabs-spacer"></div>
+    <div app-run="infowindows.html" module="infowindows" class="well"></div>
+  </div>
+</div>
+
+<style id="infowindows.css">
+[gm-info-window] {
+  display: none;
+}
+
+.map [gm-info-window] {
+  display: block;
+}
+
+.map {
+  height: 300px;
+}
+
+/* 
+Fixes Bootstrap issues with Google Maps
+see http://stackoverflow.com/a/9170756 
+*/
+.map img { 
+  max-width: none;
+}
+</style>
+<script id="infowindows.js">
+  angular.module('infowindows', ['AngularGM'])
+
+  .controller('InfoWindowsCtrl', function($scope) {
+    $scope.options = {
+      map: {
+        center: new google.maps.LatLng(48, -121),
+        zoom: 6,
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+      },
+    };
+    
+    $scope.volcanoes = [
+      {
+        id: 0,
+        name: 'Mount Rainier',
+        elevationMeters: 4392,
+        location: {
+          lat: 46.852947, 
+          lng: -121.760424
+        }
+      },
+      {
+        id: 1,
+        name: 'Mount Baker',
+        elevationMeters: 3287,
+        location: {
+          lat: 48.776797, 
+          lng: -121.814467
+        }
+      },
+      {
+        id: 2,
+        name: 'Glacier Peak',
+        elevationMeters: 3207,
+        location: {
+          lat: 48.111844, 
+          lng: -121.11412
+        }
+      }
+    ];
+    
+    $scope.triggerOpenInfoWindow = function(volcano) {
+      $scope.markerEvents = [
+        {
+          event: 'openinfowindow',
+          ids: [volcano.id]
+        },
+      ];
+    }
+  });
+</script>
+<script type="text/ng-template" id="infowindows.html">
+  <div ng-controller="InfoWindowsCtrl">
+    <div gm-info-window="infoWindow">
+      <h4>{{selectedVolcano.name}}</h4>
+      {{selectedVolcano.elevationMeters}}m
+    </div>
+    <gm-map gm-map-id="'infoWindows'" gm-center="center" gm-zoom="zoom" 
+            gm-map-options="options.map" class="map">
+
+      <gm-markers gm-objects="volcanoes"
+                  gm-id="object.id"
+                  gm-position="{ lat: object.location.lat, lng: object.location.lng }"
+                  gm-marker-options="{ title: object.name, clickable: true }"
+                  gm-events="markerEvents"
+                  gm-on-openinfowindow="selectedVolcano = object; infoWindow.open(marker.getMap(), marker);"
+                  gm-on-click="triggerOpenInfoWindow(object)">
+      </gm-markers>
+
+    </gm-map>
+    Click a marker or click a button below to learn more about the volcano.
+    <div ng-repeat="volcano in volcanoes">
+      <button class="btn" ng-click="triggerOpenInfoWindow(volcano)">
+        More about {{volcano.name}}
+      </button>
+    </div>
+  </div>
+</script>
+
+
+
+

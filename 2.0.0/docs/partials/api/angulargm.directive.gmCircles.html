@@ -1,0 +1,137 @@
+<h1><code ng:non-bindable="">gmCircles</code>
+<div><span class="hint">directive in module <code ng:non-bindable="">angulargm</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="angulargm-directive-page angulargm-directive-gmcircles-page"><p>A directive for adding circles to a <code>gmMap</code>. You may have multiple per <code>gmMap</code>.</p>
+<p>To use, you specify an array of custom objects and tell the directive how to
+extract the center point for the circle from them. A circle will be created
+for each of your objects. If you assign a new array to your scope variable
+or change the array&#39;s length, the circles will also update.  The one case
+where <code>gmCircles</code> can not automatically detect changes to your objects is
+when you mutate objects in the array. To inform the directive of such
+changes, see the <code>gmCirclesUpdate</code> event below.</p>
+<p>Only the <code>gm-objects</code>, <code>gm-id</code> and <code>gm-circle-center</code> attributes are required.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage">as attribute<pre class="prettyprint linenums">&lt;ANY gm-circles
+     gm-objects="{expression}"
+     gm-circle-center="{expression}"
+     gm-circle-options="{expression}"
+     gm-events="{expression}"
+     gm-on-*event*="{expression}"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>gm-objects</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gmcircles-page"><p>an array of objects in the current scope.
+These can be any objects you wish to attach to circles, the only requirement
+is that they have a uniform method of accessing an id and a center.</p>
+</div></td></tr><tr><td>gm-circle-center</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gmcircles-page"><p>an angular expression that given an
+object from <code>gm-objects</code>, evaluates to a google.maps.LatLngLiteral object.
+Your object can be accessed through the variable <code>object</code>.  For example, if
+your controller has</p>
+<pre><code class="lang-js">...
+$scope.myObjects = [
+  { id: 0, center: { lat: 5, lng: 5}},
+  { id: 1, center: { lat: 6, lng: 6}}
+]
+...
+</code></pre>
+<p>then in the <code>gm-circles</code> directive you would put</p>
+<pre><code class="lang-js">...
+gm-objects=&quot;myObjects&quot;
+gm-circle-center=&quot;object.center&quot;
+...
+</code></pre>
+</div></td></tr><tr><td>gm-circle-options</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gmcircles-page"><p>an angular expression that given
+an object from <code>gm-objects</code>, evaluates to a
+<a href="https://developers.google.com/maps/documentation/javascript/reference#CircleOptions">google.maps.CircleOptions</a>
+object.  Your object can be accessed through the variable <code>object</code>. If
+unspecified, google maps api defaults will be used.</p>
+</div></td></tr><tr><td>gm-events</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gmcircles-page"><p>a variable in the current scope that is used to
+simulate events on circles. Setting this variable to an object of the form</p>
+<pre><code class="lang-js">    [
+      {
+        event: &#39;click&#39;,
+        ids: [id1, ...]
+      },
+      ...
+    ]
+</code></pre>
+<p>will generate the named events on the circles with the given ids, if a
+circle with each id exists. Note: when setting the <code>gm-events</code> variable, you
+must set it to a new object for the changes to be detected.  Code like</p>
+<pre><code class="lang-js">myEvents[0][&quot;ids&quot;] = [0]
+</code></pre>
+<p>will not work.</p>
+</div></td></tr><tr><td>gm-on-*event*</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="angulargm-directive-page angulargm-directive-gmcircles-page"><p>an angular expression which evaluates to
+an event handler. This handler will be attached to each circle&#39;s *event*
+event.  The variables &#39;object&#39; and &#39;circle&#39; evaluate to your object and the
+<a href="https://developers.google.com/maps/documentation/javascript/reference#Circle">google.maps.circle</a>,
+respectively. For example:</p>
+<pre><code class="lang-html">gm-on-click=&quot;myClickFn(object, circle)&quot;
+</code></pre>
+<p>will call your <code>myClickFn</code> whenever a circle is clicked.  You may have
+multiple <code>gm-on-*event*</code> handlers, but only one for each type of event.
+For events that have an underscore in their name, such as
+&#39;position_changed&#39;, write it as &#39;gm-on-position-changed&#39;.</p>
+</div></td></tr></tbody></table></div>
+<div class="member event"><h2 id="events">Events</h2>
+<ul class="events"><li><h3 id="events_gmcirclesredraw">gmCirclesRedraw</h3>
+<div class="gmcirclesredraw"><div class="angulargm-directive-page angulargm-directive-gmcircles-gmcirclesredraw-page"><p>Force the gmCircles directive to clear and redraw all circles.</p>
+</div><div class="inline"><h4 id="events_gmcirclesredraw_listen-on">Listen on:</h4>
+<div class="listen-on">current gmCircles scope</div>
+</div>
+<h5 id="events_gmcirclesredraw_listen-on_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>objects</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="angulargm-directive-page angulargm-directive-gmcircles-gmcirclesredraw-page"><p>Not required. The name of the scope variable which
+holds the objects to redraw circles for, i.e. what you set <code>gm-objects</code> to.
+It is useful because there may be multiple instances of the <code>gmCircles</code>
+directive. If not specified, all instances of gmCircles which are child
+scopes will redraw their circles.</p>
+</div></td></tr></tbody></table><h4 id="events_gmcirclesredraw_example">Example</h4>
+<div class="example"><div class="angulargm-directive-page angulargm-directive-gmcircles-gmcirclesredraw-page"><pre><code class="lang-js">$scope.$broadcast(&#39;gmCirclesRedraw&#39;, &#39;myObjects&#39;);
+</code></pre>
+</div></div>
+</div>
+</li>
+<li><h3 id="events_gmcirclesupdate">gmCirclesUpdate</h3>
+<div class="gmcirclesupdate"><div class="angulargm-directive-page angulargm-directive-gmcircles-gmcirclesupdate-page"><p>Manually tell the <code>gmCircles</code> directive to update the circles.
+This is useful to tell the directive when an object from <code>gm-objects</code> is
+mutated--<code>gmCircles</code> can not pick up on such changes automatically.</p>
+</div><div class="inline"><h4 id="events_gmcirclesupdate_listen-on">Listen on:</h4>
+<div class="listen-on">current gmCircles scope</div>
+</div>
+<h5 id="events_gmcirclesupdate_listen-on_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>objects</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="angulargm-directive-page angulargm-directive-gmcircles-gmcirclesupdate-page"><p>Not required. The name of the scope variable which
+holds the objects to update circles for, i.e. what you set <code>gm-objects</code> to.
+It is useful because there may be multiple instances of the <code>gmCircles</code>
+directive. If not specified, all instances of <code>gmCircles</code> which are child
+scopes will update their circles.</p>
+</div></td></tr></tbody></table><h4 id="events_gmcirclesupdate_example">Example</h4>
+<div class="example"><div class="angulargm-directive-page angulargm-directive-gmcircles-gmcirclesupdate-page"><pre><code class="lang-js">$scope.$broadcast(&#39;gmCirclesUpdate&#39;, &#39;myObjects&#39;);
+</code></pre>
+</div></div>
+</div>
+</li>
+<li><h3 id="events_gmcirclesupdated">gmCirclesUpdated</h3>
+<div class="gmcirclesupdated"><div class="angulargm-directive-page angulargm-directive-gmcircles-gmcirclesupdated-page"><p>Emitted when circles are updated.</p>
+</div><div class="inline"><h4 id="events_gmcirclesupdated_type">Type:</h4>
+<div class="type">emit</div>
+</div>
+<div class="inline"><h4 id="events_gmcirclesupdated_target">Target:</h4>
+<div class="target">current gmCircles scope</div>
+</div>
+<h5 id="events_gmcirclesupdated_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>objects</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="angulargm-directive-page angulargm-directive-gmcircles-gmcirclesupdated-page"><p>the name of the scope variable which holds the
+objects the gmCircles directive was constructed with. This is what
+<code>gm-objects</code> was set to.</p>
+</div></td></tr></tbody></table><h4 id="events_gmcirclesupdated_example">Example</h4>
+<div class="example"><div class="angulargm-directive-page angulargm-directive-gmcircles-gmcirclesupdated-page"><pre><code class="lang-js">$scope.$on(&#39;gmCirclesUpdated&#39;, function(event, objects) {
+    if (objects === &#39;myObjects&#39;) {
+      ...
+    }
+});
+</code></pre>
+</div></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
