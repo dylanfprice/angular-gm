@@ -85,7 +85,7 @@ angular.module('homepage', [])
       googlemaps: '<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcP7K4Ul9dlaI63GMg2kmy1XOth7FKXKw"></script>\n',
       angular: '<script src="https://ajax.googleapis.com/ajax/libs/angularjs/' + angular.version.full + '/angular.min.js"></script>\n',
       resource: '<script src="https://ajax.googleapis.com/ajax/libs/angularjs/' + angular.version.full + '/angular-resource.min.js"></script>\n',
-      angulargm: '<script src="https://dylanfprice.github.io/angular-gm/1.0.2/angular-gm.js"></script>\n',
+      angulargm: '<script src="https://dylanfprice.github.io/angular-gm/2.0.0/angular-gm.js"></script>\n',
       firebase: '<script src="https://cdn.firebase.com/v0/firebase.js"></script>\n    <script src="http://firebase.github.io/angularFire/angularFire.js"></script>\n',
     };
   })
