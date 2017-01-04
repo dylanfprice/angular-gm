@@ -75,8 +75,8 @@ see http://stackoverflow.com/a/9170756
     <div ng-repeat="line in lines">
       Edit line {{line.id}}:
       <div class="inline" ng-repeat="latLng in line.path">
-        <input class="small-input inline" ng-model="latLng.lat" ng-change="onEdit()">,
-        <input class="small-input inline" ng-model="latLng.lng" ng-change="onEdit()">
+        <input class="small-input inline" type="number" ng-model="latLng.lat" ng-change="onEdit()">,
+        <input class="small-input inline" type="number" ng-model="latLng.lng" ng-change="onEdit()">
         <span ng-show="!$last">to</span>
       </div>
     </div>
