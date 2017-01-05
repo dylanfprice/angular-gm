@@ -172,7 +172,7 @@ angular.module('homepage', [])
 
           tabs.push(
             '<li class="' + (!index ? ' active' : '') + '">' +
-              '<a href="#' + id(filename) + '" data-toggle="tab">' + (index ? filename : 'index.html') + '</a>' +
+              '<a data-target="#' + id(filename) + '" data-toggle="tab">' + (index ? filename : 'index.html') + '</a>' +
             '</li>');
 
           if (index == 0) {
