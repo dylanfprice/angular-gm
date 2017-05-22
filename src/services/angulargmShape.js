@@ -43,9 +43,17 @@
      * Create new shapes and add them to the map for objects which are not
      * currently on the map.
      */
-    function _addNewElements(type, scope, controller, handlers, objectCache, optionsFn) {
+    function _addNewElements(type, scope, controller, handlers, objectCache, optionsFn, objectsName) {
       angular.forEach(objectCache, function(object, id) {
         var element = controller.getElement(type, scope.$id, id);
+
+        if (objectsName && !controller._objectsNameToScopesMap[objectsName]) {
+            controller._objectsNameToScopesMap[objectsName] = scope.$id;
+        }
+
+        if (objectsName && !controller._objectsNameToTypesMap[objectsName]) {
+            controller._objectsNameToTypesMap[objectsName] = type;
+        }
 
         var options = optionsFn(object);
         if (options == null) {
@@ -71,7 +79,7 @@
                   handler(scope.$parent.$parent, context);
                 } else {
                   handler(scope.$parent.$parent.$parent , context);
-                }    
+                }
               });
             });
           });
@@ -181,13 +189,13 @@
     function createShapeDirective(type, scope, attrs, controller, elementOptions) {
       checkRequiredAttributes(attrs);
 
-      var updateElements = function(scope, objects) {
+      var updateElements = function(scope, objects, objectsName) {
         var objectCache = _generateObjectCache(scope, objects);
         var handlers = angulargmUtils.getEventHandlers(attrs); // map events -> handlers
 
         _addNewElements(
           type, scope, controller, handlers,
-          objectCache, elementOptions
+          objectCache, elementOptions, objectsName
         );
 
         _removeOrphanedElements(type, scope, controller, objectCache);
@@ -198,7 +206,7 @@
       _attachEventListeners(type, scope, attrs, controller, updateElements);
 
       // initialize elements
-      $timeout(angular.bind(null, updateElements, scope, scope.gmObjects()));
+      $timeout(angular.bind(null, updateElements, scope, scope.gmObjects(), attrs.gmObjects));
     }
 
     return {

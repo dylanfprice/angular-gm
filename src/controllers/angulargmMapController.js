@@ -40,6 +40,8 @@
       // 'private' properties
       this._map = this._createMap(mapId, mapDiv, config, angulargmContainer, $scope);
       this._elements = {};
+      this._objectsNameToScopesMap = {};
+      this._objectsNameToTypesMap = {};
       this._listeners = {};
 
       // 'public' properties
@@ -273,6 +275,14 @@
         return this._elements[type];
     };
 
+    this._getScopeIdByObjectsName = function(objectsName) {
+      return this._objectsNameToScopesMap[objectsName];
+    };
+
+    this._getTypeByObjectsName = function(objectsName) {
+      return this._objectsNameToTypesMap[objectsName];
+    };
+
     /**
      * Adds a new element to the map.
      * @return {boolean} true if an element was added, false if there was already
@@ -419,6 +429,42 @@
           fn(element, id);
         }
       });
+    };
+
+    /**
+     * Applies a function to each element associated with a gmObjects binding
+     * @param {String} name of gmObjects being watched, e.g. 'people'
+     * @param {Function} fn will called with element as first argument
+     * @throw if an argument is null or undefined
+     */
+    this.forEachElementByObjectsName = function(objectsName, fn) {
+      assertDefined(objectsName, 'objectsName');
+      assertDefined(fn, 'fn');
+
+      var type = this._getTypeByObjectsName(objectsName);
+      var scopeId = this._getScopeIdByObjectsName(objectsName);
+      var elements = this._getElements(type);
+
+      angular.forEach(elements[scopeId], function(element, id) {
+        if (element != null) {
+          fn(element, id);
+        }
+      });
+    };
+
+    /**
+     * Returns the list of google.maps objects by name of gmObjects being watched
+     * @param {String} name of gmObjects being watched, e.g. 'people'
+     * @throw if an argument is null or undefined
+     */
+    this.getElementsByObjectsName = function(objectsName) {
+      assertDefined(objectsName, 'objectsName');
+
+      var type = this._getTypeByObjectsName(objectsName);
+      var elements = this._getElements(type);
+      var scopeId = this._getScopeIdByObjectsName(objectsName);
+
+      return elements[scopeId];
     };
 
     this.getMap = function() {
