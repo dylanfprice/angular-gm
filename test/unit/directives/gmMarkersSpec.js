@@ -352,4 +352,40 @@ describe('gmMarkers', function() {
     expect(count).toEqual(1);
   });
 
+  it('emits marker added event when markers added', function() {
+    var count = 0;
+    var newlyAdded;
+    scope.$on('gmMarkersAdded', function(event, objects, added) {
+      if (objects == objectsName) {
+        count++;
+        newlyAdded = added;
+      }
+    });
+
+    scope.people.push({name: '4', id: 4, location: {lat: 2, lng: 3}});
+    scope.$digest();
+
+    expect(count).toEqual(1);
+    expect(newlyAdded.length).toEqual(1);
+    expect(newlyAdded[0].id).toEqual('4');
+  });
+
+  it('emits marker removed event when markers removed', function() {
+    var count = 0;
+    var newlyRemoved;
+    scope.$on('gmMarkersRemoved', function(event, objects, removed) {
+      if (objects == objectsName) {
+        count++;
+        newlyRemoved = removed;
+      }
+    });
+
+    var popped = scope.people.pop();
+    scope.$digest();
+
+    expect(count).toEqual(1);
+    expect(newlyRemoved.length).toEqual(1);
+    expect(newlyRemoved[0].id).toEqual(popped.id.toString());
+  });
+
 });

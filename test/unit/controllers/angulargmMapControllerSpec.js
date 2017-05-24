@@ -229,7 +229,8 @@ describe('angulargmMapController', function() {
         scope,
         scope2,
         markerOptions,
-        objectsName;
+        objectsName,
+        objectsName2;
 
 
     beforeEach(function() {
@@ -239,6 +240,7 @@ describe('angulargmMapController', function() {
       scope = 'scope';
       scope2 = 'scope2';
       objectsName = 'people';
+      objectsName2 = 'notPeople';
 
       markerOptions = {
         position: position
@@ -348,6 +350,15 @@ describe('angulargmMapController', function() {
       expect(markers.length).toEqual(1);
     });
 
+    it('can apply a function to each marker associated with a gmObjects expression', function() {
+      mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
+      mapCtrl.addElement('marker', scope2, id, markerOptions, objectsName2);
+      markers = [];
+      mapCtrl.forEachElementByObjectsName(objectsName, function(marker) {
+        markers.push(marker);
+      });
+      expect(markers.length).toEqual(1);
+    });
 
     it('does not apply a function to removed markers', function() {
       var called = false;
@@ -356,5 +367,13 @@ describe('angulargmMapController', function() {
       });
       expect(called).toBeFalsy();
     });
+
+    it('can retrieve the markers associated with a gmObjects expression', function() {
+      mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
+      mapCtrl.addElement('marker', scope2, id2, markerOptions, objectsName2);
+      var result = mapCtrl.getElementsByObjectsName(objectsName);
+      expect(result).toEqual({1: jasmine.any(Object)});
+    });
+
   });
 });
