@@ -290,14 +290,23 @@
      * @throw if any arguments are null/undefined or elementOptions does not
      *   have all the required options (i.e. position)
      */
-    this.addElement = function(type, scopeId, id, elementOptions) {
+    this.addElement = function(type, scopeId, id, elementOptions, objectsName) {
         assertDefined(type, 'type');
         assertDefined(scopeId, 'scopeId');
         assertDefined(id, 'id');
         assertDefined(elementOptions, 'elementOptions');
+        assertDefined(objectsName, 'objectsName');
 
         if (this.hasElement(type, scopeId, id)) {
           return false;
+        }
+
+        if (!this._objectsNameToScopesMap[objectsName]) {
+           this._objectsNameToScopesMap[objectsName] = scopeId;
+        }
+
+        if (!this._objectsNameToTypesMap[objectsName]) {
+          this._objectsNameToTypesMap[objectsName] = type;
         }
 
         var elements = this._getElements(type);

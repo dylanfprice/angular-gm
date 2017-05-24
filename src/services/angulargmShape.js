@@ -26,6 +26,14 @@
     }
 
     /**
+     * _formatEventName('gmShapesUpdated', 'marker') -> 'gmMarkersUpdated'
+     */
+    function _formatEventName(template, type) {
+      var uppercasePluralType = type.charAt(0).toUpperCase() + type.slice(1) + 's';
+      return template.replace('Shapes', uppercasePluralType);
+    }
+
+    /**
      * Create a mapping from object id -> object.
      * The object id is retrieved using scope.gmId
      */
@@ -44,16 +52,9 @@
      * currently on the map.
      */
     function _addNewElements(type, scope, controller, handlers, objectCache, optionsFn, objectsName) {
+      var added = [];
       angular.forEach(objectCache, function(object, id) {
         var element = controller.getElement(type, scope.$id, id);
-
-        if (objectsName && !controller._objectsNameToScopesMap[objectsName]) {
-            controller._objectsNameToScopesMap[objectsName] = scope.$id;
-        }
-
-        if (objectsName && !controller._objectsNameToTypesMap[objectsName]) {
-            controller._objectsNameToTypesMap[objectsName] = type;
-        }
 
         var options = optionsFn(object);
         if (options == null) {
@@ -63,8 +64,12 @@
         if (element) {
           controller.updateElement(type, scope.$id, id, options);
         } else {
-          controller.addElement(type, scope.$id, id, options);
+          controller.addElement(type, scope.$id, id, options, objectsName);
           element = controller.getElement(type, scope.$id, id);
+          added.push({
+            id: id,
+            element: element
+          });
 
           // set up element event handlers
           angular.forEach(handlers, function(handler, event) {
@@ -85,31 +90,33 @@
           });
         }
       });
+      if (added.length > 0) {
+        scope.$emit(_formatEventName('gmShapesAdded', type), objectsName, added);
+      }
     }
 
     /**
      * Remove shape elements from the map which are no longer in objects.
      */
-    function _removeOrphanedElements(type, scope, controller, objectCache) {
+    function _removeOrphanedElements(type, scope, controller, objectCache, objectsName) {
       var orphaned = [];
 
       controller.forEachElementInScope(type, scope.$id, function(element, id) {
         if (!(id in objectCache)) {
-          orphaned.push(id);
+          orphaned.push({
+            id: id,
+            element: element
+          });
         }
       });
 
-      angular.forEach(orphaned, function(id) {
-        controller.removeElement(type, scope.$id, id);
+      angular.forEach(orphaned, function(orphan) {
+        controller.removeElement(type, scope.$id, orphan.id);
       });
-    }
 
-    /**
-     * _formatEventName('gmShapesUpdated', 'marker') -> 'gmMarkersUpdated'
-     */
-    function _formatEventName(template, type) {
-      var uppercasePluralType = type.charAt(0).toUpperCase() + type.slice(1) + 's';
-      return template.replace('Shapes', uppercasePluralType);
+      if (orphaned.length > 0) {
+        scope.$emit(_formatEventName('gmShapesRemoved', type), objectsName, orphaned);
+      }
     }
 
     /**
@@ -123,13 +130,13 @@
       // watch objects
       scope.$watch('gmObjects().length', function(newValue, oldValue) {
         if (newValue != null && newValue !== oldValue) {
-          updateElements(scope, scope.gmObjects());
+          updateElements(scope, scope.gmObjects(), attrs.gmObjects);
         }
       });
 
       scope.$watch('gmObjects()', function(newValue, oldValue) {
         if (newValue != null && newValue !== oldValue) {
-          updateElements(scope, scope.gmObjects());
+          updateElements(scope, scope.gmObjects(), attrs.gmObjects);
         }
       });
 
@@ -152,13 +159,13 @@
       scope.$on(_formatEventName('gmShapesRedraw', type), function(event, objectsName) {
         if (objectsName == null || objectsName === attrs.gmObjects) {
           updateElements(scope);
-          updateElements(scope, scope.gmObjects());
+          updateElements(scope, scope.gmObjects(), attrs.gmObjects);
         }
       });
 
       scope.$on(_formatEventName('gmShapesUpdate', type), function(event, objectsName) {
         if (objectsName == null || objectsName === attrs.gmObjects) {
-          updateElements(scope, scope.gmObjects());
+          updateElements(scope, scope.gmObjects(), attrs.gmObjects);
         }
       });
     }
@@ -198,7 +205,7 @@
           objectCache, elementOptions, objectsName
         );
 
-        _removeOrphanedElements(type, scope, controller, objectCache);
+        _removeOrphanedElements(type, scope, controller, objectCache, objectsName);
 
         scope.$emit(_formatEventName('gmShapesUpdated', type), attrs.gmObjects);
       };
