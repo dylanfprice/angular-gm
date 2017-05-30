@@ -18,6 +18,15 @@
 
 /**
  * @ngdoc event
+ * @name angulargm.directive:gmMarkerClusterer#gmMarkerClustererReady
+ * @eventOf angulargm.directive:gmMarkerClusterer
+ * @eventType emit on gmMarkerClusterer scope
+ *
+ * @description Emitted when the Marker Clusterer has finished initialization.
+ */
+
+/**
+ * @ngdoc event
  * @name angulargm.directive:gmMarkerClusterer#gmExecuteClustererMethod
  * @eventOf angulargm.directive:gmMarkerClusterer
  * @eventType listen on gmMarkerClusterer scope
@@ -70,6 +79,8 @@
             });
 
             markerClusterer.redraw();
+
+            scope.$emit('gmMarkerClustererReady');
           }
 
           scope.$on('gmMarkersUpdated', function (event, objectsName) {
