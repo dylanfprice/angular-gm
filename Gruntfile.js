@@ -65,7 +65,8 @@ module.exports = function(grunt) {
         globals: {
           exports: true,
           angular: false,
-          google: false
+          google: false,
+          MarkerClusterer: false
         }
       }
     },

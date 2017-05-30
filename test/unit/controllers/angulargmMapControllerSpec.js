@@ -350,16 +350,6 @@ describe('angulargmMapController', function() {
       expect(markers.length).toEqual(1);
     });
 
-    it('can apply a function to each marker associated with a gmObjects expression', function() {
-      mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
-      mapCtrl.addElement('marker', scope2, id, markerOptions, objectsName2);
-      markers = [];
-      mapCtrl.forEachElementByObjectsName(objectsName, function(marker) {
-        markers.push(marker);
-      });
-      expect(markers.length).toEqual(1);
-    });
-
     it('does not apply a function to removed markers', function() {
       var called = false;
       mapCtrl.forEachElement('marker', function(marker) {
@@ -368,11 +358,23 @@ describe('angulargmMapController', function() {
       expect(called).toBeFalsy();
     });
 
-    it('can retrieve the markers associated with a gmObjects expression', function() {
+    it('can retrieve the markers in a scope', function() {
       mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
       mapCtrl.addElement('marker', scope2, id2, markerOptions, objectsName2);
-      var result = mapCtrl.getElementsByObjectsName(objectsName);
+      var result = mapCtrl.getElementsByScopeId('marker', scope);
       expect(result).toEqual({1: jasmine.any(Object)});
+    });
+
+    it('can retrieve the scopeId by objectsName', function() {
+      mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
+      var scopeId = mapCtrl.getScopeIdByObjectsName(objectsName);
+      expect(scopeId).toEqual(scope);
+    });
+
+    it('can retrieve gmMarkerClusterer options by objectsName', function() {
+      mapCtrl.setMarkerClustererOptions(objectsName, {asdf: 1234});
+      var options = mapCtrl.getMarkerClustererOptions(objectsName);
+      expect(options).toEqual({asdf: 1234});
     });
 
   });

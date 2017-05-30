@@ -86,6 +86,11 @@
  * multiple `gm-on-*event*` handlers, but only one for each type of event.
  * For events that have an underscore in their name, such as
  * 'position_changed', write it as 'gm-on-position-changed'.
+ *
+ * @param {expression} gm-marker-clusterer-options an angular expression that
+ * evaluates to an object containing [MarkerClusterer options](https://gmaps-marker-clusterer.github.io/gmaps-marker-clusterer/#reference-options).
+ * If unspecified, MarkerClusterer defaults will be used. Used by the
+ * gmMarkerClusterer directive.
  */
 
 /**
@@ -152,6 +157,62 @@
  * ```
  */
 
+/**
+ * @ngdoc event
+ * @name angulargm.directive:gmMarkers#gmMarkersAdded
+ * @eventOf angulargm.directive:gmMarkers
+ * @eventType emit on current gmMarkers scope
+ *
+ * @description Emitted when markers are added.
+ *
+ * @param {string} objects the name of the scope variable which holds the
+ * objects the `gmMarkers` directive was constructed with. This is what
+ * `gm-objects` was set to.
+ *
+ * @param {array} added an array of objects representing the
+ * google.maps.Marker objects added. Each object will include `id` and
+ * `element` properties. The `id` property will match the evaluated gmId
+ * expression for the associated item in gmObjects. The `element` property
+ * will contain the google.maps.Marker object.
+ *
+ * @example
+ * ```js
+ * $scope.$on('gmMarkersAdded', function(event, objects, added) {
+ *     if (objects === 'myObjects' && added.length > 1) {
+ *       ...
+ *     }
+ * });
+ * ```
+ */
+
+/**
+ * @ngdoc event
+ * @name angulargm.directive:gmMarkers#gmMarkersRemoved
+ * @eventOf angulargm.directive:gmMarkers
+ * @eventType emit on current gmMarkers scope
+ *
+ * @description Emitted when markers are removed.
+ *
+ * @param {string} objects the name of the scope variable which holds the
+ * objects the `gmMarkers` directive was constructed with. This is what
+ * `gm-objects` was set to.
+ *
+ * @param {array} removed an array of objects representing the
+ * google.maps.Marker objects removed. Each object will include `id` and
+ * `element` properties. The `id` property will match the evaluated gmId
+ * expression for the associated item in gmObjects. The `element` property
+ * will contain the google.maps.Marker object.
+ *
+ * @example
+ * ```js
+ * $scope.$on('gmMarkersRemoved', function(event, objects, removed) {
+ *     if (objects === 'myObjects' && added.length > 1) {
+ *       ...
+ *     }
+ * });
+ * ```
+ */
+
 (function () {
 'use strict';
 
@@ -196,6 +257,7 @@
         gmId: '&',
         gmPosition: '&',
         gmMarkerOptions: '&',
+        gmMarkerClustererOptions: '&',
         gmEvents: '&'
       },
       require: '^gmMap',

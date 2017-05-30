@@ -156,6 +156,13 @@
         }
       });
 
+      scope.$watchCollection('gmMarkerClustererOptions()', function (newValue, oldValue) {
+        // different if condition here to make sure to set the initial value
+        if (newValue != null && (newValue !== oldValue || !controller.getMarkerClustererOptions(attrs.gmObjects))) {
+          controller.setMarkerClustererOptions(attrs.gmObjects, newValue);
+        }
+      });
+
       scope.$on(_formatEventName('gmShapesRedraw', type), function(event, objectsName) {
         if (objectsName == null || objectsName === attrs.gmObjects) {
           updateElements(scope);

@@ -40,8 +40,8 @@
       // 'private' properties
       this._map = this._createMap(mapId, mapDiv, config, angulargmContainer, $scope);
       this._elements = {};
-      this._objectsNameToScopesMap = {};
-      this._objectsNameToTypesMap = {};
+      this._objectsNameToScopeIdsMap = {};
+      this._objectsNameToClustererOptionsMap = {};
       this._listeners = {};
 
       // 'public' properties
@@ -275,12 +275,18 @@
         return this._elements[type];
     };
 
-    this._getScopeIdByObjectsName = function(objectsName) {
-      return this._objectsNameToScopesMap[objectsName];
+    this._setScopeIdByObjectsName = function(objectsName, scopeId) {
+      this._objectsNameToScopeIdsMap[objectsName] = scopeId;
     };
 
-    this._getTypeByObjectsName = function(objectsName) {
-      return this._objectsNameToTypesMap[objectsName];
+    /**
+     * Returns the scopeId associated with a gmMarkers/Circles/Polylines expression
+     * @return {number} scope id
+     * @throw if objectsName argument is null/undefined
+     */
+    this.getScopeIdByObjectsName = function(objectsName) {
+      assertDefined(objectsName, 'objectsName');
+      return this._objectsNameToScopeIdsMap[objectsName];
     };
 
     /**
@@ -301,12 +307,8 @@
           return false;
         }
 
-        if (!this._objectsNameToScopesMap[objectsName]) {
-           this._objectsNameToScopesMap[objectsName] = scopeId;
-        }
-
-        if (!this._objectsNameToTypesMap[objectsName]) {
-          this._objectsNameToTypesMap[objectsName] = type;
+        if (!this.getScopeIdByObjectsName(objectsName)) {
+          this._setScopeIdByObjectsName(objectsName, scopeId);
         }
 
         var elements = this._getElements(type);
@@ -441,43 +443,45 @@
     };
 
     /**
-     * Applies a function to each element associated with a gmObjects binding
-     * @param {String} name of gmObjects being watched, e.g. 'people'
-     * @param {Function} fn will called with element as first argument
+     * Returns the list of google.maps objects by scopeId
+     * @param {String} type of element, e.g. 'marker'
+     * @param {number} scope id
      * @throw if an argument is null or undefined
      */
-    this.forEachElementByObjectsName = function(objectsName, fn) {
-      assertDefined(objectsName, 'objectsName');
-      assertDefined(fn, 'fn');
-
-      var type = this._getTypeByObjectsName(objectsName);
-      var scopeId = this._getScopeIdByObjectsName(objectsName);
+    this.getElementsByScopeId = function(type, scopeId) {
+      assertDefined(type, 'type');
+      assertDefined(scopeId, 'scopeId');
       var elements = this._getElements(type);
-
-      angular.forEach(elements[scopeId], function(element, id) {
-        if (element != null) {
-          fn(element, id);
-        }
-      });
-    };
-
-    /**
-     * Returns the list of google.maps objects by name of gmObjects being watched
-     * @param {String} name of gmObjects being watched, e.g. 'people'
-     * @throw if an argument is null or undefined
-     */
-    this.getElementsByObjectsName = function(objectsName) {
-      assertDefined(objectsName, 'objectsName');
-
-      var type = this._getTypeByObjectsName(objectsName);
-      var elements = this._getElements(type);
-      var scopeId = this._getScopeIdByObjectsName(objectsName);
-
       return elements[scopeId];
     };
 
+    /**
+     * Returns the google.maps map instance
+     */
     this.getMap = function() {
       return this._map;
+    };
+
+    /**
+     * Returns the MarkerClusterer options associated with a gmObjects expression
+     * @param {String} gmObjects expression
+     * @throw if an argument is null or undefined
+     */
+    this.getMarkerClustererOptions = function (objectsName) {
+      assertDefined(objectsName, 'objectsName');
+      return this._objectsNameToClustererOptionsMap[objectsName];
+    };
+
+    /**
+     * Sets the MarkerClusterer options associated with a gmObjects expression
+     * @param {String} gmObjects expression
+     * @param {Object} MarkerClusterer options
+     * @throw if an argument is null or undefined
+     */
+    this.setMarkerClustererOptions = function (objectsName, options) {
+      assertDefined(objectsName, 'objectsName');
+      assertDefined(options, 'options');
+      this._objectsNameToClustererOptionsMap[objectsName] = options;
     };
 
     /** Instantiate controller */
