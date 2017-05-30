@@ -16,6 +16,31 @@
  * override the default clusterer options;
  */
 
+/**
+ * @ngdoc event
+ * @name angulargm.directive:gmMarkerClusterer#gmExecuteClustererMethod
+ * @eventOf angulargm.directive:gmMarkerClusterer
+ * @eventType listen on gmMarkerClusterer scope
+ *
+ * @description Broadcast to trigger execution of a
+ * [MarkerClusterer method](https://gmaps-marker-clusterer.github.io/gmaps-marker-clusterer/#methods)
+ *
+ * @param {string} objectsName gmObjects expression for the desired clusterer.
+ *
+ * @param {object} options object containing the the MarkerClusterer method
+ * to execute, the arguments to apply it with, and an event name to emit with
+ * the results.
+ *
+ * @example
+ * ```js
+ * $scope.$broadcast('gmExecuteClustererMethod', {
+ *    method: 'setMaxZoom',
+ *    arguments: [12],
+ *    callback: 'doneWithSetMaxZoom'
+ * });
+ * ```
+ */
+
 (function () {
   'use strict';
 
@@ -74,6 +99,15 @@
               angular.forEach(removed, function (value, index) {
                 markerClusterer.removeMarker(value.element);
               });
+            }
+          });
+
+          scope.$on('gmExecuteClustererMethod', function (event, objectsName, options) {
+            if (markerClusterer && options && options.method && markerClusterer[options.method] && objectsName && objectsName === attr.gmObjects) {
+              var result = markerClusterer[options.method].apply(markerClusterer, options.arguments);
+              if (options.callback) {
+                scope.$emit(options.callback, result);
+              }
             }
           });
 

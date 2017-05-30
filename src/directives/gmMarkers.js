@@ -88,7 +88,8 @@
  * 'position_changed', write it as 'gm-on-position-changed'.
  *
  * @param {expression} gm-marker-clusterer-options an angular expression that
- * evaluates to an object containing [MarkerClusterer options](https://gmaps-marker-clusterer.github.io/gmaps-marker-clusterer/#reference-options).
+ * evaluates to an object containing
+ * [MarkerClusterer options](https://gmaps-marker-clusterer.github.io/gmaps-marker-clusterer/#reference-options).
  * If unspecified, MarkerClusterer defaults will be used. Used by the
  * gmMarkerClusterer directive.
  */
