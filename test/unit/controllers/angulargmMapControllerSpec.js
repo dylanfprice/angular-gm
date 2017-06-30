@@ -228,7 +228,9 @@ describe('angulargmMapController', function() {
         id2,
         scope,
         scope2,
-        markerOptions;
+        markerOptions,
+        objectsName,
+        objectsName2;
 
 
     beforeEach(function() {
@@ -237,6 +239,8 @@ describe('angulargmMapController', function() {
       id2 = 2;
       scope = 'scope';
       scope2 = 'scope2';
+      objectsName = 'people';
+      objectsName2 = 'notPeople';
 
       markerOptions = {
         position: position
@@ -247,23 +251,23 @@ describe('angulargmMapController', function() {
     describe('addElement', function() {
 
       it('adds new markers to the map', function() {
-        var added = mapCtrl.addElement('marker', scope, id, markerOptions);
+        var added = mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
         expect(added).toBeTruthy();
       });
 
       it('does not replace markers already on the map', function() {
-        mapCtrl.addElement('marker', scope, id, markerOptions);
-        var added = mapCtrl.addElement('marker', scope, id, markerOptions);
+        mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
+        var added = mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
         expect(added).toBeFalsy();
       });
 
       it('does not add markers with no position', function() {
-        var added = angular.bind(this, mapCtrl.addElement, 'marker', scope, id, {});
+        var added = angular.bind(this, mapCtrl.addElement, 'marker', scope, id, {}, objectsName);
         expect(added).toThrow();
       });
 
       it('does not add markers with no id', function() {
-        var added = angular.bind(this, mapCtrl.addElement, 'marker', scope, null, markerOptions);
+        var added = angular.bind(this, mapCtrl.addElement, 'marker', scope, null, markerOptions, objectsName);
         expect(added).toThrow();
       });
     });
@@ -271,7 +275,7 @@ describe('angulargmMapController', function() {
     describe('getElement', function() {
 
       it('retrieves markers that are on the map', function() {
-        mapCtrl.addElement('marker', scope, id, markerOptions);
+        mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
         var marker = mapCtrl.getElement('marker', scope, id);
         expect(latLngToObj(marker.getPosition())).toEqual(markerOptions.position);
       });
@@ -286,7 +290,7 @@ describe('angulargmMapController', function() {
     describe('updateElement', function() {
 
       it('updates marker on the map', function() {
-        mapCtrl.addElement('marker', scope, id, markerOptions);
+        mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
         var newPosition = {lat: position.lat + 1, lng: position.lng + 1};
         var updated = mapCtrl.updateElement('marker', scope, id, {position: newPosition});
         var marker = mapCtrl.getElement('marker', scope, id);
@@ -295,7 +299,7 @@ describe('angulargmMapController', function() {
       });
 
       it('does not update marker not on the map', function() {
-        var updated = mapCtrl.updateElement('marker', scope, id, {position: position});
+        var updated = mapCtrl.updateElement('marker', scope, id, {position: position}, objectsName);
         expect(updated).toBeFalsy();
       });
     });
@@ -304,7 +308,7 @@ describe('angulargmMapController', function() {
     describe('removeElement', function() {
 
       beforeEach(function() {
-        mapCtrl.addElement('marker', scope, id, markerOptions);
+        mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
       });
 
       it('removes markers from the map', function() {
@@ -324,8 +328,8 @@ describe('angulargmMapController', function() {
 
 
     it('can apply a function to each marker', function() {
-      mapCtrl.addElement('marker', scope, id, markerOptions);
-      mapCtrl.addElement('marker', scope2, id, markerOptions);
+      mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
+      mapCtrl.addElement('marker', scope2, id, markerOptions, objectsName);
       markers = [];
       mapCtrl.forEachElement('marker', function(marker) {
         markers.push(marker);
@@ -337,15 +341,14 @@ describe('angulargmMapController', function() {
 
 
     it('can apply a function to each marker in a scope', function() {
-      mapCtrl.addElement('marker', scope, id, markerOptions);
-      mapCtrl.addElement('marker', scope2, id, markerOptions);
+      mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
+      mapCtrl.addElement('marker', scope2, id, markerOptions, objectsName);
       markers = [];
       mapCtrl.forEachElementInScope('marker', scope, function(marker) {
         markers.push(marker);
       });
       expect(markers.length).toEqual(1);
     });
-
 
     it('does not apply a function to removed markers', function() {
       var called = false;
@@ -354,5 +357,19 @@ describe('angulargmMapController', function() {
       });
       expect(called).toBeFalsy();
     });
+
+    it('can retrieve the markers in a scope', function() {
+      mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
+      mapCtrl.addElement('marker', scope2, id2, markerOptions, objectsName2);
+      var result = mapCtrl.getElementsByScopeId('marker', scope);
+      expect(result).toEqual({1: jasmine.any(Object)});
+    });
+
+    it('can retrieve the scopeId by objectsName', function() {
+      mapCtrl.addElement('marker', scope, id, markerOptions, objectsName);
+      var scopeId = mapCtrl.getScopeIdByObjectsName(objectsName);
+      expect(scopeId).toEqual(scope);
+    });
+
   });
 });

@@ -40,6 +40,7 @@
       // 'private' properties
       this._map = this._createMap(mapId, mapDiv, config, angulargmContainer, $scope);
       this._elements = {};
+      this._objectsNameToScopeIdsMap = {};
       this._listeners = {};
 
       // 'public' properties
@@ -273,6 +274,20 @@
         return this._elements[type];
     };
 
+    this._setScopeIdByObjectsName = function(objectsName, scopeId) {
+      this._objectsNameToScopeIdsMap[objectsName] = scopeId;
+    };
+
+    /**
+     * Returns the scopeId associated with a gmMarkers/Circles/Polylines expression
+     * @return {number} scope id
+     * @throw if objectsName argument is null/undefined
+     */
+    this.getScopeIdByObjectsName = function(objectsName) {
+      assertDefined(objectsName, 'objectsName');
+      return this._objectsNameToScopeIdsMap[objectsName];
+    };
+
     /**
      * Adds a new element to the map.
      * @return {boolean} true if an element was added, false if there was already
@@ -280,14 +295,19 @@
      * @throw if any arguments are null/undefined or elementOptions does not
      *   have all the required options (i.e. position)
      */
-    this.addElement = function(type, scopeId, id, elementOptions) {
+    this.addElement = function(type, scopeId, id, elementOptions, objectsName) {
         assertDefined(type, 'type');
         assertDefined(scopeId, 'scopeId');
         assertDefined(id, 'id');
         assertDefined(elementOptions, 'elementOptions');
+        assertDefined(objectsName, 'objectsName');
 
         if (this.hasElement(type, scopeId, id)) {
           return false;
+        }
+
+        if (!this.getScopeIdByObjectsName(objectsName)) {
+          this._setScopeIdByObjectsName(objectsName, scopeId);
         }
 
         var elements = this._getElements(type);
@@ -421,6 +441,22 @@
       });
     };
 
+    /**
+     * Returns the list of google.maps objects by scopeId
+     * @param {String} type of element, e.g. 'marker'
+     * @param {number} scope id
+     * @throw if an argument is null or undefined
+     */
+    this.getElementsByScopeId = function(type, scopeId) {
+      assertDefined(type, 'type');
+      assertDefined(scopeId, 'scopeId');
+      var elements = this._getElements(type);
+      return elements[scopeId];
+    };
+
+    /**
+     * Returns the google.maps map instance
+     */
     this.getMap = function() {
       return this._map;
     };
