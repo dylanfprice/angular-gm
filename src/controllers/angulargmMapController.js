@@ -41,7 +41,6 @@
       this._map = this._createMap(mapId, mapDiv, config, angulargmContainer, $scope);
       this._elements = {};
       this._objectsNameToScopeIdsMap = {};
-      this._objectsNameToClustererOptionsMap = {};
       this._listeners = {};
 
       // 'public' properties
@@ -460,28 +459,6 @@
      */
     this.getMap = function() {
       return this._map;
-    };
-
-    /**
-     * Returns the MarkerClusterer options associated with a gmObjects expression
-     * @param {String} gmObjects expression
-     * @throw if an argument is null or undefined
-     */
-    this.getMarkerClustererOptions = function (objectsName) {
-      assertDefined(objectsName, 'objectsName');
-      return this._objectsNameToClustererOptionsMap[objectsName];
-    };
-
-    /**
-     * Sets the MarkerClusterer options associated with a gmObjects expression
-     * @param {String} gmObjects expression
-     * @param {Object} MarkerClusterer options
-     * @throw if an argument is null or undefined
-     */
-    this.setMarkerClustererOptions = function (objectsName, options) {
-      assertDefined(objectsName, 'objectsName');
-      assertDefined(options, 'options');
-      this._objectsNameToClustererOptionsMap[objectsName] = options;
     };
 
     /** Instantiate controller */

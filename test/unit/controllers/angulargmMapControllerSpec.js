@@ -371,11 +371,5 @@ describe('angulargmMapController', function() {
       expect(scopeId).toEqual(scope);
     });
 
-    it('can retrieve gmMarkerClusterer options by objectsName', function() {
-      mapCtrl.setMarkerClustererOptions(objectsName, {asdf: 1234});
-      var options = mapCtrl.getMarkerClustererOptions(objectsName);
-      expect(options).toEqual({asdf: 1234});
-    });
-
   });
 });

@@ -21,7 +21,6 @@ describe('gmMarkers', function() {
       };
     };
     scope.mapId = 'test';
-    scope.clustererOptions = {};
 
     $timeout = _$timeout_;
     latLngToObj = angulargmUtils.latLngToObj
@@ -36,8 +35,7 @@ describe('gmMarkers', function() {
       'gm-events="markerEvents"' +
       'gm-on-click="selected = {person: object, marker: marker}"' +
       'gm-on-position-changed="posChanged = {marker: marker}"' +
-      'gm-on-mouseover="mouseovered = {person: object, marker: marker}"' +
-      'gm-marker-clusterer-options="clustererOptions">' +
+      'gm-on-mouseover="mouseovered = {person: object, marker: marker}">' +
       '</gm-markers>' +
       '</gm-map>');
 
@@ -51,7 +49,6 @@ describe('gmMarkers', function() {
     spyOn(mapCtrl, 'removeElement').and.callThrough();
     spyOn(mapCtrl, 'trigger').and.callThrough();
     spyOn(mapCtrl, 'addListener').and.callThrough();
-    spyOn(mapCtrl, 'setMarkerClustererOptions').and.callThrough();
 
     markersScopeId = elm.find('gm-markers').isolateScope().$id;
 
@@ -389,12 +386,6 @@ describe('gmMarkers', function() {
     expect(count).toEqual(1);
     expect(newlyRemoved.length).toEqual(1);
     expect(newlyRemoved[0].id).toEqual(popped.id.toString());
-  });
-
-  it('stores gmMarkerClusterer options', function() {
-    scope.clustererOptions = {asdf: 1234};
-    scope.$digest();
-    expect(mapCtrl.setMarkerClustererOptions).toHaveBeenCalledWith('people', {asdf: 1234});
   });
 
 });
