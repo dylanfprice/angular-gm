@@ -125,7 +125,7 @@
      * - handling gmEvents
      * - listening for events
      */
-    function _attachEventListeners(type, scope, attrs, controller, updateElements) {
+    function _attachEventListeners(type, scope, attrs, controller, updateElements, updateOneElement) {
 
       // watch objects
       scope.$watch('gmObjects().length', function(newValue, oldValue) {
@@ -163,9 +163,15 @@
         }
       });
 
-      scope.$on(_formatEventName('gmShapesUpdate', type), function(event, objectsName) {
-        if (objectsName == null || objectsName === attrs.gmObjects) {
+      scope.$on(_formatEventName('gmShapesUpdate', type), function(event, objectsName, objectId) {
+        if (objectsName == null) {
           updateElements(scope, scope.gmObjects(), attrs.gmObjects);
+        } else if (objectsName === attrs.gmObjects) {
+          if (objectId == null) {
+            updateElements(scope, scope.gmObjects(), attrs.gmObjects);
+          } else {
+            updateOneElement(scope, scope.gmObjects(), attrs.gmObjects, objectId);
+          }
         }
       });
     }
@@ -210,7 +216,21 @@
         scope.$emit(_formatEventName('gmShapesUpdated', type), attrs.gmObjects);
       };
 
-      _attachEventListeners(type, scope, attrs, controller, updateElements);
+      var updateOneElement = function(scope, objects, objectsName, objectId) {
+        var matchedObject;
+        for (var i = 0; i < objects.length; i++) {
+          if (scope.gmId({object: objects[i]}) === objectId) {
+            matchedObject = objects[i];
+            break;
+          }
+        }
+
+        controller.updateElement(type, scope.$id, objectId, elementOptions(matchedObject));
+
+        scope.$emit(_formatEventName('gmShapesUpdated', type), attrs.gmObjects, objectId);
+      };
+
+      _attachEventListeners(type, scope, attrs, controller, updateElements, updateOneElement);
 
       // initialize elements
       $timeout(angular.bind(null, updateElements, scope, scope.gmObjects(), attrs.gmObjects));

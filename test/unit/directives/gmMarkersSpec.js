@@ -23,7 +23,7 @@ describe('gmMarkers', function() {
     scope.mapId = 'test';
 
     $timeout = _$timeout_;
-    latLngToObj = angulargmUtils.latLngToObj
+    latLngToObj = angulargmUtils.latLngToObj;
 
     // compile angulargmMarkers directive
     elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
@@ -158,13 +158,40 @@ describe('gmMarkers', function() {
 
 
     it('updates markers with changed objects when update triggered', function() {
-      var person = scope.people[0]
+      var person = scope.people[0];
+      var origLength = scope.people.length;
+      person.location.lat = person.location.lat + 5;
+      person.location.lng = person.location.lng + 5;
+      var newPosition = person.location;
+      scope.$broadcast('gmMarkersUpdate');
+      expect(mapCtrl.updateElement).toHaveBeenCalledWith('marker', markersScopeId,
+        jasmine.any(String), {key: 'value', title: jasmine.any(String), position: newPosition});
+      expect(mapCtrl.updateElement.calls.count()).toEqual(origLength);
+    });
+
+
+    it('updates markers with changed objects when update triggered when providing objectsName', function() {
+      var origLength = scope.people.length;
+      var person = scope.people[0];
       person.location.lat = person.location.lat + 5;
       person.location.lng = person.location.lng + 5;
       var newPosition = person.location;
       scope.$broadcast('gmMarkersUpdate', objectsName);
       expect(mapCtrl.updateElement).toHaveBeenCalledWith('marker', markersScopeId,
         jasmine.any(String), {key: 'value', title: jasmine.any(String), position: newPosition});
+      expect(mapCtrl.updateElement.calls.count()).toEqual(origLength);
+    });
+
+
+    it('updates markers with changed objects when update triggered when providing objectsName and objectId', function() {
+      var person = scope.people[0];
+      person.location.lat = person.location.lat + 5;
+      person.location.lng = person.location.lng + 5;
+      var newPosition = person.location;
+      scope.$broadcast('gmMarkersUpdate', objectsName, person.id);
+      expect(mapCtrl.updateElement).toHaveBeenCalledWith('marker', markersScopeId,
+        person.id, {key: 'value', title: jasmine.any(String), position: newPosition});
+      expect(mapCtrl.updateElement.calls.count()).toEqual(1);
     });
 
 
