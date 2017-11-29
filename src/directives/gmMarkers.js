@@ -88,9 +88,11 @@
  * 'position_changed', write it as 'gm-on-position-changed'.
  *
 * @param {expression} gm-marker-constructor an angular expression which evaluates
- * to a custom marker constructor function. This constructor will be used for all
- * markers created by this gm-markers directive. If not specified, the default
- * fromt angulargmDefaults will be used. For example:
+ * to a custom marker constructor function (presumably based on
+ * [google.maps.OverlayView](https://developers.google.com/maps/documentation/javascript/reference#OverlayView).
+ * This constructor will be used for all markers created by this gm-markers
+ * directive. If not specified, the default from angulargmDefaults will be used.
+ * For example:
  * ```html
  * gm-marker-constructor="myCustomMarkerConstructor"
  * ```
