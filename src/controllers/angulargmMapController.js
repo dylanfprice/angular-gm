@@ -236,6 +236,22 @@
 
 
     /**
+     * Alias for google.maps.event.addDomListener(object, event, handler)
+     */
+    this.addDomListener = function(object, event, handler) {
+      google.maps.event.addDomListener(object, event, handler);
+    };
+
+
+    /**
+     * Alias for google.maps.event.addDomListenerOnce(object, event, handler)
+     */
+    this.addDomListenerOnce = function(object, event, handler) {
+      google.maps.event.addDomListenerOnce(object, event, handler);
+    };
+
+
+    /**
      * Alias for google.maps.event.trigger(map, event)
      * @param {string} event an event defined on google.maps.Map
      */
@@ -251,9 +267,9 @@
       google.maps.event.trigger(object, event);
     };
 
-    this._newElement = function(type, opts) {
+    this._newElement = function(type, opts, CustomMarkerConstructor) {
         if (type === 'marker') {
-            return new angulargmDefaults.markerConstructor(opts);
+            return angular.isDefined(CustomMarkerConstructor) && angular.isFunction(CustomMarkerConstructor) ? new CustomMarkerConstructor(opts) : new angulargmDefaults.markerConstructor(opts);
         } else if (type === 'polyline') {
             if (!(opts.path instanceof Array)) {
                 throw 'polylineOptions did not contain a path';
@@ -295,7 +311,7 @@
      * @throw if any arguments are null/undefined or elementOptions does not
      *   have all the required options (i.e. position)
      */
-    this.addElement = function(type, scopeId, id, elementOptions, objectsName) {
+    this.addElement = function(type, scopeId, id, elementOptions, objectsName, customMarkerConstructor) {
         assertDefined(type, 'type');
         assertDefined(scopeId, 'scopeId');
         assertDefined(id, 'id');
@@ -319,7 +335,7 @@
         // extend instead of copy to preserve value objects
         var opts = {};
         angular.extend(opts, elementOptions);
-        var element = this._newElement(type, opts);
+        var element = this._newElement(type, opts, customMarkerConstructor);
         elements[scopeId][id] = element;
         element.setMap(this._map);
 

@@ -186,6 +186,148 @@ describe('gmMarkers', function() {
   });
 
 
+  describe('gmMarkerConstructor', function() {
+    var elm, scope, markersScopeId, mapCtrl, objectsName;
+    var latLngToObj;
+    var $timeout;
+
+    var CustomMarker = function(options) {
+      if (options) {
+        if (options.position) {
+          this.latlng = new google.maps.LatLng(options.position.lat, options.position.lng);
+        }
+        this.div = document.createElement('div');
+        if (options.map) {
+          this.setMap(options.map);
+        }
+      }
+    };
+    CustomMarker.prototype = new google.maps.OverlayView();
+    CustomMarker.prototype.setMap = function (map) {
+      this._map = map;
+    };
+    CustomMarker.prototype.getPosition = function () {
+      return this.latlng;
+    };
+
+    beforeEach(inject(function($rootScope, $compile, _$timeout_, angulargmUtils) {
+      // set up scopes
+      scope = $rootScope.$new();
+      scope.people2 = [
+        {name: '0', id: 0, location: {lat: 1, lng: 2}},
+        {name: '3', id: 3, location: {lat: 4, lng: 5}}
+      ];
+      scope.getOpts2 = function(person) {
+        return {
+          key: 'value',
+          title: person.name
+        };
+      };
+      scope.mapId = 'test5';
+
+      $timeout = _$timeout_;
+      latLngToObj = angulargmUtils.latLngToObj;
+
+      scope.myCustomMarker = CustomMarker;
+
+      // compile angulargmMarkers directive
+      elm = angular.element('<gm-map gm-map-id="mapId" gm-center="center" gm-zoom="zoom" gm-bounds="bounds">' +
+        '<gm-markers ' +
+        'gm-objects="people2"' +
+        'gm-id="object.id"' +
+        'gm-position="object.location"' +
+        'gm-marker-options="getOpts2(object)"' +
+        'gm-events="markerEvents"' +
+        'gm-marker-constructor="myCustomMarker">' +
+        '</gm-markers>' +
+        '</gm-map>');
+
+      objectsName = 'people2';
+
+      $compile(elm)(scope);
+
+      mapCtrl = elm.controller('gmMap');
+      spyOn(scope.myCustomMarker.prototype, 'setMap').and.callThrough();
+      spyOn(scope.myCustomMarker.prototype, 'getPosition').and.callThrough();
+      spyOn(mapCtrl, 'addElement').and.callThrough();
+      spyOn(mapCtrl, 'trigger').and.callThrough();
+      spyOn(mapCtrl, 'addDomListener').and.callThrough();
+
+      markersScopeId = elm.find('gm-markers').isolateScope().$id;
+
+      scope.$digest();
+      $timeout.flush();
+    }));
+
+    it('is used when a custom marker constructor is provided', inject(function($compile) {
+      expect(mapCtrl.addElement.calls.count()).toEqual(scope.people2.length);
+      expect(mapCtrl.addElement).toHaveBeenCalledWith('marker', markersScopeId,
+        jasmine.any(String), {key: 'value', title: jasmine.any(String), position: jasmine.any(Object)}, objectsName, scope.myCustomMarker);
+      expect(scope.myCustomMarker.prototype.setMap.calls.count()).toEqual(scope.people2.length);
+    }));
+
+    it('triggers events', function() {
+        var person = scope.people2[0];
+        var position = person.location;
+        var id = person.name;
+        scope.markerEvents = [{
+          event: 'click',
+          ids: [id],
+        }];
+
+        scope.$digest();
+        $timeout.flush();
+        var marker = mapCtrl.trigger.calls.mostRecent()['args'][0];
+        var event = mapCtrl.trigger.calls.mostRecent()['args'][1];
+        expect(latLngToObj(marker.getPosition())).toEqual(position);
+        expect(event).toEqual('click');
+      });
+
+
+      it('triggers events on multiple markers', function() {
+
+        var position0 = scope.people2[0].location;
+        var position1 = scope.people2[1].location;
+        var id0 = scope.people2[0].name;
+        var id1 = scope.people2[1].name;
+        scope.markerEvents = [{
+          event: 'click',
+          ids: [id0, id1]
+        }];
+        scope.$digest();
+        $timeout.flush();
+        var marker0 = mapCtrl.trigger.calls.argsFor(0)[0];
+        var marker1 = mapCtrl.trigger.calls.argsFor(1)[0];
+        expect(latLngToObj(marker0.getPosition())).toEqual(position0);
+        expect(latLngToObj(marker1.getPosition())).toEqual(position1);
+      });
+
+
+      it('triggers multiple events on markers', function() {
+        var position = scope.people2[0].location;
+        var id = scope.people2[0].name;
+        scope.markerEvents = [
+          {
+            event: 'event0',
+            ids: [id]
+          },
+          {
+            event: 'event1',
+            ids: [id]
+          }
+        ];
+        scope.$digest();
+        $timeout.flush();
+        var event0 = mapCtrl.trigger.calls.argsFor(0)[1];
+        var event1 = mapCtrl.trigger.calls.argsFor(1)[1];
+        expect(event0).toEqual('event0');
+        expect(event1).toEqual('event1');
+      });
+
+
+  });
+
+
   it('triggers events', function() {
     var person = scope.people[0];
     var position = person.location;
