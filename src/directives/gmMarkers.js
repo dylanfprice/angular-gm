@@ -114,9 +114,20 @@
  * directive. If not specified, all instances of `gmMarkers` which are child
  * scopes will update their markers.
  *
+ * @param {string} objectId Not required. The id of one item from `gm-objects`
+ * that has been updated. If provided along with the objects param, only the
+ * marker for the one object with that id will be updated. If not provided,
+ * all markers will be updated as usual. It can be useful to avoid updating all
+ * the markers in a large list after each update when only a single object has
+ * changed.
+ *
  * @example
  * ```js
+ * $scope.$broadcast('gmMarkersUpdate');
+ * // or
  * $scope.$broadcast('gmMarkersUpdate', 'myObjects');
+ * // or
+ * $scope.$broadcast('gmMarkersUpdate', 'myObjects', 'dk37d09blkd2h');
  * ```
  */
 
