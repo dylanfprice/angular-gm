@@ -51,7 +51,7 @@
      * Create new shapes and add them to the map for objects which are not
      * currently on the map.
      */
-    function _addNewElements(type, scope, controller, handlers, objectCache, optionsFn, objectsName) {
+    function _addNewElements(type, scope, controller, handlers, objectCache, optionsFn, objectsName, attrs) {
       var added = [];
       angular.forEach(objectCache, function(object, id) {
         var element = controller.getElement(type, scope.$id, id);
@@ -64,7 +64,11 @@
         if (element) {
           controller.updateElement(type, scope.$id, id, options);
         } else {
-          controller.addElement(type, scope.$id, id, options, objectsName);
+          if (type === 'marker' && attrs.gmMarkerConstructor) {
+            controller.addElement(type, scope.$id, id, options, objectsName, scope.gmMarkerConstructor);
+          } else {
+            controller.addElement(type, scope.$id, id, options, objectsName);
+          }
           element = controller.getElement(type, scope.$id, id);
           added.push({
             id: id,
@@ -73,7 +77,7 @@
 
           // set up element event handlers
           angular.forEach(handlers, function(handler, event) {
-            controller.addListener(element, event, function() {
+            function listenerCb() {
               $timeout(function() {
                 var context = {object: object};
                 context[type] = element;
@@ -86,7 +90,19 @@
                   handler(scope.$parent.$parent.$parent , context);
                 }
               });
-            });
+            }
+            if (type === 'marker' && attrs.gmMarkerConstructor) {
+              // nodeType check adapted from Lodash
+              if('getDomElement' in element && element.getDomElement() && element.getDomElement().nodeType === 1) {
+                controller.addDomListener(element.getDomElement(), event, listenerCb);
+              } else {
+                throw 'the constructor provided as gmMarkerConstructor must include a ' +
+                '"getDomElement" method that returns its DOM node, which must exist ' +
+                'after the constructor is called';
+              }
+            } else {
+              controller.addListener(element, event, listenerCb);
+            }
           });
         }
       });
@@ -208,7 +224,7 @@
 
         _addNewElements(
           type, scope, controller, handlers,
-          objectCache, elementOptions, objectsName
+          objectCache, elementOptions, objectsName, attrs
         );
 
         _removeOrphanedElements(type, scope, controller, objectCache, objectsName);
